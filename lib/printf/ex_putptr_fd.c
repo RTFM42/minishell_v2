@@ -1,34 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ex_putptr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/13 14:43:52 by yushsato          #+#    #+#             */
-/*   Updated: 2024/04/23 21:48:25 by yushsato         ###   ########.fr       */
+/*   Created: 2023/06/23 23:41:00 by yushsato          #+#    #+#             */
+/*   Updated: 2023/06/24 18:21:55 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "extra.h"
 
-int	g_signal = 0;
-
-int	main(int ac, char **av, char **ae)
+int	ex_putptr_fd(void *ptr, int fd)
 {
-	char	*input;
+	int	len;
 
-	(void)av;
-	if (ac != 1 && set_errno(EINVAL))
-		exit_with_errno("argv");
-	env_set(ae);
-	while (1)
-	{
-		sig_sh(0);
-		input = ms_readline();
-		ms_isctrld(input);
-		
-		free(input);
-	}
-	return (0);
+	write(fd, "0x", 2);
+	len = ex_putunbr_base_fd((size_t)ptr, "0123456789abcdef", fd);
+	return (len + 2);
 }

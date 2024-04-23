@@ -1,34 +1,13 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/13 14:43:52 by yushsato          #+#    #+#             */
-/*   Updated: 2024/04/23 21:48:25 by yushsato         ###   ########.fr       */
+/*   Created: 2024/04/20 21:56:34 by yushsato          #+#    #+#             */
+/*   Updated: 2024/04/21 19:12:49 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-int	g_signal = 0;
-
-int	main(int ac, char **av, char **ae)
-{
-	char	*input;
-
-	(void)av;
-	if (ac != 1 && set_errno(EINVAL))
-		exit_with_errno("argv");
-	env_set(ae);
-	while (1)
-	{
-		sig_sh(0);
-		input = ms_readline();
-		ms_isctrld(input);
-		
-		free(input);
-	}
-	return (0);
-}

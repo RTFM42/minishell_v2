@@ -6,7 +6,7 @@
 #    By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/13 14:42:14 by yushsato          #+#    #+#              #
-#    Updated: 2024/04/15 04:19:29 by yushsato         ###   ########.fr        #
+#    Updated: 2024/04/23 21:41:40 by yushsato         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,36 +23,44 @@ SRCS	= ./src/main.c \
 OBJS	= $(SRCS:.c=.o)
 RLDIR	= $(shell brew --prefix readline)
 LIBFT	= libft.a
+PRINTF	= libftprintf.a
 RLFLAGS	=  -L$(RLDIR)/lib -lreadline
 INCLUDE	= -I./ -I./src -I$(RLDIR)/include
 
 %.o: %.c
 	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 
-$(NAME): $(OBJS) $(LIBFT)
+$(NAME): $(OBJS) $(LIBFT) $(PRINTF)
 	$(CC) $(CFLAGS) $^ -o $@ $(INCLUDE) $(RLFLAGS)
 
 $(LIBFT):
-		cd lib          && \
-		cd libft        && \
-		make all        && \
-		cp $@ ../../    && \
-		make fclean
+	cd lib          && \
+	cd libft        && \
+	make all        && \
+	cp $@ ../../
+
+$(PRINTF):
+	cd lib          && \
+	cd printf       && \
+	make all        && \
+	cp $@ ../../
 
 readline:
-	brew install readline
+	brew list readline &> /dev/null || brew install readline
 
-all: readline $(NAME)
+all: readline $(LIBFT) $(PRINTF) $(NAME)
 
 clean:
-	rm -rf $(OBJS) $(LIBFT)
+	rm -rf $(OBJS) $(LIBFT) $(PRINTF)
+	cd lib && cd libft && make clean
+	cd lib && cd printf && make clean
 
 fclean: clean
 	rm -f $(NAME)
+	cd lib && cd libft && make fclean
+	cd lib && cd printf && make fclean
 
 re: fclean all
-
-build: all clean
 
 __debug_configure__:
 	$(eval CC := gcc)
@@ -65,4 +73,4 @@ norminette: $(SRCS)
 
 norm: norminette
 
-.PHONY: all clean fclean re build debug norminette norm
+.PHONY: all clean fclean re debug norminette norm

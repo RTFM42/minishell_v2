@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 01:17:25 by yushsato          #+#    #+#             */
-/*   Updated: 2024/04/15 01:24:35 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/04/23 19:33:18 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
  * ## Handles prompt program interruption signals
  * @note	`SIGINT`: Exit with 130, Display prompt on a new line
  * @note	`SIGQUIT`: Nothing to do
- * @param	signo signal number
+ * @param	signo signal number to be passed on in the loop. usually 0 is fine.
  * @return	N/A
 */
 void	sig_sh(int signo)

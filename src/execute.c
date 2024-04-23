@@ -1,34 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/13 14:43:52 by yushsato          #+#    #+#             */
-/*   Updated: 2024/04/23 21:48:25 by yushsato         ###   ########.fr       */
+/*   Created: 2024/04/21 19:11:25 by yushsato          #+#    #+#             */
+/*   Updated: 2024/04/23 19:34:25 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	g_signal = 0;
-
-int	main(int ac, char **av, char **ae)
+static int	execute(char *input)
 {
-	char	*input;
+	pid_t	pid;
 
-	(void)av;
-	if (ac != 1 && set_errno(EINVAL))
-		exit_with_errno("argv");
-	env_set(ae);
-	while (1)
-	{
-		sig_sh(0);
-		input = ms_readline();
-		ms_isctrld(input);
-		
-		free(input);
-	}
-	return (0);
+	pid = fork();
+	sig_sh(0);
+	if (pid == -1)
+		exit(1);
 }

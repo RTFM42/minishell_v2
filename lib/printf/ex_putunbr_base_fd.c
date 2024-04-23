@@ -1,34 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ex_putunbr_base_fd.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/13 14:43:52 by yushsato          #+#    #+#             */
-/*   Updated: 2024/04/23 21:48:25 by yushsato         ###   ########.fr       */
+/*   Created: 2023/06/23 23:41:15 by yushsato          #+#    #+#             */
+/*   Updated: 2023/06/23 23:46:51 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "extra.h"
 
-int	g_signal = 0;
-
-int	main(int ac, char **av, char **ae)
+int	ex_putunbr_base_fd(size_t n, const char *base, int fd)
 {
-	char	*input;
+	int	len;
+	int	res;
 
-	(void)av;
-	if (ac != 1 && set_errno(EINVAL))
-		exit_with_errno("argv");
-	env_set(ae);
-	while (1)
-	{
-		sig_sh(0);
-		input = ms_readline();
-		ms_isctrld(input);
-		
-		free(input);
-	}
-	return (0);
+	len = ft_strlen(base);
+	res = 1;
+	if (n / len > 0)
+		res = ex_uadd(res, ex_putunbr_base_fd(n / len, base, fd));
+	write(fd, &base[n % len], 1);
+	return (res);
 }
