@@ -6,7 +6,7 @@
 #    By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/12 20:23:39 by yushsato          #+#    #+#              #
-#    Updated: 2024/04/23 21:44:08 by yushsato         ###   ########.fr        #
+#    Updated: 2024/04/23 21:59:45 by yushsato         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,22 +22,17 @@ SRCS	= ./ft_printf.c \
 		  ./ex_putunbr_fd.c \
 		  ./ex_putva_fd.c \
 		  ./ex_uadd.c
-#		  ./ft_memcmp.c \
-#		  ./ft_putstr_fd.c \
-#		  ./ft_putnbr_fd.c \
-#		  ./ft_putchar_fd.c \
-#		  ./ft_strlen.c
 OBJS	= $(SRCS:.c=.o)
 LIBFT	= libft.a
 INCL	= -I./
 
 $(NAME): $(OBJS) $(LIBFT)
-	ar rcs $(NAME) $(OBJS)
+	ar rcs $(NAME) $(OBJS) 
 
 $(LIBFT):
 	cd ../libft      && \
 	make all         && \
-	cp $@ ../printf/.a
+	cp $@ ../printf/
 
 all: $(LIBFT) $(NAME)
 
