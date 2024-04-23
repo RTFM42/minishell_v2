@@ -6,14 +6,22 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 18:51:27 by yushsato          #+#    #+#             */
-/*   Updated: 2024/04/13 22:33:32 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/04/23 22:29:03 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
+#include <errno.h>
 #include "libft.h"
 #include "unistd.h"
 
+/**
+ * ## Safety calloc
+ * @note	if failed to allocate memory, this function display reason and exit.
+ * @param	count count
+ * @param	size memory size
+ * @return	allocated memory pointer
+*/
 void	*sf_calloc(size_t count, size_t size)
 {
 	void	*ptr;
@@ -27,10 +35,7 @@ void	*sf_calloc(size_t count, size_t size)
 	}
 	ptr = malloc(size * count);
 	if (ptr == NULL)
-	{
-		write(2, "-minishell: malloc: Cannot allocate memory.\n", 44);
-		exit(1);
-	}
+		sf_exit(__func__);
 	if (ptr)
 		ft_bzero(ptr, size * count);
 	return (ptr);

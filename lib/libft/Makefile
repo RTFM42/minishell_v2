@@ -6,7 +6,7 @@
 #    By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/12 20:21:50 by yushsato          #+#    #+#              #
-#    Updated: 2024/04/13 22:34:47 by yushsato         ###   ########.fr        #
+#    Updated: 2024/04/23 22:11:11 by yushsato         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,6 +50,7 @@ SRCS = ft_isalpha.c \
 	   ft_putendl_fd.c \
 	   ft_putnbr_fd.c \
 	   sf_calloc.c \
+	   sf_exit.c \
 	   sf_strdup.c
 
 OBJS  = $(SRCS:.c=.o)

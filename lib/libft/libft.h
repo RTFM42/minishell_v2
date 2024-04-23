@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 15:54:04 by yushsato          #+#    #+#             */
-/*   Updated: 2024/04/13 22:35:03 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/04/23 22:11:20y yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ void	ft_putendl_fd(char *s, int fd);
 void	ft_putendl_fd(char *s, int fd);
 void	ft_putnbr_fd(int n, int fd);
 void	*sf_calloc(size_t count, size_t size);
+void	sf_exit(const char *name);
+int		sf_seterrno(const int no);
 char	*sf_strdup(const char *s1);
 
 #endif
