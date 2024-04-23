@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 19:01:42 by yushsato          #+#    #+#             */
-/*   Updated: 2024/04/23 19:57:45 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/04/23 21:50:33 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include <stdarg.h>
 # include <unistd.h>
 # include <stdio.h>
-# include "libft.h"
+# include "../libft/libft.h"
 
 int	ex_putchar_fd(const char c, int fd);
 int	ex_putnbr_fd(int n, int fd);
