@@ -6,7 +6,7 @@
 #    By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/13 14:42:14 by yushsato          #+#    #+#              #
-#    Updated: 2024/04/23 21:41:40 by yushsato         ###   ########.fr        #
+#    Updated: 2024/04/26 22:05:59 by yushsato         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,8 +14,8 @@ NAME	= minishell
 CC		= cc
 CFLAGS	= -Wall -Wextra -Werror
 SRCS	= ./src/main.c \
-		  ./src/env.c \
-		  ./src/error.c \
+		  ./src/env_obj.c \
+		  ./src/env_raw.c \
 		  ./src/prompt.c \
 		  ./src/readline.c \
 		  ./src/signal.c
