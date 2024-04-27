@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 22:04:31 by yushsato          #+#    #+#             */
-/*   Updated: 2024/04/23 22:05:19by yushsato         ###   ########.fr       */
+/*   Updated: 2024/04/27 01:15:45 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,12 @@
 
 /**
  * ## Display error and exit with status 1
- * @param	name originating function name, etc. for the most part, just write `__func__`.
+ * @param	name originating function name, etc.
+ * 					for the most part, just write `__func__`.
+ * @param	num exit number.
  * @return	1
 */
-void	sf_exit(const char *name)
+void	sf_exit(const char *name, int num)
 {
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd((char *)name, 2);
@@ -41,7 +43,7 @@ void	sf_exit(const char *name)
 		ft_putnbr_fd(errno, 2);
 		ft_putendl_fd(")Unsensitive system error.", 2);
 	}
-	exit(1);
+	exit(num);
 }
 
 /**
@@ -51,6 +53,6 @@ void	sf_exit(const char *name)
 */
 int	sf_seterrno(const int no)
 {
-	errno =	no;
+	errno = no;
 	return (no);
 }
