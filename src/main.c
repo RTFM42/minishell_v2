@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 14:43:52 by yushsato          #+#    #+#             */
-/*   Updated: 2024/05/06 23:07:16 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/05/06 23:27:24 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	g_signal = 0;
 
 int	main(int ac, char **av, char **ae)
 {
-	// char	*input;
+	const t_envraw	envraw = envraw_constructor();
 
 	(void)av;
 	if (ac != 1 && sf_seterrno(EINVAL))
@@ -24,7 +24,7 @@ int	main(int ac, char **av, char **ae)
 	env_set(ae);
 	
 	int			count = 0;
-	char *const	*raw = envraw_list();
+	char *const	*raw = envraw.list();
 
 	while (raw[count] != NULL)
 	{
@@ -32,10 +32,9 @@ int	main(int ac, char **av, char **ae)
 		ft_printf("\x1B[32m%s\x1B[0m\n", raw[count++]);
 	}
 
-	const char	*f = "/usr/bin/find";
-	char *const argv[] = {"find", ".", NULL};
+	char *const argv[] = {"/usr/bin/find", ".", NULL};
 
-	exit(execute_sync(f, argv));
+	exit(execute_sync(argv, NULL));
 	
 	// while (1)
 	// {

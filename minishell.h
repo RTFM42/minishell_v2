@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 17:07:01 by yushsato          #+#    #+#             */
-/*   Updated: 2024/05/06 23:10:18 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/05/06 23:28:32 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@
 # include <readline/history.h>
 # include "lib/libft/libft.h"
 # include "lib/printf/ft_printf.h"
+
+extern int	g_signal;
 
 typedef struct s_env
 {
@@ -45,19 +47,15 @@ typedef struct s_chainlist
 typedef struct s_envraw
 {
 	char *const	*(*list)(void);
-	char 		**(refresh)(void);
+	char		**(*refresh)(void);
 }	t_envraw;
-
-
-extern int	g_signal;
 
 t_env		**env_store(void);
 void		env_set(char **list);
 t_env		*env_find(const char *key);
 t_env		*env_push(const char *key, const char *value);
 int			env_delete(const char *key);
-char *const	*envraw_list(void);
-char		**envraw_refresh(void);
+t_envraw	envraw_constructor(void);
 char		*ms_prompt(void);
 char		*ms_readline(void);
 void		ms_isctrld(char *stdin);
@@ -65,5 +63,5 @@ void		sig_sh(int signo);
 void		sig_hd(int signo);
 void		sig_ignore(void);
 void		sig_reset(void);
-int			execute_sync(const char *file, char *const *argv);
+int			execute_sync(char *const *argv, char *const *envp);
 #endif

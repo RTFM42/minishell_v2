@@ -6,34 +6,25 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 21:43:54 by yushsato          #+#    #+#             */
-/*   Updated: 2024/05/06 23:16:27 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/05/06 23:25:39 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static char	***envraw_store(void)
+static char	***store(void)
 {
 	static char	**env_raw = NULL;
 
 	return (&env_raw);
 }
 
-char *const	*envraw_list(void)
-{
-	char	**env_raw;
-
-	envraw_refresh();
-	env_raw = *envraw_store();
-	return ((char *const *)env_raw);
-}
-
-static void	envraw_free(void)
+static void	rawfree(void)
 {
 	char	***penv_raw;
 	char	**env_raw;
 
-	penv_raw = envraw_store();
+	penv_raw = store();
 	if (*penv_raw == NULL)
 		return ;
 	env_raw = *penv_raw;
@@ -46,7 +37,7 @@ static void	envraw_free(void)
 	*penv_raw = NULL;
 }
 
-char	**envraw_refresh(void)
+char	**refresh(void)
 {
 	char	***penv_raw;
 	char	**env_raw;
@@ -54,8 +45,8 @@ char	**envraw_refresh(void)
 	int		count;
 	char	*tmp;
 
-	envraw_free();
-	penv_raw = envraw_store();
+	rawfree();
+	penv_raw = store();
 	env_raw = *penv_raw;
 	env = *env_store();
 	count = 0;
@@ -74,7 +65,16 @@ char	**envraw_refresh(void)
 	return (env_raw);
 }
 
-const t_envraw	envraw_constructor(void)
+char *const	*list(void)
+{
+	char	**env_raw;
+
+	refresh();
+	env_raw = *store();
+	return ((char *const *)env_raw);
+}
+
+t_envraw	envraw_constructor(void)
 {
 	const static t_envraw	envraw = {
 		.list = list,
