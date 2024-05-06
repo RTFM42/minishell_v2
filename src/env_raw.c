@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 21:43:54 by yushsato          #+#    #+#             */
-/*   Updated: 2024/04/27 03:18:25 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/05/06 23:16:27 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,13 @@ static char	***envraw_store(void)
 	return (&env_raw);
 }
 
-char const	**envraw_get(void)
+char *const	*envraw_list(void)
 {
 	char	**env_raw;
 
 	envraw_refresh();
 	env_raw = *envraw_store();
-	return ((char const **)env_raw);
+	return ((char *const *)env_raw);
 }
 
 static void	envraw_free(void)
@@ -72,4 +72,14 @@ char	**envraw_refresh(void)
 	}
 	*penv_raw = env_raw;
 	return (env_raw);
+}
+
+const t_envraw	envraw_constructor(void)
+{
+	const static t_envraw	envraw = {
+		.list = list,
+		.refresh = refresh,
+	};
+
+	return (envraw);
 }

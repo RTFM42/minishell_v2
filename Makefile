@@ -6,7 +6,7 @@
 #    By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/13 14:42:14 by yushsato          #+#    #+#              #
-#    Updated: 2024/05/02 23:01:27 by yushsato         ###   ########.fr        #
+#    Updated: 2024/05/06 14:03:19 by yushsato         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,6 +16,7 @@ CFLAGS	= -Wall -Wextra -Werror
 SRCS	= ./src/main.c \
 		  ./src/env_obj.c \
 		  ./src/env_raw.c \
+		  ./src/execute.c \
 		  ./src/prompt.c \
 		  ./src/readline.c \
 		  ./src/signal.c

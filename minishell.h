@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 17:07:01 by yushsato          #+#    #+#             */
-/*   Updated: 2024/04/27 03:19:05 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/05/06 23:10:18 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,13 @@ typedef struct s_chainlist
 	t_chain	*list;
 }	t_chainlist;
 
+typedef struct s_envraw
+{
+	char *const	*(*list)(void);
+	char 		**(refresh)(void);
+}	t_envraw;
+
+
 extern int	g_signal;
 
 t_env		**env_store(void);
@@ -49,7 +56,7 @@ void		env_set(char **list);
 t_env		*env_find(const char *key);
 t_env		*env_push(const char *key, const char *value);
 int			env_delete(const char *key);
-char const	**envraw_get(void);
+char *const	*envraw_list(void);
 char		**envraw_refresh(void);
 char		*ms_prompt(void);
 char		*ms_readline(void);
@@ -58,4 +65,5 @@ void		sig_sh(int signo);
 void		sig_hd(int signo);
 void		sig_ignore(void);
 void		sig_reset(void);
+int			execute_sync(const char *file, char *const *argv);
 #endif

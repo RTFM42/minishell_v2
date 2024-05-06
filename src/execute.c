@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 19:11:25 by yushsato          #+#    #+#             */
-/*   Updated: 2024/05/06 13:54:44 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/05/06 22:55:14 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,28 @@
 
 /**
  * ## Execute commands synchronously
- * @param	cmds command path and args
+ * @param	argv command path and args
  * @return	command status
-*/
-int	execute_sync(char **cmds)
+ */
+int	execute_sync(char *const *argv, char *const *envp)
 {
-	pid_t	pid;
-	int		stat;
+	pid_t		pid;
+	int			stat;
+	const char	*file;
 
 	pid = fork();
 	stat = 0;
-	sig_sh(0);
-	if (pid == 0)
-		execve(cmds[0], &cmds[1], envraw_get());
-	else if (pid < 0)
-		return (sf_errexit(__func__));
-	wait(&stat);
-	if (WIFEXITED(stat))
-		stat = WEXITSTATUS(stat);
-	else if (WIFSIGNALED(stat))
-		stat = WTERMSIG(stat);
-	return (stat);
+	if (pid == -1)
+		sf_exit(__func__, 1);
+	else if (pid == 0 && execve(argv[0], argv, envp))
+		sf_error(file);
+	else if (waitpid(pid, &stat, 0) == pid)
+	{
+		if (WIFEXITED(stat))
+			stat = WEXITSTATUS(stat);
+		else if (WIFSIGNALED(stat))
+			stat = WTERMSIG(stat);
+		return (stat);
+	}
+	return (1);
 }

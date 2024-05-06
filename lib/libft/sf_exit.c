@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 22:04:31 by yushsato          #+#    #+#             */
-/*   Updated: 2024/05/02 16:14:49 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/05/06 21:03:03 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	sf_exit(const char *name, int num)
 		ft_putendl_fd(":Not enough space/cannot allocate memory.", 2);
 	else if (errno == EIO)
 		ft_putendl_fd(":Remote I/O error.", 2);
-	else if (errno)
+	else
 	{
 		ft_putstr_fd(":(", 2);
 		ft_putnbr_fd(errno, 2);
