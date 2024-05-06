@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 19:11:25 by yushsato          #+#    #+#             */
-/*   Updated: 2024/05/06 13:51:59 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/05/06 13:54:44 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 /**
  * ## Execute commands synchronously
  * @param	cmds command path and args
+ * @return	command status
 */
 int	execute_sync(char **cmds)
 {
