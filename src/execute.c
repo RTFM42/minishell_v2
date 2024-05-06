@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 19:11:25 by yushsato          #+#    #+#             */
-/*   Updated: 2024/05/06 12:50:36 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/05/06 13:51:59 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 /**
  * ## Execute commands synchronously
- * @param	
+ * @param	cmds command path and args
 */
 int	execute_sync(char **cmds)
 {
@@ -33,5 +33,5 @@ int	execute_sync(char **cmds)
 		stat = WEXITSTATUS(stat);
 	else if (WIFSIGNALED(stat))
 		stat = WTERMSIG(stat);
-	return (sf_status(__func__));
+	return (stat);
 }
