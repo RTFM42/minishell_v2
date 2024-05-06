@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/27 01:11:59 by yushsato          #+#    #+#             */
-/*   Updated: 2024/04/27 01:12:00 by yushsato         ###   ########.fr       */
+/*   Created: 2024/05/06 12:47:29 by yushsato          #+#    #+#             */
+/*   Updated: 2024/05/06 12:47:33 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ void	ft_putendl_fd(char *s, int fd);
 void	ft_putnbr_fd(int n, int fd);
 void	*sf_calloc(size_t count, size_t size);
 void	sf_exit(const char *name, int num);
+int		sf_error(const char *name);
 int		sf_seterrno(const int no);
 char	*sf_strdup(const char *s1);
 
