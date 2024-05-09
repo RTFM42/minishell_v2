@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 17:07:01 by yushsato          #+#    #+#             */
-/*   Updated: 2024/05/06 23:28:32 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/05/09 19:03:36 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,24 +44,33 @@ typedef struct s_chainlist
 	t_chain	*list;
 }	t_chainlist;
 
-typedef struct s_envraw
+typedef struct s_envc
 {
-	char *const	*(*list)(void);
-	char		**(*refresh)(void);
-}	t_envraw;
+	t_env	**(*store)(void);
+	void	(*set)(char **list);
+	t_env	*(*find)(const char *key);
+	t_env	*(*push)(const char *key, const char *value);
+	int		(*delete)(const char *key);
+	char **(*dump)(void);
+}	t_envc;
 
-t_env		**env_store(void);
-void		env_set(char **list);
-t_env		*env_find(const char *key);
-t_env		*env_push(const char *key, const char *value);
-int			env_delete(const char *key);
-t_envraw	envraw_constructor(void);
-char		*ms_prompt(void);
-char		*ms_readline(void);
-void		ms_isctrld(char *stdin);
-void		sig_sh(int signo);
-void		sig_hd(int signo);
-void		sig_ignore(void);
-void		sig_reset(void);
-int			execute_sync(char *const *argv, char *const *envp);
+typedef struct s_execc
+{
+	int	(*sync)(char *const *argv, char *const *envp);
+}	t_execc;
+
+// t_env	**env_store(void);
+// void	env_set(char **list);
+// t_env	*env_find(const char *key);
+// t_env	*env_push(const char *key, const char *value);
+// int		env_delete(const char *key);
+t_envc	env_constructor(void);
+t_execc	exec_constructor(void);
+char	*ms_prompt(void);
+char	*ms_readline(void);
+void	ms_isctrld(char *stdin);
+void	sig_sh(int signo);
+void	sig_hd(int signo);
+void	sig_ignore(void);
+void	sig_reset(void);
 #endif

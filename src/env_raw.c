@@ -6,48 +6,25 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 21:43:54 by yushsato          #+#    #+#             */
-/*   Updated: 2024/05/06 23:25:39 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/05/09 19:03:13 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static char	***store(void)
+t_env	**env_store(void);
+void	env_set(char **list);
+t_env	*env_find(const char *key);
+t_env	*env_push(const char *key, const char *value);
+int		env_delete(const char *key);
+
+char	**env_dump(void)
 {
-	static char	**env_raw = NULL;
-
-	return (&env_raw);
-}
-
-static void	rawfree(void)
-{
-	char	***penv_raw;
-	char	**env_raw;
-
-	penv_raw = store();
-	if (*penv_raw == NULL)
-		return ;
-	env_raw = *penv_raw;
-	while (*env_raw)
-	{
-		free(*env_raw);
-		env_raw++;
-	}
-	free(env_raw);
-	*penv_raw = NULL;
-}
-
-char	**refresh(void)
-{
-	char	***penv_raw;
 	char	**env_raw;
 	t_env	*env;
 	int		count;
 	char	*tmp;
 
-	rawfree();
-	penv_raw = store();
-	env_raw = *penv_raw;
 	env = *env_store();
 	count = 0;
 	while (env && env->next && ++count)
@@ -61,25 +38,19 @@ char	**refresh(void)
 		env = env->prev;
 		count--;
 	}
-	*penv_raw = env_raw;
 	return (env_raw);
 }
 
-char *const	*list(void)
+t_envc	env_constructor(void)
 {
-	char	**env_raw;
-
-	refresh();
-	env_raw = *store();
-	return ((char *const *)env_raw);
-}
-
-t_envraw	envraw_constructor(void)
-{
-	const static t_envraw	envraw = {
-		.list = list,
-		.refresh = refresh,
+	const static t_envc	env = {
+		.store = env_store,
+		.set = env_set,
+		.find = env_find,
+		.push = env_push,
+		.delete = env_delete,
+		.dump = env_dump,
 	};
 
-	return (envraw);
+	return (env);
 }
