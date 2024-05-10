@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 14:43:52 by yushsato          #+#    #+#             */
-/*   Updated: 2024/05/09 19:08:12 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/05/09 22:35:57 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,12 @@ int	main(int ac, char **av, char **ae)
 	if (ac != 1 && sf_seterrno(EINVAL))
 		sf_exit("argv", 1);
 	envc.set(ae);
+
 	char *const argv[] = {"/opt/homebrew/bin/bash", NULL};
-	exit(execc.sync(argv, envc.dump()));
+	char **envp = envc.dump();
+	int exits = execc.sync(argv, envp);
+	envc.free(envp);
+	exit(exits);
 	
 	// while (1)
 	// {

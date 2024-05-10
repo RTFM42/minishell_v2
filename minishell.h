@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 17:07:01 by yushsato          #+#    #+#             */
-/*   Updated: 2024/05/09 19:03:36 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/05/09 22:05:29 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ typedef struct s_envc
 	t_env	*(*find)(const char *key);
 	t_env	*(*push)(const char *key, const char *value);
 	int		(*delete)(const char *key);
-	char **(*dump)(void);
+	char	**(*dump)(void);
+	void	(*free)(char **envp);
 }	t_envc;
 
 typedef struct s_execc
@@ -59,11 +60,6 @@ typedef struct s_execc
 	int	(*sync)(char *const *argv, char *const *envp);
 }	t_execc;
 
-// t_env	**env_store(void);
-// void	env_set(char **list);
-// t_env	*env_find(const char *key);
-// t_env	*env_push(const char *key, const char *value);
-// int		env_delete(const char *key);
 t_envc	env_constructor(void);
 t_execc	exec_constructor(void);
 char	*ms_prompt(void);

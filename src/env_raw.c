@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 21:43:54 by yushsato          #+#    #+#             */
-/*   Updated: 2024/05/09 19:03:13 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/05/09 22:07:37 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,16 @@ char	**env_dump(void)
 	return (env_raw);
 }
 
+void	env_free(char **envp)
+{
+	int	i;
+
+	i = 0;
+	while (envp[i])
+		free(envp[i++]);
+	free(envp);
+}
+
 t_envc	env_constructor(void)
 {
 	const static t_envc	env = {
@@ -50,6 +60,7 @@ t_envc	env_constructor(void)
 		.push = env_push,
 		.delete = env_delete,
 		.dump = env_dump,
+		.free = env_free,
 	};
 
 	return (env);
