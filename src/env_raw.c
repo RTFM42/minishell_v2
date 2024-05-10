@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 21:43:54 by yushsato          #+#    #+#             */
-/*   Updated: 2024/05/09 22:07:37 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/05/10 18:15:29 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,9 @@ void	env_free(char **envp)
 	free(envp);
 }
 
-t_envc	env_constructor(void)
+const t_envc	env_constructor(void)
 {
-	const static t_envc	env = {
+	static const t_envc	env = {
 		.store = env_store,
 		.set = env_set,
 		.find = env_find,
