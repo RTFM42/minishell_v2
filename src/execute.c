@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 19:11:25 by yushsato          #+#    #+#             */
-/*   Updated: 2024/05/10 18:15:23 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/05/10 18:16:10 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	execute_sync(char *const *argv, char *const *envp)
 	return (1);
 }
 
-const t_execc	exec_constructor(void)
+t_execc	exec_constructor(void)
 {
 	static const t_execc	execc = {
 		.sync = execute_sync,
