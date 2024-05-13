@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 19:11:25 by yushsato          #+#    #+#             */
-/*   Updated: 2024/05/14 07:46:19 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/05/14 07:52:10 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 /**
  * ## Execute commands synchronously
  * @param	argv command path and args
+ * @param	envp environment variables
  * @return	command status
  */
 int	execute_sync(char *const *argv, char *const *envp)
