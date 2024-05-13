@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 01:49:38 by yushsato          #+#    #+#             */
-/*   Updated: 2024/05/10 18:24:53 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/05/13 16:37:14 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	*ms_prompt(void)
 	char		*prompt;
 	const int	len = ft_strlen("minishell");
 
-	env = env_constructor().find("USER");
+	env = ENV().find("USER");
 	prompt = sf_calloc(len + 2 + 1, sizeof(char));
 	ft_memcpy(prompt, "minishell", len);
 	if (env && !ft_strncmp(env->value, "root", 5))
