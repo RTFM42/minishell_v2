@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 20:53:52 by yushsato          #+#    #+#             */
-/*   Updated: 2024/05/06 19:54:04 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/05/10 18:23:59 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,33 +21,6 @@ t_env	**env_store(void)
 	static t_env	*chain = NULL;
 
 	return (&chain);
-}
-
-/**
- * ## Set string array to env store
- * @param	list environment string array
- * @return	N/A
-*/
-void	env_set(char **list)
-{
-	char	*ptr;
-	char	*key;
-	int		count;
-
-	count = 0;
-	while (*list)
-	{
-		ft_printf("[%d]:\x1B[33m%s\x1B[0m\n", count++, *list);
-		ptr = ft_strchr(*list, '=');
-		key = sf_calloc(ptr - *list + 1, sizeof(char));
-		key = ft_memcpy(key, *list, ptr - *list);
-		if (*++ptr == '\0')
-			env_push(key, NULL);
-		else
-			env_push(key, ptr);
-		free(key);
-		list++;
-	}
 }
 
 /**
@@ -103,6 +76,33 @@ t_env	*env_push(const char *key, const char *value)
 	chain->next->value = sf_strdup(value);
 	chain->next->prev = chain;
 	return (chain->next);
+}
+
+/**
+ * ## Set string array to env store
+ * @param	list environment string array
+ * @return	N/A
+*/
+void	env_set(char **list)
+{
+	char	*ptr;
+	char	*key;
+	int		count;
+
+	count = 0;
+	while (*list)
+	{
+		ft_printf("[%d]:\x1B[33m%s\x1B[0m\n", count++, *list);
+		ptr = ft_strchr(*list, '=');
+		key = sf_calloc(ptr - *list + 1, sizeof(char));
+		key = ft_memcpy(key, *list, ptr - *list);
+		if (*++ptr == '\0')
+			env_push(key, NULL);
+		else
+			env_push(key, ptr);
+		free(key);
+		list++;
+	}
 }
 
 /**

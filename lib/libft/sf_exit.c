@@ -6,13 +6,14 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 22:04:31 by yushsato          #+#    #+#             */
-/*   Updated: 2024/05/06 21:03:03 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/05/10 19:27:10 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <errno.h>
 #include "libft.h"
 #include "stdlib.h"
+#include "stdio.h"
 
 /**
  * ## Display error and exit with status 1
@@ -68,16 +69,13 @@ int	sf_error(const char *name)
 		ft_putendl_fd(":Not enough space/cannot allocate memory.", 2);
 	else if (errno == EIO)
 		ft_putendl_fd(":Remote I/O error.", 2);
-	else if (errno)
+	else
 	{
 		ft_putstr_fd(":(", 2);
 		ft_putnbr_fd(errno, 2);
 		ft_putendl_fd(")Unsensitive system error.", 2);
 	}
-	if (errno)
-		return (1);
-	else
-		return (0);
+	return (1);
 }
 
 /**
