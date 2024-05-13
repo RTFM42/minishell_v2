@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 21:43:54 by yushsato          #+#    #+#             */
-/*   Updated: 2024/05/13 15:30:23 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/05/13 16:50:02 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,13 @@ char	**env_dump(void)
 	env = *env_store();
 	count = 0;
 	env_tmp = NULL;
-	while (env && count++ && ft_memcpy(&env_tmp, &env, sizeof(t_env *)))
+	while (env && ++count && ft_memcpy(&env_tmp, &env, sizeof(t_env *)))
 		env = env->next;
 	env = env_tmp;
 	array = sf_calloc(sizeof(char *), count + 1);
 	while (count > 0 && env)
 	{
 		tmp = ft_strjoin(env->key, "=");
-		ft_printf("%d: %s\n", count, env->value);
 		array[--count] = ft_strjoin(tmp, env->value);
 		free(tmp);
 		env = env->prev;
