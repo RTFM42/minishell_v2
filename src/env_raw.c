@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 21:43:54 by yushsato          #+#    #+#             */
-/*   Updated: 2024/05/10 18:22:23 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/05/13 15:30:23 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,25 +20,28 @@ int		env_delete(const char *key);
 
 char	**env_dump(void)
 {
-	char	**env_raw;
+	char	**array;
 	t_env	*env;
+	t_env	*env_tmp;
 	int		count;
 	char	*tmp;
 
 	env = *env_store();
 	count = 0;
-	while (env && env->next && ++count)
+	env_tmp = NULL;
+	while (env && count++ && ft_memcpy(&env_tmp, &env, sizeof(t_env *)))
 		env = env->next;
-	env_raw = sf_calloc(sizeof(char *), count + 1);
-	while (count + 1 > 0)
+	env = env_tmp;
+	array = sf_calloc(sizeof(char *), count + 1);
+	while (count > 0 && env)
 	{
 		tmp = ft_strjoin(env->key, "=");
-		env_raw[count] = ft_strjoin(tmp, env->value);
+		ft_printf("%d: %s\n", count, env->value);
+		array[--count] = ft_strjoin(tmp, env->value);
 		free(tmp);
 		env = env->prev;
-		count--;
 	}
-	return (env_raw);
+	return (array);
 }
 
 void	env_free(char **envp)
