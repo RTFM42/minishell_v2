@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 19:11:25 by yushsato          #+#    #+#             */
-/*   Updated: 2024/05/13 16:08:04 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/05/13 17:05:10 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,13 @@ int	execute_sync(char *const *argv, char *const *envp)
 {
 	pid_t		pid;
 	int			stat;
-	const char	*file;
 
 	pid = fork();
 	stat = 0;
 	if (pid == -1)
-		sf_exit(__func__, 1);
+		ERR().exit(__func__, 1);
 	else if (pid == 0 && execve(argv[0], argv, envp))
-		sf_error(file);
+		ERR().print(argv[0]);
 	else if (waitpid(pid, &stat, 0) == pid)
 	{
 		if (WIFEXITED(stat))

@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 17:07:01 by yushsato          #+#    #+#             */
-/*   Updated: 2024/05/13 16:04:14 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/05/13 16:56:50 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,6 @@ typedef struct s_chainlist
 	t_chain	*list;
 }	t_chainlist;
 
-/**
- * @param	store this is store
-*/
 typedef struct s_envc
 {
 	t_env	**(*store)(void);

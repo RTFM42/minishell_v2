@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 18:51:27 by yushsato          #+#    #+#             */
-/*   Updated: 2024/04/26 20:27:02 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/05/13 17:02:21 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	*sf_calloc(size_t count, size_t size)
 	}
 	ptr = malloc(size * count);
 	if (ptr == NULL)
-		sf_exit(__func__, 1);
+		ERR().exit(__func__, 1);
 	if (ptr)
 		ft_bzero(ptr, size * count);
 	return (ptr);

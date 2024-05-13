@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 12:47:29 by yushsato          #+#    #+#             */
-/*   Updated: 2024/05/06 12:47:33 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/05/13 17:02:56 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,13 @@
 # define LIBFT_H
 # include <stddef.h>
 # include <stdint.h>
+
+typedef struct s_errc
+{
+	void	(*exit)(const char *name, int num);
+	int		(*print)(const char *name);
+	int		(*setno)(const int no);
+}	t_errc;
 
 int		ft_atoi(const char *str);
 void	ft_bzero(void *s, size_t n);
@@ -52,9 +59,9 @@ void	ft_putendl_fd(char *s, int fd);
 void	ft_putendl_fd(char *s, int fd);
 void	ft_putnbr_fd(int n, int fd);
 void	*sf_calloc(size_t count, size_t size);
-void	sf_exit(const char *name, int num);
-int		sf_error(const char *name);
-int		sf_seterrno(const int no);
 char	*sf_strdup(const char *s1);
+t_errc	err_constructor(void);
+
+# define ERR err_constructor
 
 #endif

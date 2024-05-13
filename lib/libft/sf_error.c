@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sf_exit.c                                          :+:      :+:    :+:   */
+/*   sf_error.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 22:04:31 by yushsato          #+#    #+#             */
-/*   Updated: 2024/05/10 19:27:10 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/05/13 17:01:27 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
  * @param	num exit number.
  * @return	1
 */
-void	sf_exit(const char *name, int num)
+void	sf_error_exit(const char *name, int num)
 {
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd((char *)name, 2);
@@ -53,7 +53,7 @@ void	sf_exit(const char *name, int num)
  * 					for the most part, just write `__func__`.
  * @return	0/1
 */
-int	sf_error(const char *name)
+int	sf_error_print(const char *name)
 {
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd((char *)name, 2);
@@ -83,8 +83,19 @@ int	sf_error(const char *name)
  * @param	no error number
  * @return	param value
 */
-int	sf_seterrno(const int no)
+int	sf_error_setno(const int no)
 {
 	errno = no;
 	return (no);
+}
+
+t_errc	err_constructor(void)
+{
+	static const t_errc	errc = {
+		.exit = sf_error_exit,
+		.print = sf_error_print,
+		.setno = sf_error_setno,
+	};
+
+	return (errc);
 }
