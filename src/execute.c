@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 19:11:25 by yushsato          #+#    #+#             */
-/*   Updated: 2024/05/11 19:56:37 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/05/13 16:05:07 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,20 +29,7 @@ int	execute_sync(char *const *argv, char *const *envp)
 	if (pid == -1)
 		sf_exit(__func__, 1);
 	else if (pid == 0)
-	{
-
-		
-		int	count = 0;
-		while (envp[count])
-		{
-			ft_printf("child [%d]: %s\n", count, envp[count]);
-			count++;
-		}
-
-		
-		printf("child: %d\n", execve(argv[0], argv, NULL));
 		sf_error(file);
-	}
 	else if (waitpid(pid, &stat, 0) == pid)
 	{
 		if (WIFEXITED(stat))
