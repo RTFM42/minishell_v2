@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 14:43:52 by yushsato          #+#    #+#             */
-/*   Updated: 2024/05/13 17:03:34 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/05/14 07:45:01 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	main(int ac, char **av, char **ae)
 {
 	(void)av;
 	if (ac != 1 && ERR().setno(EINVAL))
-		ERR().exit("argv", 1);
+	(ERR().exit)("argv", 1);
 	ENV().set(ae);
 
 	char *const argv[] = {"/opt/homebrew/bin/bash", NULL};
