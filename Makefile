@@ -6,7 +6,7 @@
 #    By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/13 14:42:14 by yushsato          #+#    #+#              #
-#    Updated: 2024/05/06 14:03:19 by yushsato         ###   ########.fr        #
+#    Updated: 2024/05/13 16:08:41 by yushsato         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -67,7 +67,7 @@ __debug_configure__:
 	$(eval CC := gcc)
 	$(eval CFLAGS := -g -fsanitize=address -Wall -Wextra -Werror)
 
-debug: __debug_configure__ all
+debug: fclean __debug_configure__ all
 
 norminette: $(SRCS)
 	norminette $^ minishell.h
