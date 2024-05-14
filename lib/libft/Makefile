@@ -6,7 +6,7 @@
 #    By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/12 20:21:50 by yushsato          #+#    #+#              #
-#    Updated: 2024/05/13 16:58:08 by yushsato         ###   ########.fr        #
+#    Updated: 2024/05/14 15:25:52 by yushsato         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,6 +37,7 @@ SRCS = ft_isalpha.c \
 	   ft_atoi.c \
 	   ft_calloc.c \
        ft_strdup.c \
+	   ft_strictatoi.c \
 	   ft_substr.c \
        ft_strjoin.c \
        ft_strnjoin.c \
@@ -51,7 +52,7 @@ SRCS = ft_isalpha.c \
 	   ft_putnbr_fd.c \
 	   sf_calloc.c \
 	   sf_error.c \
-	   sf_strdup.c \
+	   sf_strdup.c
 
 OBJS  = $(SRCS:.c=.o)
 BOBJS = $(BONUS:.c=.o)

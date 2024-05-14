@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 20:53:52 by yushsato          #+#    #+#             */
-/*   Updated: 2024/05/13 16:04:42 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/05/14 15:27:05 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ void	env_set(char **list)
 	char	*ptr;
 	char	*key;
 	int		count;
+	t_env	*shlvl;
 
 	count = 0;
 	while (*list)
@@ -103,6 +104,10 @@ void	env_set(char **list)
 		free(key);
 		list++;
 	}
+	shlvl = env_find("SHLVL");
+	ptr = shlvl->value;
+	shlvl->value = ft_itoa(ft_strictatoi(shlvl->value) + 1);
+	free(ptr);
 }
 
 /**
