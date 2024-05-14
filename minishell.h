@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 17:07:01 by yushsato          #+#    #+#             */
-/*   Updated: 2024/05/14 09:43:48 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/05/14 17:38:03 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <signal.h>
 # include <unistd.h>
 # include <errno.h>
+# include <sys/stat.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "lib/libft/libft.h"
@@ -74,10 +75,19 @@ typedef struct s_parserc
 	void	(*free)(char **str);
 }	t_parserc;
 
+typedef struct s_pathc
+{
+	char	*(*join)(const char *p1, const char *p2);
+	int		(*exists)(const char *path);
+	int		(*isfile)(const char *path);
+	char	*(*resolve)(const char *bin);
+}	t_pathc;
+
 t_envc		env_constructor(void);
 t_execc		exec_constructor(void);
 t_sigc		sig_constructor(void);
 t_parserc	parser_constructor(void);
+t_pathc		path_constructor(void);
 char		*ms_prompt(void);
 char		*ms_readline(void);
 void		ms_isctrld(char *stdin);
@@ -86,4 +96,5 @@ void		ms_isctrld(char *stdin);
 # define EXEC exec_constructor
 # define SIG sig_constructor
 # define PSR parser_constructor
+# define PATH path_constructor
 #endif
