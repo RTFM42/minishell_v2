@@ -6,11 +6,13 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 01:17:25 by yushsato          #+#    #+#             */
-/*   Updated: 2024/05/14 08:00:06 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/05/14 09:41:25 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+int	g_signal = 0;
 
 /**
  * ## Handles prompt program interruption signals

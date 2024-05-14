@@ -6,7 +6,7 @@
 #    By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/13 14:42:14 by yushsato          #+#    #+#              #
-#    Updated: 2024/05/13 16:08:41 by yushsato         ###   ########.fr        #
+#    Updated: 2024/05/14 09:30:29 by yushsato         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,8 @@ SRCS	= ./src/main.c \
 		  ./src/execute.c \
 		  ./src/prompt.c \
 		  ./src/readline.c \
-		  ./src/signal.c
+		  ./src/signal.c \
+		  ./src/parser.c
 
 OBJS	= $(SRCS:.c=.o)
 RLDIR	= $(shell brew --prefix readline)

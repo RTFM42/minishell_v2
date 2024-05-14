@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 17:07:01 by yushsato          #+#    #+#             */
-/*   Updated: 2024/05/14 07:58:47 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/05/14 09:43:48 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,14 +68,22 @@ typedef struct s_sigc
 	void	(*reset)(void);
 }	t_sigc;
 
-t_envc	env_constructor(void);
-t_execc	exec_constructor(void);
-t_sigc	sig_constructor(void);
-char	*ms_prompt(void);
-char	*ms_readline(void);
-void	ms_isctrld(char *stdin);
+typedef struct s_parserc
+{
+	char	**(*parser)(const char *str);
+	void	(*free)(char **str);
+}	t_parserc;
+
+t_envc		env_constructor(void);
+t_execc		exec_constructor(void);
+t_sigc		sig_constructor(void);
+t_parserc	parser_constructor(void);
+char		*ms_prompt(void);
+char		*ms_readline(void);
+void		ms_isctrld(char *stdin);
 
 # define ENV env_constructor
 # define EXEC exec_constructor
 # define SIG sig_constructor
+# define PSR parser_constructor
 #endif
