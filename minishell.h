@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 17:07:01 by yushsato          #+#    #+#             */
-/*   Updated: 2024/05/13 16:56:50 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/05/14 07:58:47 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,16 +60,22 @@ typedef struct s_execc
 	int	(*sync)(char *const *argv, char *const *envp);
 }	t_execc;
 
+typedef struct s_sigc
+{
+	void	(*shell)(int signo);
+	void	(*herdoc)(int signo);
+	void	(*ignore)(void);
+	void	(*reset)(void);
+}	t_sigc;
+
 t_envc	env_constructor(void);
 t_execc	exec_constructor(void);
+t_sigc	sig_constructor(void);
 char	*ms_prompt(void);
 char	*ms_readline(void);
 void	ms_isctrld(char *stdin);
-void	sig_sh(int signo);
-void	sig_hd(int signo);
-void	sig_ignore(void);
-void	sig_reset(void);
 
 # define ENV env_constructor
 # define EXEC exec_constructor
+# define SIG sig_constructor
 #endif

@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 01:17:25 by yushsato          #+#    #+#             */
-/*   Updated: 2024/04/23 19:33:18 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/05/14 08:00:06 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@
  * @param	signo signal number to be passed on in the loop. usually 0 is fine.
  * @return	N/A
 */
-void	sig_sh(int signo)
+void	sig_shell(int signo)
 {
-	signal(SIGINT, sig_sh);
+	signal(SIGINT, sig_shell);
 	signal(SIGQUIT, SIG_IGN);
 	if (signo != SIGINT)
 		return ;
@@ -41,10 +41,10 @@ void	sig_sh(int signo)
  * @param	signo signal number
  * @return	N/A
 */
-void	sig_hd(int signo)
+void	sig_herdoc(int signo)
 {
-	signal(SIGINT, sig_hd);
-	signal(SIGQUIT, sig_hd);
+	signal(SIGINT, sig_herdoc);
+	signal(SIGQUIT, sig_herdoc);
 	if (signo == SIGINT)
 	{
 		close(0);
@@ -82,16 +82,14 @@ void	sig_reset(void)
 	signal(SIGQUIT, SIG_DFL);
 }
 
-/**
- * ## Normal exit if stdin is null 
- * @note 	Pressing "Ctrl+D" causes readline to return null
- * @param	stdin String to be processed in shell
- * @return	N/A
-*/
-void	ms_isctrld(char *stdin)
+t_sigc	sig_constructor(void)
 {
-	if (stdin != NULL)
-		return ;
-	ft_putstr_fd("exit\n", 1);
-	exit(0);
+	static const t_sigc	sig = {
+		.shell = sig_shell,
+		.herdoc = sig_herdoc,
+		.ignore = sig_ignore,
+		.reset = sig_reset,
+	};
+
+	return (sig);
 }

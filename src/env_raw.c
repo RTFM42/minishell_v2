@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 21:43:54 by yushsato          #+#    #+#             */
-/*   Updated: 2024/05/13 16:50:02 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/05/14 08:03:30 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ void	env_free(char **envp)
 	i = 0;
 	while (envp[i])
 		free(envp[i++]);
+	free(envp[i]);
 	free(envp);
 }
 
