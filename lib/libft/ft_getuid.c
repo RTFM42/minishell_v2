@@ -1,31 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   prompt.c                                           :+:      :+:    :+:   */
+/*   ft_getuid.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/14 01:49:38 by yushsato          #+#    #+#             */
-/*   Updated: 2024/05/18 15:41:47 by yushsato         ###   ########.fr       */
+/*   Created: 2024/05/18 14:45:45 by yushsato          #+#    #+#             */
+/*   Updated: 2024/05/18 15:38:50 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "./libft.h"
+#include <stdio.h>
+#include <unistd.h>
 
-/**
- * ## Generate prompt string
- * @return	Generated prompt string
-*/
-char	*ms_prompt(void)
+static void	un_getuid(unsigned int uid)
 {
-	char		*prompt;
-	const int	len = ft_strlen("minishell");
+	(void)uid;
+}
 
-	prompt = sf_calloc(len + 2 + 1, sizeof(char));
-	ft_memcpy(prompt, "minishell", len);
-	if (ft_getuid() == 0)
-		ft_memcpy(prompt + len, "# ", 2);
-	else
-		ft_memcpy(prompt + len, "$ ", 2);
-	return (prompt);
+unsigned int	ft_getuid(void)
+{
+	unsigned int		uid;
+
+	asm (
+		"bl _getuid\n"
+		"mov %w0, w0\n"
+		: "=r" (uid)
+		:
+		: "w0", "cc"
+		);
+	un_getuid(uid);
+	return (uid);
 }
