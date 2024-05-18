@@ -6,7 +6,7 @@
 #    By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/12 20:21:50 by yushsato          #+#    #+#              #
-#    Updated: 2024/05/18 14:49:48 by yushsato         ###   ########.fr        #
+#    Updated: 2024/05/18 15:47:19 by yushsato         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,7 +50,6 @@ SRCS = ft_isalpha.c \
 	   ft_putstr_fd.c \
 	   ft_putendl_fd.c \
 	   ft_putnbr_fd.c \
-	   ft_getuid.c \
 	   sf_calloc.c \
 	   sf_error.c \
 	   sf_strdup.c
