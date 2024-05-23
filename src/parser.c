@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 21:56:34 by yushsato          #+#    #+#             */
-/*   Updated: 2024/05/14 09:44:06 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/05/23 18:33:32 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,27 @@ void	parser_free(char **args)
 	free(args);
 }
 
+int	run(char **parsed, char **envp)
+{
+	int	pipefd[2];
+	int	ret;
+	char	*ls[] = {"ls", NULL};
+	char	*cat[] = {"cat", NULL};
+
+	(void)parsed;
+	pipe(pipefd);
+	EXEC().pipe((char *const *)ls, envp, 0, pipefd[1]);
+	ret = EXEC().pipe((char *const *)cat, envp, pipefd[0], 1);
+	close(pipefd[0]);
+	close(pipefd[1]);
+	return (ret);
+}
+
 t_parserc	parser_constructor(void)
 {
 	static const t_parserc	perserc = {
 		.parser = parser,
+		.run = run,
 		.free = parser_free,
 	};
 

@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 14:43:52 by yushsato          #+#    #+#             */
-/*   Updated: 2024/05/18 15:40:16 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/05/23 18:01:04 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	main(int ac, char **av, char **ae)
 		ms_isctrld(input);
 		argv = PSR().parser(input);
 		envp = ENV().dump();
-		g_signal = (EXEC().sync)(argv, envp);
+		g_signal = (PSR().run)(argv, envp);
 		PSR().free(argv);
 		ENV().free(envp);
 		free(input);
