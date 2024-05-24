@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 03:22:27 by yushsato          #+#    #+#             */
-/*   Updated: 2024/05/24 16:43:09 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/05/24 17:58:07 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,12 @@ char	*ms_readline(void)
 	{
 		tmp = input;
 		extra = readline("> ");
-		input[ft_strlen(input) - 1] = '\n';
+		input[ft_strlen(input) - 1] = '\0';
 		input = ft_strjoin(input, extra);
 		free(tmp);
 		free(extra);
 	}
 	if (input && input[0] != '\0')
 		add_history(input);
-	while (input && ft_strchr(input, '\n'))
-		ft_strchr(input, '\n')[0] = ' ';
 	return (input);
 }
