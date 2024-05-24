@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 17:07:01 by yushsato          #+#    #+#             */
-/*   Updated: 2024/05/23 17:48:50 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/05/24 14:15:33 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,13 @@
 # include <readline/history.h>
 # include "lib/libft/libft.h"
 # include "lib/printf/ft_printf.h"
+
+# define LXR_WORD 0
+# define LXR_2QUOTE 1
+# define LXR_1QUOTE 2
+# define LXR_PIPE 3
+# define LXR_REDIR 4
+# define LXR_SCOLON 5
 
 extern int	g_signal;
 
@@ -44,6 +51,18 @@ typedef struct s_chainlist
 {
 	t_chain	*list;
 }	t_chainlist;
+
+typedef struct token
+{
+	char			*value;
+	unsigned short	type;
+	struct token	*left;
+	struct token	*right;
+}	t_token;
+
+typedef struct s_node
+{
+}	t_node;
 
 typedef struct s_envc
 {

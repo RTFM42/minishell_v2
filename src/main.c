@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 14:43:52 by yushsato          #+#    #+#             */
-/*   Updated: 2024/05/23 18:01:04 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/05/24 00:33:53 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	ms_isctrld(char *stdin)
 int	main(int ac, char **av, char **ae)
 {
 	char	*input;
-	char	**argv;
+	char	**node;
 	char	**envp;
 
 	if (av[0] && ac != 1 && ERR().setno(EINVAL))
@@ -40,10 +40,10 @@ int	main(int ac, char **av, char **ae)
 		SIG().shell(0);
 		input = ms_readline();
 		ms_isctrld(input);
-		argv = PSR().parser(input);
+		node = PSR().parser(input);
 		envp = ENV().dump();
-		g_signal = (PSR().run)(argv, envp);
-		PSR().free(argv);
+		g_signal = (PSR().run)(node, envp);
+		PSR().free(node);
 		ENV().free(envp);
 		free(input);
 	}

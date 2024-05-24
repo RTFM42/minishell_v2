@@ -6,17 +6,16 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 19:11:25 by yushsato          #+#    #+#             */
-/*   Updated: 2024/05/23 18:48:38 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/05/24 14:17:09 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-
 static int	await(pid_t pid, int infd, int outfd)
 {
 	int	stat;
-	
+
 	if (waitpid(pid, &stat, 0) == pid)
 	{
 		if (WIFEXITED(stat))
@@ -64,7 +63,7 @@ int	execute_pipe(char *const *argv, char *const *envp, int infd, int outfd)
 	char	*path;
 	pid_t	pid;
 
-	if (argv == NULL || argv[0]	== NULL)
+	if (argv == NULL || argv[0] == NULL)
 		return (0);
 	path = PATH().resolve(argv[0]);
 	pid = fork();
