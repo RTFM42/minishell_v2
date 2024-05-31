@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 00:36:42 by yushsato          #+#    #+#             */
-/*   Updated: 2024/05/31 19:33:35 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/05/31 19:40:53 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ t_token	*token(const char *str)
 	int	i;
 
 	i = 0;
-	if (str[i] == ';' || ft_strncmp(&str[i], "&&", 2)
+	if (str[i] == ';' || !ft_strncmp(&str[i], "&&", 2)
 		|| str[i] == '|' || str[i] == '>' || str[i] == '<')
 		return (token_conjection(str, &i));
 	while (str[i] && !ft_isspace(str[i]))
