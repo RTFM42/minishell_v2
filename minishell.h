@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 17:07:01 by yushsato          #+#    #+#             */
-/*   Updated: 2024/05/31 01:11:48 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/05/31 19:28:32 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,13 @@
 # include "lib/printf/ft_printf.h"
 
 # define LXR_WORD 0
-# define LXR_PIPE 3
-# define LXR_INPUT 4
-# define LXR_OUTPUT 5
-# define LXR_HEREDOC 6
-# define LXR_APPEND 7
-# define LXR_LOGIC 8
-# define LXR_SCOLON 9
+# define LXR_PIPE 1
+# define LXR_INPUT 2
+# define LXR_OUTPUT 3
+# define LXR_HEREDOC 4
+# define LXR_APPEND 5
+# define LXR_LOGIC 6
+# define LXR_SCOLON 7
 # define LXR_ERROR INT_MAX
 
 extern int	g_signal;
@@ -67,7 +67,7 @@ typedef struct s_token
 
 typedef struct s_tokenc
 {
-	t_token	*(*new)(char *token, int length, int type);
+	t_token	*(*new)(char *token, int len, int type);
 }	t_tokenc;
 
 typedef struct s_execc
@@ -105,8 +105,8 @@ t_sigc		sig_constructor(void);
 t_parserc	parser_constructor(void);
 t_pathc		path_constructor(void);
 t_tokenc	token_constructor(void);
-t_token		*token(char *str);
-t_token		*lexer(char *input);
+t_token		*token(const char *str);
+t_token		*lexer(const char *input);
 char		*ms_prompt(void);
 char		*ms_readline(void);
 void		ms_isctrld(char *stdin);

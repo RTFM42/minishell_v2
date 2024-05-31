@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   word.c                                             :+:      :+:    :+:   */
+/*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 00:36:42 by yushsato          #+#    #+#             */
-/*   Updated: 2024/05/31 00:42:48 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/05/31 19:33:35 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-int	token_1quote(char *str, int *i)
+int	token_1quote(const char *str, int *i)
 {
 	int	endable;
 
@@ -29,7 +29,7 @@ int	token_1quote(char *str, int *i)
 	return (endable);
 }
 
-int	token_2quote(char *str, int *i)
+int	token_2quote(const char *str, int *i)
 {
 	int	endable;
 
@@ -46,7 +46,7 @@ int	token_2quote(char *str, int *i)
 	return (endable);
 }
 
-t_token	*token_cutout(char *str, int len, int type)
+t_token	*token_cutout(const char *str, int len, int type)
 {
 	t_token	*new;
 
@@ -55,7 +55,7 @@ t_token	*token_cutout(char *str, int len, int type)
 	return (new);
 }
 
-t_token	*token_conjection(char *str, int *i)
+t_token	*token_conjection(const char *str, int *i)
 {
 	if (str[*i] == ';')
 		return (token_cutout(str, 1, LXR_SCOLON));
@@ -74,7 +74,7 @@ t_token	*token_conjection(char *str, int *i)
 	return (NULL);
 }
 
-t_token	*token(char *str)
+t_token	*token(const char *str)
 {
 	int	i;
 
@@ -86,9 +86,9 @@ t_token	*token(char *str)
 	{
 		if (str[i] && str[i] == '\\' && str[i + 1])
 			i += 2;
-		else if (str[i] == '\'' && word_1quote(str, &i))
+		else if (str[i] == '\'' && token_1quote(str, &i))
 			return (NULL);
-		else if (str[i] == '\"' && word_2quote(str, &i))
+		else if (str[i] == '\"' && token_2quote(str, &i))
 			return (NULL);
 		else if (str[i] == ';' || ft_strncmp(&str[i], "&&", 2)
 			|| str[i] == '|' || str[i] == '>' || str[i] == '<')
