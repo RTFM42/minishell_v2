@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 00:36:42 by yushsato          #+#    #+#             */
-/*   Updated: 2024/05/31 19:43:15 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/05/31 21:27:23 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,15 +61,15 @@ t_token	*token_conjection(const char *str, int *i)
 		return (token_cutout(str, 1, LXR_SCOLON));
 	if (!ft_strncmp(&str[*i], "&&", 2))
 		return (token_cutout(str, 2, LXR_LOGIC));
-	if (str[*i] == '|')
+	if (!ft_strncmp(&str[*i], "|", 1))
 		return (token_cutout(str, 1, LXR_PIPE));
-	if (ft_strncmp(&str[*i], ">>", 2))
+	if (!ft_strncmp(&str[*i], ">>", 2))
 		return (token_cutout(str, 2, LXR_APPEND));
-	if (ft_strncmp(&str[*i], "<<", 2))
+	if (!ft_strncmp(&str[*i], "<<", 2))
 		return (token_cutout(str, 2, LXR_HEREDOC));
-	if (ft_strncmp(&str[*i], ">", 1))
+	if (!ft_strncmp(&str[*i], ">", 1))
 		return (token_cutout(str, 1, LXR_OUTPUT));
-	if (ft_strncmp(&str[*i], "<", 1))
+	if (!ft_strncmp(&str[*i], "<", 1))
 		return (token_cutout(str, 1, LXR_INPUT));
 	return (NULL);
 }
