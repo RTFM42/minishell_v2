@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 00:36:42 by yushsato          #+#    #+#             */
-/*   Updated: 2024/05/31 19:40:53 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/05/31 19:43:15 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ t_token	*token(const char *str)
 			return (NULL);
 		else if (str[i] == '\"' && token_2quote(str, &i))
 			return (NULL);
-		else if (str[i] == ';' || ft_strncmp(&str[i], "&&", 2)
+		else if (str[i] == ';' || !ft_strncmp(&str[i], "&&", 2)
 			|| str[i] == '|' || str[i] == '>' || str[i] == '<')
 			break ;
 		else if (str[i])
