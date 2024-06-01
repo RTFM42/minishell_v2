@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 00:36:42 by yushsato          #+#    #+#             */
-/*   Updated: 2024/05/31 22:02:06 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/01 15:45:08 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ t_token	*token_cutout(const char *str, int len, int type)
 
 t_token	*token_conjection(const char *str, int *i)
 {
-	if (str[*i] == ';')
+	if (!ft_strncmp(&str[*i], ";", 1))
 		return (token_cutout(str, 1, LXR_SCOLON));
 	if (!ft_strncmp(&str[*i], "&&", 2))
 		return (token_cutout(str, 2, LXR_LOGIC));
@@ -66,7 +66,7 @@ t_token	*token_conjection(const char *str, int *i)
 	if (!ft_strncmp(&str[*i], ">>", 2))
 		return (token_cutout(str, 2, LXR_APPEND));
 	if (!ft_strncmp(&str[*i], "<<", 2))
-		return (token_cutout(str, 2, LXR_HEREDOC));
+		return (token_cutout(str, 2, LXR_HEREDOC));	
 	if (!ft_strncmp(&str[*i], ">", 1))
 		return (token_cutout(str, 1, LXR_OUTPUT));
 	if (!ft_strncmp(&str[*i], "<", 1))
@@ -82,7 +82,6 @@ t_token	*token(const char *str)
 	if (str[i] == ';' || !ft_strncmp(&str[i], "&&", 2)
 		|| str[i] == '|' || str[i] == '>' || str[i] == '<')
 		return (token_conjection(str, &i));
-	ft_printf("token is word\n");
 	while (str[i] && !ft_isspace(str[i]))
 	{
 		if (str[i] && str[i] == '\\' && str[i + 1])
