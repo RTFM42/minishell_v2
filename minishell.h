@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 17:07:01 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/07 17:02:11 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/07 20:22:05 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ typedef struct s_token
 typedef struct s_tokenc
 {
 	t_token	*(*new)(char *token, int len, int type);
-	int		*(*iserror)(t_token *token);
+	int		(*iserror)(t_token *token);
 }	t_tokenc;
 
 typedef struct s_execc
