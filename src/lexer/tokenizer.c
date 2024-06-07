@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 00:36:42 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/07 16:35:36 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/07 16:48:33 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ t_token	*token_conjection(const char *str, int *i)
 	return (NULL);
 }
 
-t_token	*token(const char *str)
+t_token	*tokenizer(const char *str)
 {
 	int	i;
 

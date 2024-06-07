@@ -6,11 +6,13 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 00:36:42 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/07 16:42:43 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/07 16:49:56 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+
+t_token	*tokenizer(const char *str);
 
 t_token	*lexer(const char *input)
 {
@@ -23,7 +25,7 @@ t_token	*lexer(const char *input)
 	{
 		if (ft_isspace(*input) && input++)
 			continue ;
-		add = token(input);
+		add = tokenizer(input);
 		if (head == NULL && add && ft_memcpy(&head, &add, sizeof(t_token *))
 			&& ft_memcpy(&cursor, &add, sizeof(t_token *)))
 			input += add->len;

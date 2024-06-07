@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 17:07:01 by yushsato          #+#    #+#             */
-/*   Updated: 2024/05/31 19:28:32 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/07 16:49:36 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,6 @@ t_sigc		sig_constructor(void);
 t_parserc	parser_constructor(void);
 t_pathc		path_constructor(void);
 t_tokenc	token_constructor(void);
-t_token		*token(const char *str);
 t_token		*lexer(const char *input);
 char		*ms_prompt(void);
 char		*ms_readline(void);
