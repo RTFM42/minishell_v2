@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 17:30:44 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/08 00:11:20 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/08 00:12:12 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ void	token_printall(t_token *head)
 			ft_printf("token[%d](%s): %s", head->len, "ERROR", head->token);
 		else
 			ft_printf("token[%d](%s): %s", head->len, "UNHANDLED", head->token);
+		ft_printf("\n");
 		head = head->next;
 	}
 }
