@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 21:56:34 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/01 15:48:40 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/08 00:04:59 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,8 @@ char	**parser(const char *str)
 	t_token	*token;
 	
 	token = lexer(str);
-	while (token)
-	{
-		ft_printf("lexer: %s, %d\n", token->token, token->type);
-		token = token->next;
-	}
-
+	TKN().freeall(token);
+	TKN().printall(token);
 	ret = ft_split(str, ' ');
 	return (ret);
 }
