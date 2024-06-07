@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 00:36:42 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/07 16:33:43 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/07 16:42:43 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,19 +24,13 @@ t_token	*lexer(const char *input)
 		if (ft_isspace(*input) && input++)
 			continue ;
 		add = token(input);
-		if (head == NULL && add)
-		{
-			head = add;
-			cursor = add;
+		if (head == NULL && add && ft_memcpy(&head, &add, sizeof(t_token *))
+			&& ft_memcpy(&cursor, &add, sizeof(t_token *)))
 			input += add->len;
-		}
-		else if (add)
-		{
-			cursor->next = add;
-			add->prev = cursor;
-			input += add->len;
-			cursor = add;
-		}
+		else if (add && ft_memcpy(&(cursor->next), &add, sizeof(t_token *))
+			&& ft_memcpy(&(add->prev), &cursor, sizeof(t_token *))
+			&& ft_memcpy(&cursor, &add, sizeof(t_token *)))
+			input += cursor->len;
 	}
 	return (head);
 }
