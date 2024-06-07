@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 20:53:52 by yushsato          #+#    #+#             */
-/*   Updated: 2024/05/14 15:27:05 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/08 00:19:01 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,6 @@ void	env_set(char **list)
 	count = 0;
 	while (*list)
 	{
-		ft_printf("[%d]:\x1B[33m%s\x1B[0m\n", count++, *list);
 		ptr = ft_strchr(*list, '=');
 		key = sf_calloc(ptr - *list + 1, sizeof(char));
 		key = ft_memcpy(key, *list, ptr - *list);
