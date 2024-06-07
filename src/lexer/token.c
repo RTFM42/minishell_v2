@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 17:30:44 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/08 00:03:22 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/08 00:11:20 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,21 +50,21 @@ void	token_printall(t_token *head)
 	while (head)
 	{
 		if (head->type == LXR_WORD)
-			ft_printf("token[%d](%s): %s", head->len, head->token,"WORD");
+			ft_printf("token[%d](%s): %s", head->len, "WORD", head->token);
 		else if (head->type == LXR_PIPE)
-			ft_printf("token[%d](%s): %s", head->len, head->token,"PIPE");
+			ft_printf("token[%d](%s): %s", head->len, "PIPE", head->token);
 		else if (head->type == LXR_INPUT)
-			ft_printf("token[%d](%s): %s", head->len, head->token,"OUTPUT");
+			ft_printf("token[%d](%s): %s", head->len, "OUTPUT", head->token);
 		else if (head->type == LXR_HEREDOC)
-			ft_printf("token[%d](%s): %s", head->len, head->token,"HEREDOC");
+			ft_printf("token[%d](%s): %s", head->len, "HEREDOC", head->token);
 		else if (head->type == LXR_APPEND)
-			ft_printf("token[%d](%s): %s", head->len, head->token,"APPEND");
+			ft_printf("token[%d](%s): %s", head->len, "APPEND", head->token);
 		else if (head->type == LXR_LOGIC)
-			ft_printf("token[%d](%s): %s", head->len, head->token,"LOGIC");
+			ft_printf("token[%d](%s): %s", head->len, "LOGIC", head->token);
 		else if (head->type == LXR_ERROR)
-			ft_printf("token[%d](%s): %s", head->len, head->token,"ERROR");
+			ft_printf("token[%d](%s): %s", head->len, "ERROR", head->token);
 		else
-			ft_printf("token[%d](%s): %s", head->len, head->token,"unhandled type");
+			ft_printf("token[%d](%s): %s", head->len, "UNHANDLED", head->token);
 		head = head->next;
 	}
 }
