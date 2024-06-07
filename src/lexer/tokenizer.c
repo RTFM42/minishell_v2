@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 00:36:42 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/07 16:48:33 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/08 00:30:41 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,9 +95,9 @@ t_token	*tokenizer(const char *str)
 		if (str[i] && str[i] == '\\' && str[i + 1])
 			i += 2;
 		else if (str[i] == '\'' && token_1quote(str, &i) == 0)
-			return (TKN().new((char *)str, ft_strlen(str), LXR_ERROR));
+			return (TKN().new(ft_strdup(str), ft_strlen(str), LXR_ERROR));
 		else if (str[i] == '\"' && token_2quote(str, &i) == 0)
-			return (TKN().new((char *)str, ft_strlen(str), LXR_ERROR));
+			return (TKN().new(ft_strdup(str), ft_strlen(str), LXR_ERROR));
 		else if (str[i] == ';' || !ft_strncmp(&str[i], "&&", 2)
 			|| str[i] == '|' || str[i] == '>' || str[i] == '<')
 			break ;

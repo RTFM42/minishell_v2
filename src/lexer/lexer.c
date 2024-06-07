@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 00:36:42 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/07 17:58:41 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/08 00:25:12 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_token	*tokenizer(const char *str);
 
 void	lexer_error(t_token token)
 {
-	ft_putstr_fd("parse error near `", 2);
+	ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
 	ft_putstr_fd(token.token, 2);
 	ft_putstr_fd("'\n", 2);
 }
