@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 00:36:42 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/01 15:45:08 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/07 16:16:24 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,36 +14,44 @@
 
 int	token_1quote(const char *str, int *i)
 {
-	int	endable;
+	int	isable;
 
-	endable = 0;
-	while (str[*i] && str[*i] != '\'')
+	isable = 0;
+	if (str[*i] == '\'')
+		(*i)++;
+	else
+		return (0);
+	while (str[*i])
 	{
 		if (str[*i] == '\\' && str[*i + 1])
 			*i += 2;
-		if (str[*i] == '\'' && (*i)++ && endable++)
+		if (str[*i] == '\'' && ++(*i) && ++isable)
 			break ;
 		if (str[*i])
 			*i += 1;
 	}
-	return (endable);
+	return (isable);
 }
 
 int	token_2quote(const char *str, int *i)
 {
-	int	endable;
+	int	isable;
 
-	endable = 0;
-	while (str[*i] && str[*i] != '\"')
+	isable = 0;
+	if (str[*i] == '\"')
+		(*i)++;
+	else
+		return (0);
+	while (str[*i])
 	{
 		if (str[*i] == '\\' && str[*i + 1])
 			*i += 2;
-		if (str[*i] == '\"' && (*i)++ && endable++)
+		if (str[*i] == '\"' && ++(*i) && ++isable)
 			break ;
 		if (str[*i])
 			*i += 1;
 	}
-	return (endable);
+	return (isable);
 }
 
 t_token	*token_cutout(const char *str, int len, int type)
@@ -86,10 +94,10 @@ t_token	*token(const char *str)
 	{
 		if (str[i] && str[i] == '\\' && str[i + 1])
 			i += 2;
-		else if (str[i] == '\'' && token_1quote(str, &i))
-			return (NULL);
-		else if (str[i] == '\"' && token_2quote(str, &i))
-			return (NULL);
+		else if (str[i] == '\'' && token_1quote(str, &i) == 0)
+			return (TKN().new((char *)str, ft_strlen(str), LXR_ERROR));
+		else if (str[i] == '\"' && token_2quote(str, &i) == 0)
+			return (TKN().new((char *)str, ft_strlen(str), LXR_ERROR));
 		else if (str[i] == ';' || !ft_strncmp(&str[i], "&&", 2)
 			|| str[i] == '|' || str[i] == '>' || str[i] == '<')
 			break ;
