@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 00:36:42 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/07 14:40:59 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/07 16:33:43 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ t_token	*lexer(const char *input)
 	t_token	*head;
 	t_token	*cursor;
 	t_token	*add;
-	
+
 	head = NULL;
 	while (*input)
 	{
