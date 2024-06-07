@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 17:30:44 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/07 16:49:43 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/07 17:01:48 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,22 @@ t_token	*token_new(char *token, int len, int type)
 	return (new);
 }
 
+int	token_iserror(t_token *token)
+{
+	while (token)
+	{
+		if (token->type == LXR_ERROR)
+			return (1);
+		token = token->next;
+	}
+	return (0);
+}
+
 t_tokenc	token_constructor(void)
 {
 	static const t_tokenc	tokenc = {
 		.new = token_new,
+		.iserror = token_iserror,
 	};
 
 	return (tokenc);
