@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 20:53:52 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/08 00:20:47 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/08 00:21:25 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,6 @@ void	env_set(char **list)
 	char	*key;
 	t_env	*shlvl;
 
-	count = 0;
 	while (*list)
 	{
 		ptr = ft_strchr(*list, '=');
