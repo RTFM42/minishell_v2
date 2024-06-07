@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 17:07:01 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/07 23:59:42 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/08 00:43:48 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ typedef struct s_sigc
 
 typedef struct s_parserc
 {
-	char	**(*parser)(const char *str);
+	t_token	*(*parser)(const char *str);
 	int		(*run)(char **parsed, char **envp);
 	void	(*free)(char **str);
 }	t_parserc;

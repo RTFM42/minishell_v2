@@ -6,21 +6,20 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 21:56:34 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/08 00:09:07 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/08 00:44:00 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 int	word(char *str);
 
-char	**parser(const char *str)
+t_token	*parser(const char *str)
 {
 	char	**ret;
 	t_token	*token;
 	
 	token = lexer(str);
 	TKN().printall(token);
-	TKN().freeall(token);
 	ret = ft_split(str, ' ');
 	return (ret);
 }
