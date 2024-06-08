@@ -85,6 +85,7 @@ t_token	*token_conjection(const char *str, int *i)
 t_token	*tokenizer(const char *str)
 {
 	int	i;
+	int	hist;
 
 	i = 0;
 	if (str[i] == ';' || !ft_strncmp(&str[i], "&&", 2)
@@ -92,6 +93,7 @@ t_token	*tokenizer(const char *str)
 		return (token_conjection(str, &i));
 	while (str[i] && !ft_isspace(str[i]))
 	{
+		hist = i;
 		if (str[i] && str[i] == '\\' && str[i + 1])
 			i += 2;
 		else if (str[i] == '\'' && token_1quote(str, &i) == 0)
@@ -101,7 +103,7 @@ t_token	*tokenizer(const char *str)
 		else if (str[i] == ';' || !ft_strncmp(&str[i], "&&", 2)
 			|| str[i] == '|' || str[i] == '>' || str[i] == '<')
 			break ;
-		else if (str[i])
+		else if (hist == i && str[i])
 			i++;
 	}
 	return (token_cutout(str, i, LXR_WORD));
