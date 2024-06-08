@@ -1,0 +1,90 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   word.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/08 19:39:39 by yushsato          #+#    #+#             */
+/*   Updated: 2024/06/08 19:45:55 by yushsato         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../minishell.h"
+
+char	*stralocat(char *dst, const char *add, int len)
+{
+	int		dlen;
+	char	*ret;
+
+	dlen = ft_strlen(dst);
+	ret = ft_calloc(dlen + len + 1, sizeof(char));
+	ft_memcpy(ret, dst, dlen);
+	ft_memcpy(ret + dlen, add, len);
+	free(dst);
+	return (ret);
+}
+
+void	parse_1quote(char **dst, char **src)
+{
+	char	*rdst;
+	char	*rsrc;
+
+	rdst = *dst;
+	rsrc = *src;
+	while (*(++rsrc) && *rsrc != '\'')
+		rdst = stralocat(rdst, rsrc, 1);
+	rsrc++;
+	*src = rsrc;
+	*dst = rdst;
+}
+
+void	parse_2quote(char **dst, char **src)
+{
+	char	*envk;
+	char	*envv;
+
+	(*src)++;
+	while (**src && **src != '\"')
+	{
+		if ((!ft_memcmp(*src, "\\$", 2) || !ft_memcmp(*src, "\\\"", 2))
+			&& ++(*src))
+			*dst = stralocat(*dst, (*src)++, 1);
+		else if (**src == '$' && ft_isalnum(*(*src + 1)))
+		{
+			envk = ft_calloc(1, sizeof(char));
+			while (ft_isalnum(*++(*src)))
+				envk = stralocat(envk, *src, 1);
+			if (ENV().find(envk))
+			{
+				envv = ENV().find(envk)->value;
+				*dst = stralocat(*dst, envv, ft_strlen(envv));
+			}
+			free(envk);
+		}
+		else
+			*dst = stralocat(*dst, (*src)++, 1);
+	}
+	(*src)++;
+}
+
+char	*parse_word(t_token *token)
+{
+	char		*dst;
+	const char	*src = token->token;
+
+	src = token->token;
+	dst = ft_calloc(1, sizeof(char));
+	while (src && *src)
+	{
+		if (*src == '\\' && *(src + 1) != '\0' && ++src)
+			dst = stralocat(dst, src, 1);
+		else if (*src == '\'')
+			parse_1quote(&dst, (char **)&src);
+		else if (*src == '\"')
+			parse_2quote(&dst, (char **)&src);
+		else
+			dst = stralocat(dst, src++, 1);
+	}
+	return (dst);
+}

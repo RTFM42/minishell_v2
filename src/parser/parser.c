@@ -6,20 +6,29 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 21:56:34 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/08 00:44:00 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/08 19:40:55 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-int	word(char *str);
+
+char	*parse_word(t_token *token);
 
 t_token	*parser(const char *str)
 {
 	t_token	*token;
+	t_token	*head;
 
-	token = lexer(str);
-	TKN().printall(token);
-	return (token);
+	head = lexer(str);
+	TKN().printall(head);
+	token = head;
+	while (token)
+	{
+		if (token->type == LXR_WORD)
+			token->token = parse_word(token);
+		token = token->next;
+	}
+	return (head);
 }
 
 void	parser_free(char **args)
@@ -35,9 +44,18 @@ void	parser_free(char **args)
 
 int	parser_run(t_token *parsed, char **envp)
 {
-	int		ret;
+	int		ret = 0;
+	// char	**array;
 
-	ret = (EXEC().sync)(parsed, envp);
+	/**
+	 * # TODO List
+	 * 
+	 * 1. Token to String Array
+	 * 2. Run (exec)
+	 */
+	// ret = (EXEC().sync)(parsed, envp);
+	(void)envp;
+	TKN().printall(parsed);
 	return (ret);
 }
 

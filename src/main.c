@@ -43,7 +43,7 @@ int	main(int ac, char **av, char **ae)
 		token = PSR().parser(input);
 		envp = ENV().dump();
 		g_signal = (PSR().run)(token, envp);
-		TKN().free(token);
+		TKN().freeall(token);
 		ENV().free(envp);
 		free(input);
 	}

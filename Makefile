@@ -6,7 +6,7 @@
 #    By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/13 14:42:14 by yushsato          #+#    #+#              #
-#    Updated: 2024/05/31 00:48:27 by yushsato         ###   ########.fr        #
+#    Updated: 2024/06/08 19:50:00 by yushsato         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,8 +20,9 @@ SRCS	= ./src/main.c \
 		  ./src/prompt.c \
 		  ./src/readline.c \
 		  ./src/signal.c \
-		  ./src/parser.c \
 		  ./src/path.c \
+		  ./src/parser/parser.c \
+		  ./src/parser/word.c \
 		  ./src/lexer/lexer.c \
 		  ./src/lexer/token.c \
 		  ./src/lexer/tokenizer.c

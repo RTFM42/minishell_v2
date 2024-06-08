@@ -35,6 +35,10 @@
 # define LXR_SCOLON 7
 # define LXR_ERROR INT_MAX
 
+# define PSR_NORMAL 0
+# define PSR_1QUOTE 1
+# define PSR_2QUOTE 2
+
 extern int	g_signal;
 
 typedef struct s_env
@@ -90,7 +94,7 @@ typedef struct s_sigc
 typedef struct s_parserc
 {
 	t_token	*(*parser)(const char *str);
-	int		(*run)(char **parsed, char **envp);
+	int		(*run)(t_token *parsed, char **envp);
 	void	(*free)(char **str);
 }	t_parserc;
 
