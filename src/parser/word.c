@@ -6,11 +6,12 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 19:39:39 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/10 16:42:26 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/10 22:20:56 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+#define CMP ft_memcmp
 
 int	isenvchar(int c)
 {
@@ -56,8 +57,7 @@ void	parse_2quote(char **dst, char **src)
 	(*src)++;
 	while (**src && **src != '\"')
 	{
-		if ((!ft_memcmp(*src, "\\$", 2) || !ft_memcmp(*src, "\\\"", 2))
-			&& ++(*src))
+		if ((!CMP(*src, "\\$", 2) || !CMP(*src, "\\\"", 2)) && ++(*src))
 			*dst = stralocat(*dst, (*src)++, 1);
 		else if (**src == '$' && isenvchar(*(*src + 1)))
 		{
@@ -69,6 +69,8 @@ void	parse_2quote(char **dst, char **src)
 				*dst = stralocat(*dst, envv, ft_strlen(envv));
 			free(envk);
 		}
+		else if (**src == '$' && (*(*src + 1)) == '?' && ++(*src) && ++(*src))
+			*dst = stralocat(*dst, ft_itoa(g_signal), 1);
 		else
 			*dst = stralocat(*dst, (*src)++, 1);
 	}
