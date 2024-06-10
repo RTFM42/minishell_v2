@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 19:39:39 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/10 15:36:12 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/10 16:42:26 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ void	parse_1quote(char **dst, char **src)
 
 	rdst = *dst;
 	rsrc = *src;
-	ft_printf("parse_1quote: %s\n", rsrc);
 	while (*(++rsrc) && *rsrc != '\'')
 		rdst = stralocat(rdst, rsrc, 1);
 	if (*rsrc)

@@ -6,13 +6,14 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 21:56:34 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/08 19:40:55 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/10 16:41:15 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
 char	*parse_word(t_token *token);
+t_token	*sanitize_token(t_token *head);
 
 t_token	*parser(const char *str)
 {
@@ -28,7 +29,7 @@ t_token	*parser(const char *str)
 			token->token = parse_word(token);
 		token = token->next;
 	}
-	return (head);
+	return (sanitize_token(head));
 }
 
 void	parser_free(char **args)
