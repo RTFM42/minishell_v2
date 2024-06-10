@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 17:07:01 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/10 18:59:29 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/10 21:26:50 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <unistd.h>
 # include <errno.h>
 # include <limits.h>
+# include <stdbool.h>
 # include <sys/stat.h>
 # include <readline/readline.h>
 # include <readline/history.h>
@@ -71,10 +72,11 @@ typedef struct s_token
 
 typedef struct s_node
 {
-	char			*token;
-	int				prevconj;
-	int				nextconj;
-	int				inputfd;
+	char			**token;
+	int				*in_fds;
+	char			**hd_bufs;
+	int				*out_fds;
+	bool			pipe;
 	struct s_node	*next;
 }	t_node;
 
