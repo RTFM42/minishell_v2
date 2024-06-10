@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 19:11:25 by yushsato          #+#    #+#             */
-/*   Updated: 2024/05/24 14:17:09 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/11 02:05:24 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,11 +80,29 @@ int	execute_pipe(char *const *argv, char *const *envp, int infd, int outfd)
 	return (1);
 }
 
+int	execute_run(t_token *head, char **envp)
+{
+	int		ret = 0;
+	// char	**array;
+
+	/**
+	 * # TODO List
+	 * 
+	 * 1. Token to String Array
+	 * 2. Run (exec)
+	 */
+	// ret = (EXEC().sync)(parsed, envp);
+	(void)envp;
+	TKN().printall(head);
+	return (ret);
+}
+
 t_execc	exec_constructor(void)
 {
 	static const t_execc	execc = {
 		.sync = execute_sync,
 		.pipe = execute_pipe,
+		.run = execute_run,
 	};
 
 	return (execc);

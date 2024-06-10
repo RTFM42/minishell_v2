@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 17:07:01 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/10 21:26:50 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/11 02:05:19 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ typedef struct s_execc
 {
 	int	(*sync)(char *const *argv, char *const *envp);
 	int	(*pipe)(char *const *argv, char *const *envp, int infd, int outfd);
+	int	(*run)(t_token *head, char **envp);
 }	t_execc;
 
 typedef struct s_sigc
@@ -105,7 +106,6 @@ typedef struct s_sigc
 typedef struct s_parserc
 {
 	t_token	*(*parser)(const char *str);
-	int		(*run)(t_token *parsed, char **envp);
 	void	(*free)(char **str);
 }	t_parserc;
 

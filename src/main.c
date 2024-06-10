@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 14:43:52 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/10 21:33:51 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/11 02:05:45 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	main(int ac, char **av, char **ae)
 			continue ;
 		}
 		envp = ENV().dump();
-		g_signal = (PSR().run)(token, envp);
+		g_signal = (EXEC().run)(token, envp);
 		TKN().freeall(token);
 		ENV().free(envp);
 	}

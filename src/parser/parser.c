@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 21:56:34 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/10 21:36:53 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/11 02:04:57 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,28 +53,10 @@ void	parser_free(char **args)
 	free(args);
 }
 
-int	parser_run(t_token *parsed, char **envp)
-{
-	int		ret = 0;
-	// char	**array;
-
-	/**
-	 * # TODO List
-	 * 
-	 * 1. Token to String Array
-	 * 2. Run (exec)
-	 */
-	// ret = (EXEC().sync)(parsed, envp);
-	(void)envp;
-	TKN().printall(parsed);
-	return (ret);
-}
-
 t_parserc	parser_constructor(void)
 {
 	static const t_parserc	perserc = {
 		.parser = parser,
-		.run = parser_run,
 		.free = parser_free,
 	};
 
