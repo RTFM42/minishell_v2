@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 14:43:52 by yushsato          #+#    #+#             */
-/*   Updated: 2024/05/24 15:30:57 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/10 21:33:51 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,15 @@ int	main(int ac, char **av, char **ae)
 		input = ms_readline();
 		ms_isctrld(input);
 		token = PSR().parser(input);
+		free(input);
+		if (token == NULL)
+		{
+			g_signal = 2;			
+			continue ;
+		}
 		envp = ENV().dump();
 		g_signal = (PSR().run)(token, envp);
 		TKN().freeall(token);
 		ENV().free(envp);
-		free(input);
 	}
 }
