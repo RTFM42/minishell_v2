@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 00:36:42 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/08 00:25:12 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/10 19:54:25 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,23 @@
 
 t_token	*tokenizer(const char *str);
 
-void	lexer_error(t_token token)
+int	lexer_error(t_token token)
 {
 	ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
 	ft_putstr_fd(token.token, 2);
 	ft_putstr_fd("'\n", 2);
+	return (1);
+}
+
+int	validate_order(t_token *cursor)
+{
+	if (cursor->prev == NULL && LXR_PIPE <= cursor->type)
+		return (0);
+	if (cursor->prev
+		&& LXR_INPUT <= cursor->prev->type && LXR_INPUT <= cursor->type
+		&& !(LXR_PIPE <= cursor->prev->type && cursor->type <= LXR_APPEND))
+		return (0);
+	return (1);
 }
 
 t_token	*lexer(const char *input)
@@ -40,11 +52,11 @@ t_token	*lexer(const char *input)
 			&& ft_memcpy(&(add->prev), &cursor, sizeof(t_token *))
 			&& ft_memcpy(&cursor, &add, sizeof(t_token *)))
 			input += cursor->len;
-		if (TKN().iserror(cursor))
-		{
-			lexer_error(*cursor);
+		if ((cursor->prev == NULL && LXR_PIPE <= cursor->type)
+			|| validate_order(cursor) == 0)
+			cursor->type = LXR_ERROR;
+		if (TKN().iserror(cursor) && lexer_error(*cursor))
 			break ;
-		}
 	}
 	return (head);
 }

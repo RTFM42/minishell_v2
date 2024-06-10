@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 21:56:34 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/10 16:41:15 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/10 19:30:21 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,18 +18,20 @@ t_token	*sanitize_token(t_token *head);
 t_token	*parser(const char *str)
 {
 	t_token	*token;
-	t_token	*head;
+	t_token	*thead;
+	// t_node	*nhead;
 
-	head = lexer(str);
-	TKN().printall(head);
-	token = head;
+	thead = lexer(str);
+	// TKN().printall(thead);
+	token = thead;
 	while (token)
 	{
 		if (token->type == LXR_WORD)
 			token->token = parse_word(token);
 		token = token->next;
 	}
-	return (sanitize_token(head));
+	thead = sanitize_token(thead);
+	return (thead);
 }
 
 void	parser_free(char **args)

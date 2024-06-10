@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 17:07:01 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/08 00:43:48 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/10 18:59:29 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,11 @@
 # include "lib/printf/ft_printf.h"
 
 # define LXR_WORD 0
-# define LXR_PIPE 1
-# define LXR_INPUT 2
+# define LXR_INPUT 1
+# define LXR_HEREDOC 2
 # define LXR_OUTPUT 3
-# define LXR_HEREDOC 4
-# define LXR_APPEND 5
+# define LXR_APPEND 4
+# define LXR_PIPE 5
 # define LXR_LOGIC 6
 # define LXR_SCOLON 7
 # define LXR_ERROR INT_MAX
@@ -68,6 +68,15 @@ typedef struct s_token
 	struct s_token	*next;
 	struct s_token	*prev;
 }	t_token;
+
+typedef struct s_node
+{
+	char			*token;
+	int				prevconj;
+	int				nextconj;
+	int				inputfd;
+	struct s_node	*next;
+}	t_node;
 
 typedef struct s_tokenc
 {
