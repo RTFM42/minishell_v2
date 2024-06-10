@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 00:36:42 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/08 00:30:41 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/08 23:04:35 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,9 @@ int	token_1quote(const char *str, int *i)
 		return (0);
 	while (str[*i])
 	{
-		if (str[*i] == '\\' && str[*i + 1])
-			*i += 2;
 		if (str[*i] == '\'' && ++(*i) && ++isable)
 			break ;
-		if (str[*i])
+		else if (str[*i])
 			*i += 1;
 	}
 	return (isable);
@@ -46,9 +44,9 @@ int	token_2quote(const char *str, int *i)
 	{
 		if (str[*i] == '\\' && str[*i + 1])
 			*i += 2;
-		if (str[*i] == '\"' && ++(*i) && ++isable)
+		else if (str[*i] == '\"' && ++(*i) && ++isable)
 			break ;
-		if (str[*i])
+		else if (str[*i])
 			*i += 1;
 	}
 	return (isable);

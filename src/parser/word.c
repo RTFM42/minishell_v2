@@ -6,11 +6,19 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 19:39:39 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/08 19:45:55 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/10 15:36:12 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+
+int	isenvchar(int c)
+{
+	if (('0' <= c && c <= '9') || ('a' <= c && c <= 'z')
+		|| ('A' <= c && c <= 'Z') || c == '_')
+		return (1);
+	return (0);
+}
 
 char	*stralocat(char *dst, const char *add, int len)
 {
@@ -32,9 +40,11 @@ void	parse_1quote(char **dst, char **src)
 
 	rdst = *dst;
 	rsrc = *src;
+	ft_printf("parse_1quote: %s\n", rsrc);
 	while (*(++rsrc) && *rsrc != '\'')
 		rdst = stralocat(rdst, rsrc, 1);
-	rsrc++;
+	if (*rsrc)
+		rsrc++;
 	*src = rsrc;
 	*dst = rdst;
 }
@@ -50,22 +60,21 @@ void	parse_2quote(char **dst, char **src)
 		if ((!ft_memcmp(*src, "\\$", 2) || !ft_memcmp(*src, "\\\"", 2))
 			&& ++(*src))
 			*dst = stralocat(*dst, (*src)++, 1);
-		else if (**src == '$' && ft_isalnum(*(*src + 1)))
+		else if (**src == '$' && isenvchar(*(*src + 1)))
 		{
 			envk = ft_calloc(1, sizeof(char));
-			while (ft_isalnum(*++(*src)))
+			while (isenvchar(*++(*src)))
 				envk = stralocat(envk, *src, 1);
-			if (ENV().find(envk))
-			{
-				envv = ENV().find(envk)->value;
+			if (ENV().find(envk)
+				&& ft_memcpy(&envv, &(ENV().find(envk)->value), sizeof(char *)))
 				*dst = stralocat(*dst, envv, ft_strlen(envv));
-			}
 			free(envk);
 		}
 		else
 			*dst = stralocat(*dst, (*src)++, 1);
 	}
-	(*src)++;
+	if (*src)
+		(*src)++;
 }
 
 char	*parse_word(t_token *token)
@@ -78,7 +87,7 @@ char	*parse_word(t_token *token)
 	while (src && *src)
 	{
 		if (*src == '\\' && *(src + 1) != '\0' && ++src)
-			dst = stralocat(dst, src, 1);
+			dst = stralocat(dst, src++, 1);
 		else if (*src == '\'')
 			parse_1quote(&dst, (char **)&src);
 		else if (*src == '\"')
