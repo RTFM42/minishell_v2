@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 15:42:35 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/10 16:44:22 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/12 04:58:29 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 t_token	*sanitize_token(t_token *head)
 {
-	t_token	*courser;
+	t_token	*cursor;
 
-	courser = head;
-	while (courser)
+	cursor = head;
+	while (cursor)
 	{
-		courser->len = ft_strlen(courser->token);
-		courser = courser->next;
+		cursor->len = ft_strlen(cursor->token);
+		cursor = cursor->next;
 	}
 	return (head);
 }
