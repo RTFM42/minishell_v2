@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 12:47:29 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/14 14:54:44 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/14 14:57:52 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void			ft_putendl_fd(char *s, int fd);
 void			ft_putnbr_fd(int n, int fd);
 void			*sf_calloc(size_t count, size_t size);
 char			*sf_strdup(const char *s1);
-int 			sf_open(const char *path, int flag);
+int				sf_open(const char *path, int flag);
 t_errc			err_constructor(void);
 
 # define ERR err_constructor
