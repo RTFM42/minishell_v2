@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 22:04:31 by yushsato          #+#    #+#             */
-/*   Updated: 2024/05/13 17:01:27 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/14 14:43:42 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int	sf_error_print(const char *name)
 	{
 		ft_putstr_fd(":(", 2);
 		ft_putnbr_fd(errno, 2);
-		ft_putendl_fd(")Unsensitive system error.", 2);
+		ft_putendl_fd(")Unsensitive error.", 2);
 	}
 	return (1);
 }
