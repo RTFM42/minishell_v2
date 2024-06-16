@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 17:07:01 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/11 02:05:19 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/16 16:20:42 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <errno.h>
 # include <limits.h>
 # include <stdbool.h>
+# include <fcntl.h>
 # include <sys/stat.h>
 # include <readline/readline.h>
 # include <readline/history.h>
@@ -70,16 +71,6 @@ typedef struct s_token
 	struct s_token	*prev;
 }	t_token;
 
-typedef struct s_node
-{
-	char			**token;
-	int				*in_fds;
-	char			**hd_bufs;
-	int				*out_fds;
-	bool			pipe;
-	struct s_node	*next;
-}	t_node;
-
 typedef struct s_tokenc
 {
 	t_token	*(*new)(char *token, int len, int type);
@@ -87,6 +78,29 @@ typedef struct s_tokenc
 	void	(*freeall)(t_token *head);
 	void	(*printall)(t_token *head);
 }	t_tokenc;
+
+typedef struct s_node
+{
+	int				last_output_type;
+	int				last_input_type;
+	int				conjection_type;
+	int				exit_status;
+	char			**args;
+	char			*input_fname;
+	char			*heredoc_str;
+	char			*output_fname;
+	char			*append_fname;
+	struct s_node	*next;
+	struct s_node	*prev;
+}	t_node;
+
+typedef struct s_nodec
+{
+	t_node	*(*free)(t_node *node);
+	t_node	*(*new)(t_node *prev);
+	t_token	*(*add_args)(t_node *target, t_token *cursor);
+	t_token	*(*add_redir)(t_node *target, t_token *cursor);
+}	t_nodec;
 
 typedef struct s_execc
 {
@@ -124,6 +138,7 @@ t_parserc	parser_constructor(void);
 t_pathc		path_constructor(void);
 t_tokenc	token_constructor(void);
 t_token		*lexer(const char *input);
+t_nodec		node_constructor(void);
 char		*ms_prompt(void);
 char		*ms_readline(void);
 void		ms_isctrld(char *stdin);
@@ -134,4 +149,5 @@ void		ms_isctrld(char *stdin);
 # define PSR parser_constructor
 # define PATH path_constructor
 # define TKN token_constructor
+# define NODE node_constructor
 #endif

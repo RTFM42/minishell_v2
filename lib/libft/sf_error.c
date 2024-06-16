@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 22:04:31 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/14 14:43:42 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/14 16:19:56 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,17 +27,17 @@ void	sf_error_exit(const char *name, int num)
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd((char *)name, 2);
 	if (errno == EACCES)
-		ft_putendl_fd(":Permission denied.", 2);
+		ft_putendl_fd(": Permission denied.", 2);
 	else if (errno == EEXIST)
-		ft_putendl_fd(":File exists.", 2);
+		ft_putendl_fd(": File exists.", 2);
 	else if (errno == EINVAL)
-		ft_putendl_fd(":Invalid argument.", 2);
+		ft_putendl_fd(": Invalid argument.", 2);
 	else if (errno == ENOENT)
-		ft_putendl_fd(":No such file or directory.", 2);
+		ft_putendl_fd(": No such file or directory.", 2);
 	else if (errno == ENOMEM)
 		ft_putendl_fd(":Not enough space/cannot allocate memory.", 2);
 	else if (errno == EIO)
-		ft_putendl_fd(":Remote I/O error.", 2);
+		ft_putendl_fd(": Remote I/O error.", 2);
 	else
 	{
 		ft_putstr_fd(":(", 2);

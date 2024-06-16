@@ -6,29 +6,32 @@
 #    By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/13 14:42:14 by yushsato          #+#    #+#              #
-#    Updated: 2024/06/11 01:57:16 by yushsato         ###   ########.fr        #
+#    Updated: 2024/06/16 15:25:31 by yushsato         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	= minishell
 CC		= cc
 CFLAGS	= -Wall -Wextra -Werror
-SRCS	= ./src/env/env_obj.c \
-		  ./src/env/env_raw.c \
-		  ./src/execute/execute.c \
-		  ./src/lexer/lexer.c \
+SRCS	= ./src/lexer/lexer.c \
 		  ./src/lexer/token.c \
 		  ./src/lexer/tokenizer.c \
-		  ./src/parser/isenvchar.c \
-		  ./src/parser/parser.c \
-		  ./src/parser/sanitize.c \
+		  ./src/prompt.c \
 		  ./src/parser/strallocat.c \
 		  ./src/parser/word.c \
+		  ./src/parser/sanitize.c \
+		  ./src/parser/parser.c \
+		  ./src/parser/isenvchar.c \
+		  ./src/env/env_raw.c \
+		  ./src/env/env_obj.c \
 		  ./src/main.c \
 		  ./src/path.c \
-		  ./src/prompt.c \
 		  ./src/readline.c \
 		  ./src/signal.c \
+		  ./src/execute/execute.c \
+		  ./src/execute/run.c \
+		  ./src/execute/node_redirection.c \
+		  ./src/execute/node.c \
 
 OBJS	= $(SRCS:.c=.o)
 RLDIR	= $(shell brew --prefix readline)
