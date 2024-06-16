@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 04:44:17 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/16 19:09:54 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/16 19:10:14 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	**strsallocat(char **ary, char *add)
 	head = ary;
 	i = 0;
 	while (ary && *ary && ++i)
-		ary++;g
+		ary++;
 	ret = ft_calloc(i + 2, sizeof(char *));
 	ft_memcpy(ret, head, i * sizeof(char *));
 	free(head);
