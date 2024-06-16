@@ -6,7 +6,7 @@
 #    By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/13 14:42:14 by yushsato          #+#    #+#              #
-#    Updated: 2024/06/16 23:39:44 by yushsato         ###   ########.fr        #
+#    Updated: 2024/06/16 23:51:03 by yushsato         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,6 +15,7 @@ CC		= cc
 CFLAGS	= -Wall -Wextra -Werror
 SRCS	= ./src/lexer/lexer.c \
 		  ./src/lexer/token.c \
+		  ./src/lexer/error.c \
 		  ./src/lexer/tokenizer.c \
 		  ./src/lexer/sanitizer.c \
 		  ./src/parser/strallocat.c \
