@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 00:36:42 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/17 01:13:25 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/17 01:21:06 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,8 @@ t_token	*tokenizer(const char *str)
 		else if (str[i] == ';' || !ft_strncmp(&str[i], "&&", 2)
 			|| str[i] == '|' || str[i] == '>' || str[i] == '<')
 			break ;
+		else if (str[i] == '&')
+			return (TKN().new(ft_strdup("&"), 1, LXR_ERROR));
 		else if (hist == i && str[i])
 			i++;
 	}
