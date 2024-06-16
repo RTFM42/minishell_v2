@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 00:36:42 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/08 23:04:35 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/17 01:13:25 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ t_token	*token_conjection(const char *str, int *i)
 {
 	if (!ft_strncmp(&str[*i], ";", 1))
 		return (token_cutout(str, 1, LXR_SCOLON));
-	if (!ft_strncmp(&str[*i], "&&", 2))
+	if (!ft_strncmp(&str[*i], "&&", 1))
 		return (token_cutout(str, 2, LXR_LOGIC));
 	if (!ft_strncmp(&str[*i], "|", 1))
 		return (token_cutout(str, 1, LXR_PIPE));

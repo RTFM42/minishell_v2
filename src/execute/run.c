@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 04:17:16 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/17 00:54:22 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/17 01:07:07 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,28 +79,35 @@ int	execute_run(t_token *cursor, char **envp)
 {
 	t_node	*node;
 	t_node	*head;
-	int		lp[2];
-	int		rp[2];
+	// int		lp[2];
+	// int		rp[2];
 	
 	node = execute_ready(cursor);
 	head = node;
+	(void)envp;
+	ft_printf("execute_run\n");
 	while (node)
 	{
-		pipe(lp);
-		pipe(rp);
-		if (node->conjection_type == LXR_SCOLON)
-		{
-			EXEC().pipe(node->args, envp, lp[1], rp[0]);
-			if (lp)
-			{
-				node->
-			}
-			close(lp[0]);
-			close(lp[1]);
-			lp[0] = rp[0];
-			lp[1] = rp[1];
-		}
+		node_print(node);
+		node = node->next;
 	}
+	// while (node)
+	// {
+	// 	pipe(lp);
+	// 	pipe(rp);
+	// 	if (node->conjection_type == LXR_SCOLON)
+	// 	{
+	// 		EXEC().pipe(node->args, envp, lp[1], rp[0]);
+	// 		if (lp)
+	// 		{
+	// 			node->
+	// 		}
+	// 		close(lp[0]);
+	// 		close(lp[1]);
+	// 		lp[0] = rp[0];
+	// 		lp[1] = rp[1];
+	// 	}
+	// }
 	NODE().free(head);
 	return (0);
 }
