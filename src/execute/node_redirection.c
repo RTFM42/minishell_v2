@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 19:44:35 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/16 18:57:39 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/16 19:08:52 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,12 @@ t_token	*node_add_heredoc(t_node *T, t_token *C)
 		line = readline("> ");
 		if (line)
 		{
-			if (ft_memcmp(line, C->token, C->len) && line[C->len] != '\0')
+			if (!ft_memcmp(line, C->token, C->len) && line[C->len] == '\0')
+			{
 				free(line);
-			if (ft_memcmp(line, C->token, C->len) && line[C->len] != '\0')
 				break ;
-			if (line)
-				T->hdoc_str = strallocat(T->hdoc_str, line, ft_strlen(line));
+			}
+			T->hdoc_str = strallocat(T->hdoc_str, line, ft_strlen(line));
 			free(line);
 		}
 	}

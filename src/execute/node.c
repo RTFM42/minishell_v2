@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 04:44:17 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/16 18:55:54 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/16 19:09:54 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,11 @@ char	**strsallocat(char **ary, char *add)
 	head = ary;
 	i = 0;
 	while (ary && *ary && ++i)
-		ary++;
+		ary++;g
 	ret = ft_calloc(i + 2, sizeof(char *));
 	ft_memcpy(ret, head, i * sizeof(char *));
 	free(head);
-	ret[i] = add;
+	ret[i] = ft_strdup(add);
 	return (ret);
 }
 
@@ -51,13 +51,15 @@ t_node	*node_new(t_node *prev)
 t_node	*node_free(t_node *node)
 {
 	t_node	*next;
+	char	**args;
 
 	while (node)
 	{
-		if (node->args)
+		args = node->args;
+		if (args)
 		{
-			while (*(node->args))
-				free(*(node->args)++);
+			while (*args)
+				free(*args++);
 			free(node->args);
 		}
 		if (node->input_fname)
