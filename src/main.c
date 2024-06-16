@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 14:43:52 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/16 16:22:36 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/16 23:42:39 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ int	main(int ac, char **av, char **ae)
 		input = ms_readline();
 		ms_isctrld(input);
 		token = PSR().parser(input);
+		TKN().printall(token);
 		free(input);
 		if (token == NULL)
 		{
