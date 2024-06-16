@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 04:17:16 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/16 18:55:54 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/16 21:58:00 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,11 @@ int	execute_run(t_token *cursor, char **envp)
 	(void)envp;
 	// while (node)
 	// {
-	// 	if ()
+	// 	pipe(lpipe);
+	// 	if (node->conjection_type == LXR_PIPE)
+	// 	{
+			
+	// 	}
 	// }
 	NODE().free(head);
 	return (0);

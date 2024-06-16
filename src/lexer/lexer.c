@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 00:36:42 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/10 19:54:25 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/16 21:57:42 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,5 +58,6 @@ t_token	*lexer(const char *input)
 		if (TKN().iserror(cursor) && lexer_error(*cursor))
 			break ;
 	}
+	TKN().printall(head);
 	return (head);
 }
