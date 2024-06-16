@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 04:17:16 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/16 23:56:08 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/17 00:54:22 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,9 +66,8 @@ t_node	*execute_ready(t_token *cursor)
 				node->next->prev = node;
 				node = node->next;
 			}
-			cursor = cursor->next;
 		}
-		else if (LXR_INPUT <= cursor->type)
+		if (LXR_INPUT <= cursor->type)
 			cursor = NODE().add_redir(node, cursor);
 		else
 			cursor = NODE().add_args(node, cursor);
@@ -80,25 +79,28 @@ int	execute_run(t_token *cursor, char **envp)
 {
 	t_node	*node;
 	t_node	*head;
-	// int		lpipe[2];
-	// int		rpipe[2];
+	int		lp[2];
+	int		rp[2];
 	
 	node = execute_ready(cursor);
 	head = node;
 	while (node)
 	{
-		node_print(node);
-		node = node->next;
+		pipe(lp);
+		pipe(rp);
+		if (node->conjection_type == LXR_SCOLON)
+		{
+			EXEC().pipe(node->args, envp, lp[1], rp[0]);
+			if (lp)
+			{
+				node->
+			}
+			close(lp[0]);
+			close(lp[1]);
+			lp[0] = rp[0];
+			lp[1] = rp[1];
+		}
 	}
-	(void)envp;
-	// while (node)
-	// {
-	// 	pipe(lpipe);
-	// 	if (node->conjection_type == LXR_PIPE)
-	// 	{
-			
-	// 	}
-	// }
 	NODE().free(head);
 	return (0);
 }

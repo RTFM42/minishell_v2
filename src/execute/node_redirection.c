@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 19:44:35 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/16 19:08:52 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/17 00:55:21 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,5 +88,10 @@ t_token	*node_add_redirection(t_node *T, t_token *C)
 		C = node_add_output(T, C);
 	else if (C->type == LXR_APPEND && C->next)
 		C = node_add_append(T, C);
+	else if (C->type == LXR_PIPE && C->next)
+	{
+		T->input_fname = LXR_PIPE;
+		C = C->next;
+	}
 	return (C);
 }
