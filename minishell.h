@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 17:07:01 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/16 16:20:42 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/16 18:55:54 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ typedef struct s_node
 	int				exit_status;
 	char			**args;
 	char			*input_fname;
-	char			*heredoc_str;
+	char			*hdoc_str;
 	char			*output_fname;
 	char			*append_fname;
 	struct s_node	*next;

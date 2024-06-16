@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 04:44:17 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/16 16:11:28 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/16 18:55:54 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,8 @@ t_node	*node_free(t_node *node)
 		}
 		if (node->input_fname)
 			free(node->input_fname);
-		if (node->heredoc_str)
-			free(node->heredoc_str);
+		if (node->hdoc_str)
+			free(node->hdoc_str);
 		if (node->output_fname)
 			free(node->output_fname);
 		if (node->append_fname)

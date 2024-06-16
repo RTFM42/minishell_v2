@@ -6,85 +6,87 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 19:44:35 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/16 16:24:12 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/16 18:57:39 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+#define C cursor
+#define T target
 
 char	*strallocat(char *dst, const char *add, int len);
 
-t_token	*node_add_input(t_node *target, t_token *cursor)
+t_token	*node_add_input(t_node *T, t_token *C)
 {
-	cursor = cursor->next;
-	if (target->input_fname)
-		free(target->input_fname);
-	target->input_fname = ft_strdup(cursor->token);
-	target->last_input_type = LXR_INPUT;
-	cursor = cursor->next;
-	return (cursor);
+	C = C->next;
+	if (T->input_fname)
+		free(T->input_fname);
+	T->input_fname = ft_strdup(C->token);
+	T->last_input_type = LXR_INPUT;
+	C = C->next;
+	return (C);
 }
 
-t_token	*node_add_heredoc(t_node *target, t_token *cursor)
+t_token	*node_add_heredoc(t_node *T, t_token *C)
 {
 	char	*line;
 
-	line = NULL;
-	cursor = cursor->next;
+	C = C->next;
+	if (T->hdoc_str)
+		free(T->hdoc_str);
+	T->hdoc_str = NULL;
 	SIG().herdoc(0);
-	if (target->heredoc_str)
-	{
-		free(target->heredoc_str);
-		target->heredoc_str = NULL;
-	}
-	while (ft_memcmp(line, cursor->token, cursor->len)
-		&& line[cursor->len] != '\0')
+	while (1)
 	{
 		line = readline("> ");
 		if (line)
 		{
-			target->heredoc_str = strallocat(target->heredoc_str,
-					line, ft_strlen(line));
+			if (ft_memcmp(line, C->token, C->len) && line[C->len] != '\0')
+				free(line);
+			if (ft_memcmp(line, C->token, C->len) && line[C->len] != '\0')
+				break ;
+			if (line)
+				T->hdoc_str = strallocat(T->hdoc_str, line, ft_strlen(line));
 			free(line);
 		}
 	}
 	SIG().shell(0);
-	target->last_input_type = LXR_HEREDOC;
-	cursor = cursor->next;
-	return (cursor);
+	T->last_input_type = LXR_HEREDOC;
+	C = C->next;
+	return (C);
 }
 
-t_token	*node_add_output(t_node *target, t_token *cursor)
+t_token	*node_add_output(t_node *T, t_token *C)
 {
-	cursor = cursor->next;
-	if (target->output_fname)
-		free(target->output_fname);
-	target->output_fname = ft_strdup(cursor->token);
-	target->last_output_type = LXR_OUTPUT;
-	cursor = cursor->next;
-	return (cursor);
+	C = C->next;
+	if (T->output_fname)
+		free(T->output_fname);
+	T->output_fname = ft_strdup(C->token);
+	T->last_output_type = LXR_OUTPUT;
+	C = C->next;
+	return (C);
 }
 
-t_token	*node_add_append(t_node *target, t_token *cursor)
+t_token	*node_add_append(t_node *T, t_token *C)
 {
-	cursor = cursor->next;
-	if (target->append_fname)
-		free(target->append_fname);
-	target->append_fname = ft_strdup(cursor->token);
-	target->last_output_type = LXR_APPEND;
-	cursor = cursor->next;
-	return (cursor);
+	C = C->next;
+	if (T->append_fname)
+		free(T->append_fname);
+	T->append_fname = ft_strdup(C->token);
+	T->last_output_type = LXR_APPEND;
+	C = C->next;
+	return (C);
 }
 
-t_token	*node_add_redirection(t_node *target, t_token *cursor)
+t_token	*node_add_redirection(t_node *T, t_token *C)
 {
-	if (cursor->type == LXR_INPUT && cursor->next)
-		cursor = node_add_input(target, cursor);
-	else if (cursor->type == LXR_HEREDOC && cursor->next)
-		cursor = node_add_heredoc(target, cursor);
-	else if (cursor->type == LXR_OUTPUT && cursor->next)
-		cursor = node_add_output(target, cursor);
-	else if (cursor->type == LXR_APPEND && cursor->next)
-		cursor = node_add_append(target, cursor);
-	return (cursor);
+	if (C->type == LXR_INPUT && C->next)
+		C = node_add_input(T, C);
+	else if (C->type == LXR_HEREDOC && C->next)
+		C = node_add_heredoc(T, C);
+	else if (C->type == LXR_OUTPUT && C->next)
+		C = node_add_output(T, C);
+	else if (C->type == LXR_APPEND && C->next)
+		C = node_add_append(T, C);
+	return (C);
 }

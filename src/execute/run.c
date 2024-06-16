@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 04:17:16 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/16 16:30:00 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/16 18:55:54 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,11 @@ void	node_print(t_node *node)
 	ft_printf(
 		"],\n"
 		"\t\"input_fname\": %s,\n"
-		"\t\"heredoc_str\": %s,\n"
+		"\t\"hdoc_str\": %s,\n"
 		"\t\"output_fname\": %s,\n"
 		"\t\"append_fname\": %s\n"
 		"}\n",
-		node->input_fname, node->heredoc_str, node->output_fname,
+		node->input_fname, node->hdoc_str, node->output_fname,
 		node->append_fname
 	);
 }
@@ -79,16 +79,22 @@ t_node	*execute_ready(t_token *cursor)
 int	execute_run(t_token *cursor, char **envp)
 {
 	t_node	*node;
-	int		lpipe[2];
-	int		rpipe[2];
+	t_node	*head;
+	// int		lpipe[2];
+	// int		rpipe[2];
 	
 	node = execute_ready(cursor);
+	head = node;
 	while (node)
 	{
 		node_print(node);
 		node = node->next;
 	}
 	(void)envp;
-	NODE().free(node);
+	// while (node)
+	// {
+	// 	if ()
+	// }
+	NODE().free(head);
 	return (0);
 }
