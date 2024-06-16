@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 15:42:35 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/17 00:12:35 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/17 00:14:10 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ t_token	*sanitizer(t_token *head)
 	{
 		cursor->len = ft_strlen(cursor->token);
 		if ((C->next == NULL && LXR_INPUT <= C->type && C->type <= LXR_LOGIC
-			&& error(*cursor)) || (C->type == LXR_ERROR && error(*cursor)))
-		{				
+				&& error(*cursor)) || (C->type == LXR_ERROR && error(*cursor)))
+		{g
 			cursor->type = LXR_ERROR;
 			break ;
 		}
