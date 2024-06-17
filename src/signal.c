@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 01:17:25 by yushsato          #+#    #+#             */
-/*   Updated: 2024/05/14 09:41:25 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/17 02:17:53 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,12 @@ void	sig_herdoc(int signo)
 	signal(SIGQUIT, sig_herdoc);
 	if (signo == SIGINT)
 	{
-		close(0);
+		sf_close(0);
 		g_signal = 130;
 	}
 	else if (signo == SIGQUIT)
 	{
-		close(0);
+		sf_close(0);
 		ft_putstr_fd("quit: 3", 1);
 		g_signal = 131;
 	}

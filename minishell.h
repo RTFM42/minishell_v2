@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 17:07:01 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/16 18:55:54 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/17 19:40:52 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,9 +104,9 @@ typedef struct s_nodec
 
 typedef struct s_execc
 {
-	int	(*sync)(char *const *argv, char *const *envp);
-	int	(*pipe)(char *const *argv, char *const *envp, int infd, int outfd);
-	int	(*run)(t_token *head, char **envp);
+	pid_t	(*async)(char *const *argv, char *const *envp, int *left_pipe, int *right_pipe);
+	int		(*await)(pid_t pid);
+	int		(*run)(t_token *head, char **envp);
 }	t_execc;
 
 typedef struct s_sigc
