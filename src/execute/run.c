@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 04:17:16 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/17 20:18:08 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/17 20:36:35 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,8 +158,8 @@ int	execute_scolon(t_node *node, char **envp, int *lp, int *rp)
 		outputer(crp[0], node->output_fname);
 	else if (node->last_input_type == LXR_APPEND)
 		appender(crp[0], node->append_fname);
-	node->exit_status = EXEC().await(pid);
 	sf_close(lp[1]);
+	node->exit_status = EXEC().await(pid);
 	return (node->exit_status);
 }
 
