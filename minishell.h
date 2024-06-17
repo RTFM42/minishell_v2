@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 17:07:01 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/17 19:40:52 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/17 20:43:19 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ typedef struct s_node
 	int				last_input_type;
 	int				conjection_type;
 	int				exit_status;
+	int				cancel;
 	char			**args;
 	char			*input_fname;
 	char			*hdoc_str;

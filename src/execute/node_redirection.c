@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 19:44:35 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/17 01:10:47 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/17 21:23:11 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #define T target
 
 char	*strallocat(char *dst, const char *add, int len);
+t_token	*node_add_heredoc(t_node *T, t_token *C);
 
 t_token	*node_add_input(t_node *T, t_token *C)
 {
@@ -46,8 +47,20 @@ t_token	*node_add_heredoc(t_node *T, t_token *C)
 				free(line);
 				break ;
 			}
+			if (*line == '\0')
+			{
+				free(line);
+				ft_printf("warning: here-document delimited by end-of-file");
+				T->cancel = 1;
+				break ;
+			}
 			T->hdoc_str = strallocat(T->hdoc_str, line, ft_strlen(line));
 			free(line);
+		}
+		if (line == NULL)
+		{
+			T->cancel = 1;
+			break ;
 		}
 	}
 	SIG().shell(0);
@@ -91,10 +104,7 @@ t_token	*node_add_redirection(t_node *T, t_token *C)
 	else if (C->type >= LXR_PIPE)
 	{
 		if (C->type == LXR_PIPE)
-		{
 			T->last_input_type = LXR_PIPE;
-			ft_printf("okok, %d\n", C->type);
-		}
 		C = C->next;
 	}
 	return (C);
