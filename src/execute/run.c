@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 04:17:16 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/18 16:22:35 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/18 18:55:44 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,6 @@ int	execute_scolon(t_node *node, char **envp, int *lp, int *rp)
 
 	ft_memcpy(li.pipe, lp, sizeof(int) * 2);
 	ft_memcpy(ri.pipe, rp, sizeof(int) * 2);
-	sf_close(lp[0]);
 	if (node->last_input_type == LXR_INPUT)
 		li.info = node->input_fname;
 	li.type = node->last_input_type;
@@ -99,6 +98,7 @@ int	execute_scolon(t_node *node, char **envp, int *lp, int *rp)
 	pid = (EXEC().async)(node->args, envp, li, ri);
 	if (node->last_input_type == LXR_HEREDOC)
 		write(lp[1], node->hdoc_str, ft_strlen(node->hdoc_str));
+	sf_close(lp[0]);
 	sf_close(lp[1]);
 	node->exit_status = EXEC().await(pid);
 	return (node->exit_status);
