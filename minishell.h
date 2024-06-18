@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 17:07:01 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/17 20:43:19 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/18 15:48:14 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,9 +103,16 @@ typedef struct s_nodec
 	t_token	*(*add_redir)(t_node *target, t_token *cursor);
 }	t_nodec;
 
+typedef struct s_io
+{
+	int		type;
+	int		pipe[2];
+	char	*info;
+}	t_io;
+
 typedef struct s_execc
 {
-	pid_t	(*async)(char *const *argv, char *const *envp, int *left_pipe, int *right_pipe);
+	pid_t	(*async)(char *const *argv, char *const *envp, t_io li, t_io ri);
 	int		(*await)(pid_t pid);
 	int		(*run)(t_token *head, char **envp);
 }	t_execc;

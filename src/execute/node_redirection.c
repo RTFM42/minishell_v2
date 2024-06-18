@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 19:44:35 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/17 21:23:11 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/18 15:40:55 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #define C cursor
 #define T target
 
-char	*strallocat(char *dst, const char *add, int len);
+char	**strsallocat(char **ary, char *add);
 t_token	*node_add_heredoc(t_node *T, t_token *C);
 
 t_token	*node_add_input(t_node *T, t_token *C)
@@ -24,47 +24,6 @@ t_token	*node_add_input(t_node *T, t_token *C)
 		free(T->input_fname);
 	T->input_fname = ft_strdup(C->token);
 	T->last_input_type = LXR_INPUT;
-	C = C->next;
-	return (C);
-}
-
-t_token	*node_add_heredoc(t_node *T, t_token *C)
-{
-	char	*line;
-
-	C = C->next;
-	if (T->hdoc_str)
-		free(T->hdoc_str);
-	T->hdoc_str = NULL;
-	SIG().herdoc(0);
-	while (1)
-	{
-		line = readline("> ");
-		if (line)
-		{
-			if (!ft_memcmp(line, C->token, C->len) && line[C->len] == '\0')
-			{
-				free(line);
-				break ;
-			}
-			if (*line == '\0')
-			{
-				free(line);
-				ft_printf("warning: here-document delimited by end-of-file");
-				T->cancel = 1;
-				break ;
-			}
-			T->hdoc_str = strallocat(T->hdoc_str, line, ft_strlen(line));
-			free(line);
-		}
-		if (line == NULL)
-		{
-			T->cancel = 1;
-			break ;
-		}
-	}
-	SIG().shell(0);
-	T->last_input_type = LXR_HEREDOC;
 	C = C->next;
 	return (C);
 }

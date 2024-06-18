@@ -6,7 +6,7 @@
 #    By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/13 14:42:14 by yushsato          #+#    #+#              #
-#    Updated: 2024/06/16 23:51:03 by yushsato         ###   ########.fr        #
+#    Updated: 2024/06/18 15:59:02 by yushsato         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,21 +18,24 @@ SRCS	= ./src/lexer/lexer.c \
 		  ./src/lexer/error.c \
 		  ./src/lexer/tokenizer.c \
 		  ./src/lexer/sanitizer.c \
+		  ./src/prompt.c \
 		  ./src/parser/strallocat.c \
 		  ./src/parser/word.c \
 		  ./src/parser/parser.c \
 		  ./src/parser/isenvchar.c \
 		  ./src/env/env_raw.c \
 		  ./src/env/env_obj.c \
-		  ./src/execute/execute.c \
-		  ./src/execute/run.c \
-		  ./src/execute/node_redirection.c \
-		  ./src/execute/node.c \
-		  ./src/prompt.c \
 		  ./src/main.c \
 		  ./src/path.c \
 		  ./src/readline.c \
-		  ./src/signal.c
+		  ./src/signal.c \
+		  ./src/execute/async.c \
+		  ./src/execute/execute.c \
+		  ./src/execute/run.c \
+		  ./src/execute/node_redirection.c \
+		  ./src/execute/node_redirection_heredoc.c \
+		  ./src/execute/strsallocat.c \
+		  ./src/execute/node.c
 OBJS	= $(SRCS:.c=.o)
 RLDIR	= $(shell brew --prefix readline)
 LIBFT	= libft.a

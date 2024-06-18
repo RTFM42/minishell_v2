@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 04:17:16 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/17 20:36:35 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/18 16:22:35 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 void	node_print(t_node *node)
 {
 	char	**args;
+
 	ft_printf(
 		"{\n"
 		"\t\"last_output_type\": %d,\n"
@@ -32,8 +33,7 @@ void	node_print(t_node *node)
 	while (*args)
 	{
 		ft_printf("\"%s\"", *args);
-		args++;
-		if (*args)
+		if (*++args)
 			ft_printf(", ");
 	}
 	ft_printf(
@@ -43,7 +43,9 @@ void	node_print(t_node *node)
 		"\t\"output_fname\": %s,\n"
 		"\t\"append_fname\": %s\n"
 		"}\n",
-		node->input_fname, node->hdoc_str, node->output_fname,
+		node->input_fname,
+		node->hdoc_str,
+		node->output_fname,
 		node->append_fname
 	);
 }
@@ -60,6 +62,8 @@ t_node	*execute_ready(t_token *cursor)
 		if (LXR_PIPE <= cursor->type)
 		{
 			node->conjection_type = cursor->type;
+			if (node->cancel && ++(head->cancel))
+				break ;
 			if (cursor->next)
 			{
 				node->next = NODE().new(node);
@@ -75,89 +79,26 @@ t_node	*execute_ready(t_token *cursor)
 	return (head);
 }
 
-void	inputer(char *fname, int infd)
-{
-	ssize_t	bytes;
-	char	buffer[1024];
-	int		openfd;
-
-	bytes = 1;
-	openfd = open(fname, O_RDONLY);
-	while (1)
-	{
-		bytes = read(openfd, buffer, sizeof(buffer));
-		if (bytes == 0)
-			break ;
-		write(infd, buffer, bytes);
-	}
-	sf_close(openfd);
-}
-
-void	heredoc(int infd, char *hdoc_str)
-{
-	if (hdoc_str)
-		write(infd, hdoc_str, ft_strlen(hdoc_str));
-	write(infd, "\0", 1);
-}
-
-void	outputer(int outfd, char *fname)
-{
-	ssize_t	bytes;
-	char	buffer[1024];
-	int		openfd;
-
-	bytes = 1;
-	openfd = open(fname, O_WRONLY);
-	while (1)
-	{
-		bytes = read(outfd, buffer, sizeof(buffer));
-		if (bytes == 0)
-			break ;
-		write(openfd, buffer, bytes);
-	}
-	sf_close(openfd);
-}
-
-void	appender(int outfd, char *fname)
-{
-	ssize_t	bytes;
-	char	buffer[1024];
-	int		openfd;
-
-	bytes = 1;
-	openfd = open(fname, O_APPEND);
-	while (1)
-	{
-		bytes = read(outfd, buffer, sizeof(buffer));
-		if (bytes == 0)
-			break ;
-		write(openfd, buffer, bytes);
-	}
-	sf_close(openfd);
-}
-
 int	execute_scolon(t_node *node, char **envp, int *lp, int *rp)
 {
-	int		clp[2];
-	int		crp[2];
+	t_io	li;
+	t_io	ri;
 	pid_t	pid;
 
-	ft_memcpy(clp, lp, sizeof(int) * 2);
-	ft_memcpy(crp, rp, sizeof(int) * 2);
-	if (node->last_input_type == 0)
-		clp[0] = STDIN_FILENO;
-	if (node->last_output_type == 0)
-		crp[1] = STDOUT_FILENO;
-	pid = EXEC().async(node->args, envp, clp, crp);
+	ft_memcpy(li.pipe, lp, sizeof(int) * 2);
+	ft_memcpy(ri.pipe, rp, sizeof(int) * 2);
 	sf_close(lp[0]);
 	if (node->last_input_type == LXR_INPUT)
-		inputer(node->input_fname, clp[1]);
-	else if (node->last_input_type == LXR_HEREDOC)
-		heredoc(clp[1], node->hdoc_str);
-	if (node->last_input_type == LXR_OUTPUT)
-		outputer(crp[0], node->output_fname);
-	else if (node->last_input_type == LXR_APPEND)
-		appender(crp[0], node->append_fname);
+		li.info = node->input_fname;
+	li.type = node->last_input_type;
+	if (node->last_output_type == LXR_OUTPUT)
+		ri.info = node->output_fname;
+	if (node->last_output_type == LXR_APPEND)
+		ri.info = node->append_fname;
+	ri.type = node->last_output_type;
+	pid = (EXEC().async)(node->args, envp, li, ri);
+	if (node->last_input_type == LXR_HEREDOC)
+		write(lp[1], node->hdoc_str, ft_strlen(node->hdoc_str));
 	sf_close(lp[1]);
 	node->exit_status = EXEC().await(pid);
 	return (node->exit_status);
@@ -171,6 +112,11 @@ int	execute_run(t_token *cursor, char **envp)
 	int		rp[2];
 	
 	node = execute_ready(cursor);
+	if (node->cancel)
+	{
+		NODE().free(node);
+		return (1);
+	}
 	head = node;
 	while (node)
 	{
