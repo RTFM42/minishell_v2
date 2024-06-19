@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 04:17:16 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/19 16:43:48 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/19 17:08:31 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,13 +63,12 @@ t_node	*execute_ready(t_token *cursor)
 		{
 			node->conjection_type = cursor->type;
 			head->cancel = node->cancel;
-			if (node->cancel)
+			if (node->cancel || !cursor->next)
 				break ;
-			if (!cursor->next)
-				continue;
 			node->next = NODE().new(node);
 			node->next->prev = node;
 			node = node->next;
+			cursor = cursor->next;
 		}
 		else if (LXR_INPUT <= cursor->type)
 			cursor = NODE().add_redir(node, cursor);
@@ -100,6 +99,7 @@ int	execute_scolon(t_node *node, char **envp, int *lp, int *rp)
 		write(lp[1], node->hdoc_str, ft_strlen(node->hdoc_str));
 	sf_close(lp[0]);
 	sf_close(lp[1]);
+	ft_printf("wtf\n");
 	node->exit_status = EXEC().await(pid);
 	return (node->exit_status);
 }
@@ -117,9 +117,10 @@ int	execute_run(t_token *cursor, char **envp)
 		&& !NODE().free(node))
 		return (status);
 	head = node;
+	pipe(lp);
 	while (node)
 	{
-		pipe(lp);
+		ft_printf("node_print\n");
 		pipe(rp);
 		if (node->conjection_type == LXR_SCOLON || node->conjection_type == 0)
 			status = execute_scolon(node, envp, lp, rp);
