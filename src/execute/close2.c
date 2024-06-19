@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 17:20:39 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/19 17:27:08 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/19 17:31:17 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,4 +17,3 @@ void	close_pipe(int *pipe)
 	sf_close(pipe[0]);
 	sf_close(pipe[1]);
 }
-
