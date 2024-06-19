@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 19:39:39 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/19 15:53:40 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/19 16:27:58 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ char	*parse_word(t_token *token)
 	char		*dst;
 	const char	*src = token->token;
 
-	src = token->token;
 	dst = ft_calloc(1, sizeof(char));
 	while (src && *src)
 	{
