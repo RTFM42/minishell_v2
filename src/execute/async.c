@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 01:12:08 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/18 15:58:31 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/19 16:25:18 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ pid_t	execute_async(char *const *argv, char *const *envp, t_io li, t_io ri)
 	{
 		shell_io(li, ri);
 		execve(path, argv, envp);
-		ERR().exit(argv[0], 1);
+		(ERR().exit)(argv[0], 1);
 	}
 	if (pid == -1)
 		ERR().print(argv[0]);
