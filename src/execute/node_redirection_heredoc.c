@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 21:07:17 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/19 16:12:11 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/19 16:37:20 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static int	heredoc_concat(char *line, t_node *T, t_token *C)
 
 t_token	*node_add_heredoc(t_node *T, t_token *C)
 {
-	int status;
+	int	status;
 	int	fd;
 
 	SIG().herdoc(0);
