@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 04:17:16 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/19 16:40:05 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/19 16:43:48 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,12 +113,9 @@ int	execute_run(t_token *cursor, char **envp)
 	int		rp[2];
 	
 	node = execute_ready(cursor);
-	if (node->cancel)
-	{
-		status = node->cancel;
-		NODE().free(node);
+	if (node->cancel && ft_memset(&status, node->cancel, 1)
+		&& !NODE().free(node))
 		return (status);
-	}
 	head = node;
 	while (node)
 	{
