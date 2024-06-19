@@ -6,11 +6,11 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 00:39:16 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/19 00:44:18 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/19 15:58:16 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	*sig_cache(void)
+static int	*sig_cache(void)
 {
 	static int	sig = 0;
 	

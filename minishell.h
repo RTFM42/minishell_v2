@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 17:07:01 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/19 00:47:47 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/19 15:58:59 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,7 @@ typedef struct s_sigc
 	void	(*herdoc)(int signo);
 	void	(*ignore)(void);
 	void	(*reset)(void);
+	void	(*set)(int signo);
 	int		(*get)(void);
 }	t_sigc;
 

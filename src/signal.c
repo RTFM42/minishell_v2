@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 01:17:25 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/19 15:25:19 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/19 15:58:37 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ t_sigc	sig_constructor(void)
 		.herdoc = sig_herdoc,
 		.ignore = sig_ignore,
 		.reset = sig_reset,
+		.set = sig_cache_set,
 		.get = sig_cache_get,
 	};
 

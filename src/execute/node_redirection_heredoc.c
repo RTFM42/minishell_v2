@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 21:07:17 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/19 15:36:47 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/19 16:12:11 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,10 @@ static int	heredoc_concat(char *line, t_node *T, t_token *C)
 		ft_printf("warning: here-document delimited by end-of-file\n");
 		return (0);
 	}
-	if (line == NULL && SIG().get() != 0)
+	else if (SIG().get() != 0)
 	{
 		ft_printf("\n");
-		T->cancel = 1;
+		T->cancel = g_signal;
 		return (-1);
 	}
 	T->hdoc_str = strallocat(T->hdoc_str, line, ft_strlen(line));
@@ -45,6 +45,7 @@ t_token	*node_add_heredoc(t_node *T, t_token *C)
 	int	fd;
 
 	SIG().herdoc(0);
+	SIG().set(0);
 	C = C->next;
 	if (T->hdoc_str)
 		free(T->hdoc_str);

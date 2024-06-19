@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 04:17:16 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/18 18:55:44 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/19 16:15:17 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,16 +62,16 @@ t_node	*execute_ready(t_token *cursor)
 		if (LXR_PIPE <= cursor->type)
 		{
 			node->conjection_type = cursor->type;
-			if (node->cancel && ++(head->cancel))
+			head->cancel = node->cancel;
+			if (node->cancel)
 				break ;
-			if (cursor->next)
-			{
-				node->next = NODE().new(node);
-				node->next->prev = node;
-				node = node->next;
-			}
+			if (!cursor->next)
+				continue;
+			node->next = NODE().new(node);
+			node->next->prev = node;
+			node = node->next;
 		}
-		if (LXR_INPUT <= cursor->type)
+		else if (LXR_INPUT <= cursor->type)
 			cursor = NODE().add_redir(node, cursor);
 		else
 			cursor = NODE().add_args(node, cursor);
@@ -108,19 +108,20 @@ int	execute_run(t_token *cursor, char **envp)
 {
 	t_node	*node;
 	t_node	*head;
+	int		status;
 	int		lp[2];
 	int		rp[2];
 	
 	node = execute_ready(cursor);
 	if (node->cancel)
 	{
+		status = node->cancel;
 		NODE().free(node);
-		return (1);
+		return (status);
 	}
 	head = node;
 	while (node)
 	{
-		node_print(node);
 		pipe(lp);
 		pipe(rp);
 		if (node->conjection_type == LXR_SCOLON || node->conjection_type == 0)
