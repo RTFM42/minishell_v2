@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 01:17:25 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/19 13:10:13 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/19 15:25:19 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ void	sig_shell(int signo)
 	rl_replace_line("", 0);
 	rl_redisplay();
 	g_signal = 130;
-	if (g_signal)
-		sig_cache_set(g_signal);
+	if (signo)
+		sig_cache_set(signo);
 }
 
 /**
@@ -56,8 +56,8 @@ void	sig_herdoc(int signo)
 		return ;
 	sf_close(STDIN_FILENO);
 	g_signal = 130;
-	if (g_signal)
-		sig_cache_set(g_signal);
+	if (signo)
+		sig_cache_set(signo);
 }
 
 /**
