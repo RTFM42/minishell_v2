@@ -6,11 +6,13 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 04:17:16 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/19 17:11:49 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/19 17:23:57 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+
+void	close_pipe(int *pipe);
 
 /** WIP
  * node_print - For debugging, print the node structure
@@ -97,8 +99,7 @@ int	execute_scolon(t_node *node, char **envp, int *lp, int *rp)
 	pid = (EXEC().async)(node->args, envp, li, ri);
 	if (node->last_input_type == LXR_HEREDOC)
 		write(lp[1], node->hdoc_str, ft_strlen(node->hdoc_str));
-	sf_close(lp[0]);
-	sf_close(lp[1]);
+	close_pipe(lp);
 	node->exit_status = EXEC().await(pid);
 	return (node->exit_status);
 }
@@ -123,16 +124,11 @@ int	execute_run(t_token *cursor, char **envp)
 		if (node->conjection_type == LXR_SCOLON || node->conjection_type == 0)
 			status = execute_scolon(node, envp, lp, rp);
 		else
-		{
-			sf_close(lp[0]);
-			sf_close(lp[1]);
-		}
+			close_pipe(lp);
 		node = node->next;
-		lp[0] = rp[0];
-		lp[1] = rp[1];
+		ft_memcpy(lp, rp, sizeof(int) * 2);
 	}
-	sf_close(rp[0]);
-	sf_close(rp[1]);
+	close_pipe(lp);
 	NODE().free(head);
 	return (status);
 }

@@ -6,7 +6,7 @@
 #    By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/13 14:42:14 by yushsato          #+#    #+#              #
-#    Updated: 2024/06/19 00:58:36 by yushsato         ###   ########.fr        #
+#    Updated: 2024/06/19 17:25:26 by yushsato         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,6 +34,7 @@ SRCS	= ./src/signal_cache.c \
 		  ./src/execute/execute.c \
 		  ./src/execute/run.c \
 		  ./src/execute/node_redirection.c \
+		  ./src/execute/close2.c \
 		  ./src/execute/node_redirection_heredoc.c \
 		  ./src/execute/strsallocat.c \
 		  ./src/execute/node.c
@@ -43,7 +44,6 @@ LIBFT	= libft.a
 PRINTF	= libftprintf.a
 RLFLAGS	=  -L$(RLDIR)/lib -lreadline
 INCLUDE	= -I./ -I./src -I$(RLDIR)/include
-
 %.o: %.c
 	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 
