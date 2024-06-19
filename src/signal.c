@@ -6,11 +6,14 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 01:17:25 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/17 02:17:53 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/19 09:09:04 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+void	sig_cache_set(int signo);
+int		sig_cache_get(void);
 
 int	g_signal = 0;
 
@@ -23,6 +26,8 @@ int	g_signal = 0;
 */
 void	sig_shell(int signo)
 {
+	if (signo)
+		sig_cache_set(signo);
 	signal(SIGINT, sig_shell);
 	signal(SIGQUIT, SIG_IGN);
 	if (signo != SIGINT)
@@ -45,19 +50,14 @@ void	sig_shell(int signo)
 */
 void	sig_herdoc(int signo)
 {
+	if (signo)
+		sig_cache_set(signo);
 	signal(SIGINT, sig_herdoc);
-	signal(SIGQUIT, sig_herdoc);
-	if (signo == SIGINT)
-	{
-		sf_close(0);
-		g_signal = 130;
-	}
-	else if (signo == SIGQUIT)
-	{
-		sf_close(0);
-		ft_putstr_fd("quit: 3", 1);
-		g_signal = 131;
-	}
+	signal(SIGQUIT, SIG_IGN);
+	if (signo != SIGINT)
+		return ;
+	sf_close(STDIN_FILENO);
+	g_signal = 130;
 }
 
 /**
@@ -91,6 +91,7 @@ t_sigc	sig_constructor(void)
 		.herdoc = sig_herdoc,
 		.ignore = sig_ignore,
 		.reset = sig_reset,
+		.get = sig_cache_get,
 	};
 
 	return (sig);

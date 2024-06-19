@@ -6,14 +6,15 @@
 #    By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/13 14:42:14 by yushsato          #+#    #+#              #
-#    Updated: 2024/06/18 15:59:02 by yushsato         ###   ########.fr        #
+#    Updated: 2024/06/19 00:58:36 by yushsato         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	= minishell
 CC		= cc
 CFLAGS	= -Wall -Wextra -Werror
-SRCS	= ./src/lexer/lexer.c \
+SRCS	= ./src/signal_cache.c \
+		  ./src/lexer/lexer.c \
 		  ./src/lexer/token.c \
 		  ./src/lexer/error.c \
 		  ./src/lexer/tokenizer.c \
