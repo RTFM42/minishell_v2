@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 21:56:34 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/16 23:36:31 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/19 16:31:44 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ t_token	*parser(const char *str)
 	{
 		if (token->type == LXR_WORD)
 			token->token = parse_word(token);
+		token->len = ft_strlen(token->token);
 		token = token->next;
 	}
 	token = head;
