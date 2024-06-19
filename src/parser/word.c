@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 19:39:39 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/19 12:54:52 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/19 14:23:21 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ void	parse_2quote(char **dst, char **src)
 
 char	*parse_word(t_token *token)
 {
+	char		*tmp;
 	char		*dst;
 	const char	*src = token->token;
 
@@ -81,7 +82,11 @@ char	*parse_word(t_token *token)
 		else if (*src == '$' && isenvchar(*(src + 1)))
 			parse_env(&dst, (char **)&src);
 		else if (!ft_memcmp(src, "$?", 2) && src++ && src++)
-			dst = strallocat(dst, ft_itoa(g_signal), 1);
+		{
+			tmp = ft_itoa(g_signal);
+			dst = strallocat(dst, tmp, ft_strlen(tmp));
+			free(tmp);
+		}
 		else
 			dst = strallocat(dst, src++, 1);
 	}
