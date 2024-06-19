@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 04:17:16 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/19 16:15:17 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/19 16:40:05 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ int	execute_run(t_token *cursor, char **envp)
 		pipe(lp);
 		pipe(rp);
 		if (node->conjection_type == LXR_SCOLON || node->conjection_type == 0)
-			execute_scolon(node, envp, lp, rp);
+			status = execute_scolon(node, envp, lp, rp);
 		else
 		{
 			sf_close(lp[0]);
@@ -138,5 +138,5 @@ int	execute_run(t_token *cursor, char **envp)
 	sf_close(rp[0]);
 	sf_close(rp[1]);
 	NODE().free(head);
-	return (0);
+	return (status);
 }
