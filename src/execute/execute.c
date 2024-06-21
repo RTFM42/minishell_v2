@@ -6,14 +6,14 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 19:11:25 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/18 01:13:04 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/20 08:33:21 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
 int		execute_run(t_token *head, char **envp);
-pid_t	execute_async(char *const *argv, char *const *envp, t_io li, t_io ri);
+pid_t	execute_async(t_node *node, char *const *envp);
 
 int	await(pid_t pid)
 {

@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 17:07:01 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/19 15:58:59 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/20 13:36:54 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,16 +81,14 @@ typedef struct s_tokenc
 
 typedef struct s_node
 {
-	int				last_output_type;
-	int				last_input_type;
 	int				conjection_type;
 	int				exit_status;
 	int				cancel;
+	int				*lpipe;
+	int				*rpipe;
 	char			**args;
-	char			*input_fname;
-	char			*hdoc_str;
-	char			*output_fname;
-	char			*append_fname;
+	t_token			*in_tokens;
+	t_token			*out_tokens;
 	struct s_node	*next;
 	struct s_node	*prev;
 }	t_node;
@@ -107,12 +105,12 @@ typedef struct s_io
 {
 	int		type;
 	int		pipe[2];
-	char	*info;
+	char	**info;
 }	t_io;
 
 typedef struct s_execc
 {
-	pid_t	(*async)(char *const *argv, char *const *envp, t_io li, t_io ri);
+	pid_t	(*async)(t_node *node, char *const *envp);
 	int		(*await)(pid_t pid);
 	int		(*run)(t_token *head, char **envp);
 }	t_execc;

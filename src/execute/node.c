@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 04:44:17 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/18 16:05:41 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/20 13:23:45 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,11 @@ t_token	*node_add_append(t_node *target, t_token *cursor);
 t_token	*node_add_redirection(t_node *target, t_token *cursor);
 char	**strsallocat(char **ary, char *add);
 
-static void	strs_free(char **strs)
+static int	strs_free(char **strs)
 {
 	while (strs && *strs)
 		free(*strs++);
+	return (1);
 }
 
 t_node	*node_free(t_node *node)
@@ -30,18 +31,14 @@ t_node	*node_free(t_node *node)
 
 	while (node)
 	{
-		if (node->args)
-			strs_free(node->args);
-		if (node->args)
+		if (node->lpipe)
+			free(node->lpipe);
+		if (node->rpipe)
+			free(node->rpipe);
+		if (node->args && strs_free(node->args))
 			free(node->args);
-		if (node->input_fname)
-			free(node->input_fname);
-		if (node->hdoc_str)
-			free(node->hdoc_str);
-		if (node->output_fname)
-			free(node->output_fname);
-		if (node->append_fname)
-			free(node->append_fname);
+		TKN().freeall(node->in_tokens);
+		TKN().freeall(node->out_tokens);
 		next = node->next;
 		free(node);
 		node = next;
@@ -54,6 +51,8 @@ t_node	*node_new(t_node *prev)
 	t_node	*node;
 
 	node = ft_calloc(1, sizeof(t_node));
+	node->lpipe = ft_calloc(3, sizeof(int));
+	node->rpipe = ft_calloc(3, sizeof(int));
 	if (prev)
 	{
 		node->prev = prev;

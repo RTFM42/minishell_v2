@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 19:44:35 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/18 15:40:55 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/20 13:56:59 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,55 +16,40 @@
 
 char	**strsallocat(char **ary, char *add);
 t_token	*node_add_heredoc(t_node *T, t_token *C);
+t_token	*token_push(t_token *head, char *token, int len, int type);
+t_token	*token_unshift(t_token *head, char *token, int len, int type);
 
 t_token	*node_add_input(t_node *T, t_token *C)
 {
 	C = C->next;
-	if (T->input_fname)
-		free(T->input_fname);
-	T->input_fname = ft_strdup(C->token);
-	T->last_input_type = LXR_INPUT;
-	C = C->next;
-	return (C);
+	T->in_tokens = token_push(T->in_tokens, C->token, C->len, LXR_INPUT);
+	return (C->next);
 }
 
 t_token	*node_add_output(t_node *T, t_token *C)
 {
 	C = C->next;
-	if (T->output_fname)
-		free(T->output_fname);
-	T->output_fname = ft_strdup(C->token);
-	T->last_output_type = LXR_OUTPUT;
+	T->out_tokens = token_push(T->out_tokens, C->token, C->len, LXR_OUTPUT);
 	C = C->next;
-	return (C);
+	return (C->next);
 }
 
 t_token	*node_add_append(t_node *T, t_token *C)
 {
 	C = C->next;
-	if (T->append_fname)
-		free(T->append_fname);
-	T->append_fname = ft_strdup(C->token);
-	T->last_output_type = LXR_APPEND;
-	C = C->next;
-	return (C);
+	T->out_tokens = token_push(T->out_tokens , C->token, C->len, LXR_APPEND);
+	return (C->next);
 }
 
 t_token	*node_add_redirection(t_node *T, t_token *C)
 {
-	if (C->type == LXR_INPUT && C->next)
+	if (C->type == LXR_INPUT)
 		C = node_add_input(T, C);
-	else if (C->type == LXR_HEREDOC && C->next)
+	else if (C->type == LXR_HEREDOC)
 		C = node_add_heredoc(T, C);
-	else if (C->type == LXR_OUTPUT && C->next)
+	else if (C->type == LXR_OUTPUT)
 		C = node_add_output(T, C);
-	else if (C->type == LXR_APPEND && C->next)
+	else if (C->type == LXR_APPEND)
 		C = node_add_append(T, C);
-	else if (C->type >= LXR_PIPE)
-	{
-		if (C->type == LXR_PIPE)
-			T->last_input_type = LXR_PIPE;
-		C = C->next;
-	}
 	return (C);
 }
