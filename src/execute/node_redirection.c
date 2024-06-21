@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 19:44:35 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/20 13:56:59 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/22 03:38:36 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ t_token	*node_add_output(t_node *T, t_token *C)
 {
 	C = C->next;
 	T->out_tokens = token_push(T->out_tokens, C->token, C->len, LXR_OUTPUT);
-	C = C->next;
 	return (C->next);
 }
 
