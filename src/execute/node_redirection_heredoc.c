@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   node_redirection_heredoc.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: nsakanou <nsakanou@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 21:07:17 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/20 13:29:50 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/22 19:42:06 by nsakanou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,12 @@ static int	heredoc_concat(char *line, t_token *token, t_node *T, t_token *C)
 	}
 	if (line == NULL && SIG().get() == 0)
 	{
-		ft_printf("warning: here-document delimited by end-of-file\n");
+		printf("warning: here-document delimited by end-of-file\n");
 		return (0);
 	}
 	else if (SIG().get() != 0)
 	{
-		ft_printf("\n");
+		printf("\n");
 		T->cancel = g_signal;
 		return (-1);
 	}	
