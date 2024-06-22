@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 01:17:25 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/21 22:04:00 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/22 15:24:52 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,18 +75,6 @@ void	sig_herdoc(int signo)
 }
 
 /**
- * ## Ignore `SIGINT` and `SIGQUIT`
- * @note	`SIGINT`: Nothing to do
- * @note	`SIGQUIT`: Nothing to do
- * @return	N/A
-*/
-void	sig_ignore(void)
-{
-	signal(SIGINT, SIG_IGN);
-	signal(SIGQUIT, SIG_IGN);
-}
-
-/**
  * ## Set `SIGINT` and `SIGQUIT` to default
  * @note	`SIGINT`: Default behavior
  * @note	`SIGQUIT`: Default behavior
@@ -103,7 +91,7 @@ t_sigc	sig_constructor(void)
 	static const t_sigc	sig = {
 		.shell = sig_shell,
 		.herdoc = sig_herdoc,
-		.ignore = sig_ignore,
+		.exec = sig_exec,
 		.reset = sig_reset,
 		.set = sig_cache_set,
 		.get = sig_cache_get,

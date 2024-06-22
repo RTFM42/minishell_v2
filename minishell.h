@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 17:07:01 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/20 13:36:54 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/22 15:26:57 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ typedef struct s_tokenc
 	t_token	*(*new)(char *token, int len, int type);
 	int		(*iserror)(t_token *token);
 	void	(*freeall)(t_token *head);
-	void	(*printall)(t_token *head);
 }	t_tokenc;
 
 typedef struct s_node
@@ -119,7 +118,7 @@ typedef struct s_sigc
 {
 	void	(*shell)(int signo);
 	void	(*herdoc)(int signo);
-	void	(*ignore)(void);
+	void	(*exec)(int signo);
 	void	(*reset)(void);
 	void	(*set)(int signo);
 	int		(*get)(void);

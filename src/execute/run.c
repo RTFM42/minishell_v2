@@ -6,17 +6,16 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 04:17:16 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/21 22:06:34 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/22 15:37:22 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-void	sig_exec(int signo);
 void	close_pipe(int *pipe);
 t_token	*token_last(t_token *head);
 
-t_node	*execute_ready(t_token *cursor)
+static t_node	*execute_ready(t_token *cursor)
 {
 	t_node	*head;
 	t_node	*node;
@@ -60,42 +59,34 @@ int	execute_run(t_token *cursor, char **envp)
 	head = node;
 	pipe(node->lpipe);
 	is_logic = 0;
+	SIG().exec(0);
 	while (node)
 	{
 		pipe(node->rpipe);
 		if (node->conjection_type == LXR_LOGIC)
 		{
-			sig_exec(0);
 			pid = (EXEC().async)(node, envp);
 			close_pipe(node->lpipe);
 			status = EXEC().await(pid);
-			SIG().shell(0);
 			is_logic = status;
 		}
 		else if (node->conjection_type == LXR_PIPE && !is_logic)
 		{
-			sig_exec(0);
 			pid = (EXEC().async)(node, envp);
 			close_pipe(node->lpipe);
-			status = EXEC().await(pid);
-			SIG().shell(0);
 		}
 		else if (node->conjection_type == LXR_SCOLON && !is_logic)
 		{
-			sig_exec(0);
 			pid = (EXEC().async)(node, envp);
 			close_pipe(node->lpipe);
 			status = EXEC().await(pid);
-			SIG().shell(0);
 			is_logic = 0;
 		}
 		else if (!is_logic)
 		{
-			sig_exec(0);
 			pid = (EXEC().async)(node, envp);
 			close_pipe(node->lpipe);
 			status = EXEC().await(pid);
-			SIG().shell(0);
 		}
 		else
 			close_pipe(node->lpipe);
@@ -107,6 +98,7 @@ int	execute_run(t_token *cursor, char **envp)
 		else
 			break ;
 	}
+	SIG().shell(0);
 	close_pipe(node->rpipe);
 	NODE().free(head);
 	return (status);
