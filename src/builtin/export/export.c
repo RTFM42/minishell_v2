@@ -5,24 +5,54 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: nsakanou <nsakanou@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/09 17:53:09 by nsakanou          #+#    #+#             */
-/*   Updated: 2024/06/22 20:01:15 by nsakanou         ###   ########.fr       */
+/*   Created: 2024/06/26 16:33:02 by nsakanou          #+#    #+#             */
+/*   Updated: 2024/06/26 17:12:28 by nsakanou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
 
+void	export_print_all(void)
+{
+	char	**envp;
+	int		i;
+
+	envp = ENV().dump();
+	i = 0;
+	while (envp[i])
+	{
+		printf("declare -x %s\n", envp[i]);
+		i++;
+	}
+	ENV().free(envp);
+}
+
 int	export_command(char **argv)
 {
-	t_env	*env;
-	int		ret;
+	int		i;
+	char	*key;
+	char	*value;
 
-	ret = 0;
-	env = (ENV().store)->next;
-	if (ft_memcpy(&env, &(*env_store())->next, sizeof(void *)) && !argv[1])
-		export_sortenvs(env);
-	while (env_update("?", ft_itoa(ret)) && *++argv)
-		if (export_insert(*argv, env))
-			ret = 1;
-	return (ret);
+	if (!argv[1])
+	{
+		export_print_all();
+		return (0);
+	}
+	i = 1;
+	while (argv[i])
+	{
+		key = get_key(argv[i]);
+		value = get_value(argv[i]);
+		if (env_name_judge(key))
+		{
+			if (ENV().push(key, value) == NULL)
+				ERR().print("export");
+		}
+		else
+			ERR().print("export");
+		free(key);
+		free(value);
+		i++;
+	}
+	return (0);
 }

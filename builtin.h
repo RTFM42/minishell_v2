@@ -6,7 +6,7 @@
 /*   By: nsakanou <nsakanou@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 18:23:20 by nsakanou          #+#    #+#             */
-/*   Updated: 2024/06/22 20:02:04 by nsakanou         ###   ########.fr       */
+/*   Updated: 2024/06/26 17:05:58 by nsakanou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,9 @@ int		export_command(char **argv);
 int		env_command(void);
 
 //export
-char	*export_strjoin(const char *s1, const char *s2);
-void	export_sortenvs(t_env *env);
-char	*export_getname(char *argv);
-char	*export_getvalue(char *argv);
-int		export_insert(char *arg, t_env *env);
+char	*get_key(const char *argv);
+char	*get_value(const char *argv);
+int		env_name_judge(const char *key);
 
 int		ft_strcmp(const char *s1, const char *s2);
 
