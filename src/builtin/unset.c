@@ -6,7 +6,7 @@
 /*   By: nsakanou <nsakanou@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 17:53:20 by nsakanou          #+#    #+#             */
-/*   Updated: 2024/06/22 19:48:22 by nsakanou         ###   ########.fr       */
+/*   Updated: 2024/06/26 16:15:37 by nsakanou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,13 @@ int	unset_command(char **argv)
 	i = 1;
 	while (argv[i])
 	{
-		env = (ENV().store())->next;
+		env = *(ENV().store());
 		if (env_name_judge(argv[i]))
 		{
 			while (env)
 			{
 				if (ft_strcmp(env->key, argv[i]) == 0
-					&& ENV().delete(argv[i]))//env_del(env_store(), argv[i])
+					&& ENV().delete(argv[i]) == 0)
 					break ;
 				env = env->next;
 			}
