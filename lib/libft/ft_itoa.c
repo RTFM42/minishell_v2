@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yushsato <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 16:53:32 by yushsato          #+#    #+#             */
-/*   Updated: 2023/06/07 15:01:24 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/25 20:11:42 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	*itoa_alloc(long n)
 		n /= 10;
 		i++;
 	}
-	ret = ft_calloc(++i, sizeof(char));
+	ret = sf_calloc(++i, sizeof(char));
 	return (ret);
 }
 

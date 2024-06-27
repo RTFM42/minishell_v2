@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 12:47:29 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/17 03:20:10 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/25 20:11:42 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int				ft_strncmp(const char *s1, const char *s2, unsigned int n);
 char			*ft_strnstr(const char *s, const char *find, size_t len);
 int				ft_tolower(int c);
 int				ft_toupper(int c);
-void			*ft_calloc(size_t count, size_t size);
+void			*sf_calloc(size_t count, size_t size);
 char			*ft_strdup(const char *s1);
 int				ft_strictatoi(const char *str);
 char			*ft_substr(const char *s, unsigned int start, size_t len);

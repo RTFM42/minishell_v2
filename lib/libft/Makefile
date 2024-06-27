@@ -6,7 +6,7 @@
 #    By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/12 20:21:50 by yushsato          #+#    #+#              #
-#    Updated: 2024/06/17 02:14:35 by yushsato         ###   ########.fr        #
+#    Updated: 2024/06/25 20:11:42 by yushsato         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,7 @@ SRCS = ft_isalpha.c \
 	   ft_memcmp.c \
 	   ft_strnstr.c \
 	   ft_atoi.c \
-	   ft_calloc.c \
+	   sf_calloc.c \
        ft_strdup.c \
 	   ft_strictatoi.c \
 	   ft_substr.c \

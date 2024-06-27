@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 19:39:39 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/19 16:27:58 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/25 20:11:42 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	parse_env(char **dst, char **src)
 	char	*envk;
 	char	*envv;
 
-	envk = ft_calloc(1, sizeof(char));
+	envk = sf_calloc(1, sizeof(char));
 	while (isenvchar(*++(*src)))
 		envk = strallocat(envk, *src, 1);
 	if (ENV().find(envk)
@@ -75,7 +75,7 @@ char	*parse_word(t_token *token)
 	char		*dst;
 	const char	*src = token->token;
 
-	dst = ft_calloc(1, sizeof(char));
+	dst = sf_calloc(1, sizeof(char));
 	while (src && *src)
 	{
 		if (*src == '\\' && *(src + 1) != '\0' && ++src)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strmapi.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yushsato <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:04:34 by yushsato          #+#    #+#             */
-/*   Updated: 2023/06/10 14:28:30 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/25 20:11:42 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	*ft_strmapi(const char *s, char (*f)(unsigned int, char))
 	i = 0;
 	while (s[i] != '\0')
 		i++;
-	ret = ft_calloc(i + 1, sizeof(char));
+	ret = sf_calloc(i + 1, sizeof(char));
 	if (ret == NULL)
 		return (NULL);
 	i = 0;

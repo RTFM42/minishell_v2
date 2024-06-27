@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yushsato <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 19:16:37 by yushsato          #+#    #+#             */
-/*   Updated: 2023/12/07 17:27:35 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/25 20:11:42 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ char	*ft_strtrim(const char *s1, const char *set)
 		len = s2 - s1 + 2;
 	else
 		len = 1;
-	ret = (char *)ft_calloc(len, 1);
+	ret = (char *)sf_calloc(len, 1);
 	if (ret == 0x0)
 		return (0);
 	ft_bzero(ret, len);

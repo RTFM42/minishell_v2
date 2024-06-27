@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 04:44:17 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/20 13:23:45 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/25 22:14:31 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,6 @@ t_node	*node_free(t_node *node)
 
 	while (node)
 	{
-		if (node->lpipe)
-			free(node->lpipe);
-		if (node->rpipe)
-			free(node->rpipe);
 		if (node->args && strs_free(node->args))
 			free(node->args);
 		TKN().freeall(node->in_tokens);
@@ -50,9 +46,7 @@ t_node	*node_new(t_node *prev)
 {
 	t_node	*node;
 
-	node = ft_calloc(1, sizeof(t_node));
-	node->lpipe = ft_calloc(3, sizeof(int));
-	node->rpipe = ft_calloc(3, sizeof(int));
+	node = sf_calloc(1, sizeof(t_node));
 	if (prev)
 	{
 		node->prev = prev;

@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/04 17:08:33 by yushsato          #+#    #+#             */
-/*   Updated: 2023/12/07 17:28:44 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/25 20:11:42 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ char	**split_allocate(const char *s, char c)
 			j++;
 		s += i;
 	}
-	ret = ft_calloc(sizeof(char *), j);
+	ret = sf_calloc(sizeof(char *), j);
 	if (!ret)
 		return (NULL);
 	i = 0;
@@ -55,7 +55,7 @@ char	**split_in(char **ret, const char *s, char c)
 			i[0]++;
 		if (i[0] != 0)
 		{
-			ret[i[1]] = ft_calloc(sizeof(char), i[0] + 1);
+			ret[i[1]] = sf_calloc(sizeof(char), i[0] + 1);
 			if (ret[i[1]] == NULL)
 			{
 				while (--i[1])

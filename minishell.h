@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 17:07:01 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/22 15:26:57 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/27 14:59:40 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,6 @@ typedef struct s_node
 	int				conjection_type;
 	int				exit_status;
 	int				cancel;
-	int				*lpipe;
-	int				*rpipe;
 	char			**args;
 	t_token			*in_tokens;
 	t_token			*out_tokens;
@@ -109,8 +107,10 @@ typedef struct s_io
 
 typedef struct s_execc
 {
-	pid_t	(*async)(t_node *node, char *const *envp);
+	pid_t	(*async)(char *const *argv, char *const *envp, int *ifp, int *ofp);
 	int		(*await)(pid_t pid);
+	int		(*promise_all)(void);
+	void	(*promise_add)(pid_t pid);
 	int		(*run)(t_token *head, char **envp);
 }	t_execc;
 

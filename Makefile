@@ -6,7 +6,7 @@
 #    By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/13 14:42:14 by yushsato          #+#    #+#              #
-#    Updated: 2024/06/21 16:33:44 by yushsato         ###   ########.fr        #
+#    Updated: 2024/06/25 22:12:49 by yushsato         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,14 +31,14 @@ SRCS	= ./src/signal_cache.c \
 		  ./src/readline.c \
 		  ./src/signal.c \
 		  ./src/execute/async.c \
-		  ./src/execute/execute.c \
+		  ./src/execute/exec.c \
+		  ./src/execute/promise.c \
 		  ./src/execute/run.c \
-		  ./src/execute/token.c \
-		  ./src/execute/node_redirection.c \
-		  ./src/execute/close2.c \
-		  ./src/execute/node_redirection_heredoc.c \
-		  ./src/execute/strsallocat.c \
-		  ./src/execute/node.c
+		  ./src/node/token.c \
+		  ./src/node/node_redirection.c \
+		  ./src/node/node_redirection_heredoc.c \
+		  ./src/node/strsallocat.c \
+		  ./src/node/node.c
 OBJS	= $(SRCS:.c=.o)
 RLDIR	= $(shell brew --prefix readline)
 LIBFT	= libft.a

@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 04:17:16 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/22 15:37:22 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/27 18:39:55 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,59 +47,62 @@ int	execute_run(t_token *cursor, char **envp)
 {
 	t_node	*node;
 	t_node	*head;
-	pid_t	pid;
-	int		status;
+	int		ifp[2];
+	int		ofp[2];
+	int		is_pipe;
 	int		is_logic;
-	
+	int		status;
+
 	SIG().set(0);
 	node = execute_ready(cursor);
+	head = node;
+	is_logic = 0;
+	is_pipe = 0;
 	status = node->cancel;
 	if (status && !NODE().free(node))
 		return (status);
-	head = node;
-	pipe(node->lpipe);
-	is_logic = 0;
 	SIG().exec(0);
 	while (node)
 	{
-		pipe(node->rpipe);
-		if (node->conjection_type == LXR_LOGIC)
+		ifp[0] = STDIN_FILENO;
+		ifp[1] = STDOUT_FILENO;
+		if (is_pipe)
+			ft_memcpy(ifp, ofp, sizeof(int) * 2);
+		ofp[0] = STDIN_FILENO;
+		ofp[1] = STDOUT_FILENO;
+		if (node->conjection_type == LXR_LOGIC
+			&& ((is_logic && !status) || !is_logic))
 		{
-			pid = (EXEC().async)(node, envp);
-			close_pipe(node->lpipe);
-			status = EXEC().await(pid);
-			is_logic = status;
+			EXEC().promise_add(EXEC().async(node->args, envp, ifp, ofp));
+			if (is_pipe)
+				close_pipe(ifp);
+			is_logic = 1;
+			is_pipe = 0;
 		}
-		else if (node->conjection_type == LXR_PIPE && !is_logic)
+		else if (node->conjection_type == LXR_PIPE
+			&& ((is_logic && !status) || !is_logic))
 		{
-			pid = (EXEC().async)(node, envp);
-			close_pipe(node->lpipe);
-		}
-		else if (node->conjection_type == LXR_SCOLON && !is_logic)
-		{
-			pid = (EXEC().async)(node, envp);
-			close_pipe(node->lpipe);
-			status = EXEC().await(pid);
+			pipe(ofp);
+			EXEC().promise_add(EXEC().async(node->args, envp, ifp, ofp));
+			if (is_pipe)
+				close_pipe(ifp);
 			is_logic = 0;
-		}
-		else if (!is_logic)
-		{
-			pid = (EXEC().async)(node, envp);
-			close_pipe(node->lpipe);
-			status = EXEC().await(pid);
+			is_pipe = 1;
 		}
 		else
-			close_pipe(node->lpipe);
-		if (node->next)
 		{
-			ft_memcpy(node->next->lpipe, node->rpipe, sizeof(int) * 2);
-			node = node->next;
+			if ((is_logic && !status) || !is_logic)
+				EXEC().promise_add(EXEC().async(node->args,envp, ifp, ofp));
+			if (is_pipe)
+				close_pipe(ifp);
+			is_logic = 0;
+			is_pipe = 0;
 		}
-		else
-			break ;
+		if (!is_pipe)
+			status = EXEC().promise_all();
+		node = node->next;
 	}
 	SIG().shell(0);
-	close_pipe(node->rpipe);
 	NODE().free(head);
 	return (status);
 }

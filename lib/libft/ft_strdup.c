@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yushsato <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 19:34:51 by yushsato          #+#    #+#             */
-/*   Updated: 2023/12/07 17:26:52 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/06/25 20:11:42 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ char	*ft_strdup(const char *s1)
 	char	*ret;
 
 	len = ft_strlen(s1) + sizeof(char);
-	ret = (char *)ft_calloc(len, 1);
+	ret = (char *)sf_calloc(len, 1);
 	if (!ret)
 		return (NULL);
 	ft_memcpy(ret, s1, len);
