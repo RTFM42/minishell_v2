@@ -6,7 +6,7 @@
 #    By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/13 14:42:14 by yushsato          #+#    #+#              #
-#    Updated: 2024/06/29 01:25:32 by yushsato         ###   ########.fr        #
+#    Updated: 2024/07/02 16:04:48 by yushsato         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,8 +21,10 @@ SRCS	= ./src/signal_cache.c \
 		  ./src/lexer/sanitizer.c \
 		  ./src/prompt.c \
 		  ./src/parser/strallocat.c \
+		  ./src/parser/word_env.c \
 		  ./src/parser/word.c \
 		  ./src/parser/parser.c \
+		  ./src/parser/isenvchar.c \
 		  ./src/env/env_raw.c \
 		  ./src/env/env_obj.c \
 		  ./src/main.c \

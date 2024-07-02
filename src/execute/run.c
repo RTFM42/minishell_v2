@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 04:17:16 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/27 18:39:55 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/07/02 15:11:25 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int	execute_run(t_token *cursor, char **envp)
 		if (node->conjection_type == LXR_LOGIC
 			&& ((is_logic && !status) || !is_logic))
 		{
-			EXEC().promise_add(EXEC().async(node->args, envp, ifp, ofp));
+			EXEC().promise_add((EXEC().async)(node->args, envp, ifp, ofp));
 			if (is_pipe)
 				close_pipe(ifp);
 			is_logic = 1;
@@ -83,7 +83,7 @@ int	execute_run(t_token *cursor, char **envp)
 			&& ((is_logic && !status) || !is_logic))
 		{
 			pipe(ofp);
-			EXEC().promise_add(EXEC().async(node->args, envp, ifp, ofp));
+			EXEC().promise_add((EXEC().async)(node->args, envp, ifp, ofp));
 			if (is_pipe)
 				close_pipe(ifp);
 			is_logic = 0;
@@ -92,7 +92,7 @@ int	execute_run(t_token *cursor, char **envp)
 		else
 		{
 			if ((is_logic && !status) || !is_logic)
-				EXEC().promise_add(EXEC().async(node->args,envp, ifp, ofp));
+				EXEC().promise_add((EXEC().async)(node->args,envp, ifp, ofp));
 			if (is_pipe)
 				close_pipe(ifp);
 			is_logic = 0;

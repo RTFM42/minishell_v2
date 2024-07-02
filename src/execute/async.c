@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 01:12:08 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/27 18:35:32 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/07/02 14:39:53 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,13 +43,13 @@ pid_t	async(char *const *argv, char *const *envp, int *ifp, int *ofp)
 		if (ifp[0] != STDIN_FILENO && dup2(ifp[0], STDIN_FILENO) != -1)
 			close_pipe(ifp);
 		else if (ifp[0] != STDIN_FILENO)
-			ERR().exit("dup2", 1);
+			(ERR().exit)("dup2", 1);
 		if (ofp[1] != STDOUT_FILENO && dup2(ofp[1], STDOUT_FILENO) != -1)
 			close_pipe(ofp);
 		else if (ofp[1] != STDOUT_FILENO)
-			ERR().exit("dup2", 1);
+			(ERR().exit)("dup2", 1);
 		exec(path, argv, envp);
-		ERR().exit(argv[0], 1);
+		(ERR().exit)(argv[0], 1);
 	}
 	free(path);
 	return (pid);
