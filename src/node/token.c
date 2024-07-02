@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 13:24:42 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/20 13:25:36 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/07/02 17:01:23 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 t_token	*token_push(t_token *head, char *token, int len, int type)
 {
-	t_token	*C;
+	t_token	*cursor;
 
 	if (head == NULL)
 		return (TKN().new(ft_strdup(token), len, type));
@@ -30,7 +30,7 @@ t_token	*token_push(t_token *head, char *token, int len, int type)
 
 t_token	*token_unshift(t_token *head, char *token, int len, int type)
 {
-	t_token	*C;
+	t_token	*cursor;
 
 	if (head == NULL)
 		return (TKN().new(ft_strdup(token), len, type));
@@ -42,7 +42,7 @@ t_token	*token_unshift(t_token *head, char *token, int len, int type)
 
 t_token	*token_last(t_token *head)
 {
-	t_token	*C;
+	t_token	*cursor;
 
 	C = head;
 	while (C && C->next)

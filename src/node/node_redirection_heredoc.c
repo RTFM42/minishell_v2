@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 21:07:17 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/20 13:29:50 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/07/02 17:00:39 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static int	heredoc_concat(char *line, t_token *token, t_node *T, t_token *C)
 		ft_printf("\n");
 		T->cancel = g_signal;
 		return (-1);
-	}	
+	}
 	token->token = strallocat(token->token, line, ft_strlen(line));
 	token->token = strallocat(token->token, "\n", 2);
 	return (1);
