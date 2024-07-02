@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 14:43:46 by yushsato          #+#    #+#             */
-/*   Updated: 2024/07/02 16:56:34 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/07/02 17:44:07 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,36 @@ static void	deploy_env_signal(char **pdst)
 	free(envv);
 }
 
-static void	deploy_env(char **split, t_token *token, char **pdst)
+static void	deploy_strs_o2(char **split, t_token *token, char **pdst, int i)
 {
-	int		i;
 	int		j;
 	t_token	*prev;
 	t_token	*next;
+
+	*pdst = strallocat(*pdst, split[0], ft_strlen(split[0]));
+	prev = (TKN().new)(*pdst, ft_strlen(*pdst), LXR_WORD);
+	prev->next = token;
+	prev->prev = token->prev;
+	token->prev = prev;
+	if (prev->prev)
+		prev->prev->next = prev;
+	j = 1;
+	while (j < i - 1)
+	{
+		next = (TKN().new)(ft_strdup(split[j]), ft_strlen(split[j]), LXR_WORD);
+		next->next = token;
+		next->prev = prev;
+		prev->next = next;
+		token->prev = next;
+		prev = next;
+		j++;
+	}
+	*pdst = ft_strdup(split[i - 1]);
+}
+
+static void	deploy_strs(char **split, t_token *token, char **pdst)
+{
+	int		i;
 
 	i = 0;
 	while (split && split[i])
@@ -39,27 +63,7 @@ static void	deploy_env(char **split, t_token *token, char **pdst)
 	else if (i == 1)
 		*pdst = strallocat(*pdst, split[0], ft_strlen(split[0]));
 	else if (i >= 2)
-	{
-		*pdst = strallocat(*pdst, split[0], ft_strlen(split[0]));
-		prev = TKN().new(*pdst, ft_strlen(*pdst), LXR_WORD);
-		prev->next = token;
-		prev->prev = token->prev;
-		token->prev = prev;
-		if (prev->prev)
-			prev->prev->next = prev;
-		j = 1;
-		while (j < i - 1)
-		{
-			next = TKN().new(ft_strdup(split[j]), ft_strlen(split[j]), LXR_WORD);
-			next->next = token;
-			next->prev = prev;
-			prev->next = next;
-			token->prev = next;
-			prev = next;
-			j++;
-		}
-		*pdst = ft_strdup(split[i - 1]);
-	}
+		deploy_strs_o2(split, token, pdst, i);
 }
 
 void	parse_env(t_token *token, char **pdst, char **psrc)
@@ -80,7 +84,7 @@ void	parse_env(t_token *token, char **pdst, char **psrc)
 		{
 			envv = ft_strdup(ENV().find(envk)->value);
 			split = ft_split(envv, ' ');
-			deploy_env(split, token, pdst);
+			deploy_strs(split, token, pdst);
 			i = 0;
 			while (split && split[i])
 				free(split[i++]);
