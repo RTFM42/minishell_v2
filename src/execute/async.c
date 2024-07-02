@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 01:12:08 by yushsato          #+#    #+#             */
-/*   Updated: 2024/07/02 14:39:53 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/07/02 18:08:47 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,24 @@ static void	exec(const char *file, char *const *argv, char *const *envp)
 	if (!ft_memcmp(file, "env", 4))
 		exit(1);
 	execve(file, argv, envp);
+}
+
+int	await(pid_t pid)
+{
+	int	stat;
+
+	if (waitpid(pid, &stat, 0) == pid)
+	{
+		if (WIFEXITED(stat))
+			stat = WEXITSTATUS(stat);
+		else if (WIFSIGNALED(stat))
+			stat = WTERMSIG(stat) + 128;
+		if (0 <= stat && stat <= 255)
+			return (stat);
+		else
+			return (255);
+	}
+	return (1);
 }
 
 pid_t	async(char *const *argv, char *const *envp, int *ifp, int *ofp)
