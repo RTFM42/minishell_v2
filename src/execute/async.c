@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 01:12:08 by yushsato          #+#    #+#             */
-/*   Updated: 2024/07/02 18:08:47 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/07/02 19:47:59 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,31 @@ int	await(pid_t pid)
 		else
 			return (255);
 	}
+	if (pid == 0)
+		return (g_signal);
+	return (1);
+}
+
+static int	isexecable(const char *fpath, const char *fname)
+{
+	struct stat	st;
+
+	if (stat(fpath, &st) == -1)
+	{
+		ERR().setno(ENOENT);
+		ERR().print(fname);
+		free((void *)fpath);
+		g_signal = 126;
+		return (0);
+	}
+	if (access(fpath, X_OK) == -1)
+	{
+		ERR().setno(EACCES);
+		ERR().print(fname);
+		free((void *)fpath);
+		g_signal = 127;
+		return (0);
+	}
 	return (1);
 }
 
@@ -54,8 +79,10 @@ pid_t	async(char *const *argv, char *const *envp, int *ifp, int *ofp)
 
 	if (argv == NULL || argv[0] == NULL)
 		return (0);
-	pid = fork();
 	path = PATH().resolve(argv[0]);
+	if (isexecable(path, argv[0]) == 0)
+		return (0);
+	pid = fork();
 	if (pid == 0)
 	{
 		if (ifp[0] != STDIN_FILENO && dup2(ifp[0], STDIN_FILENO) != -1)
