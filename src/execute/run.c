@@ -6,7 +6,7 @@
 /*   By: nsakanou <nsakanou@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 04:17:16 by yushsato          #+#    #+#             */
-/*   Updated: 2024/07/04 13:39:15 by nsakanou         ###   ########.fr       */
+/*   Updated: 2024/07/04 13:54:37 by nsakanou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,7 @@ void	handle_other_node(t_node *node, int *fds, int *status, char **envp)
 
 void	process_node(t_node *node, int *status, char **envp)
 {
-	int	fds[4];
+	int	fds[5];
 
 	fds[0] = STDIN_FILENO;
 	fds[1] = STDOUT_FILENO;
