@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 22:04:31 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/14 16:19:56 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/07/06 14:07:34 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,8 @@ int	sf_error_print(const char *name)
 		ft_putendl_fd(":Invalid argument.", 2);
 	else if (errno == ENOENT)
 		ft_putendl_fd(":No such file or directory.", 2);
+	else if (errno == EISDIR)
+		ft_putendl_fd(":Is a directory.", 2);
 	else if (errno == ENOMEM)
 		ft_putendl_fd(":Not enough space/cannot allocate memory.", 2);
 	else if (errno == EIO)

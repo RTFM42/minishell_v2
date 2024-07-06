@@ -6,11 +6,14 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 01:12:08 by yushsato          #+#    #+#             */
-/*   Updated: 2024/07/02 19:47:59 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/07/06 16:17:00 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+
+int	path_builtin_inj(char **d_fpath, const char *s_fname);
+int	exec_builtin_inj(const char *file, char *const *argv, char *const *envp);
 
 void	close_pipe(int *pipe)
 {
@@ -20,13 +23,6 @@ void	close_pipe(int *pipe)
 		sf_close(pipe[1]);
 	pipe[0] = STDIN_FILENO;
 	pipe[1] = STDOUT_FILENO;
-}
-
-static void	exec(const char *file, char *const *argv, char *const *envp)
-{
-	if (!ft_memcmp(file, "env", 4))
-		exit(1);
-	execve(file, argv, envp);
 }
 
 int	await(pid_t pid)
@@ -49,27 +45,25 @@ int	await(pid_t pid)
 	return (1);
 }
 
-static int	isexecable(const char *fpath, const char *fname)
+static int	path_resolve_wrapper(char **d_fpath, const char *s_fname)
 {
 	struct stat	st;
+	int			ret;
 
-	if (stat(fpath, &st) == -1)
+	ret = 1;
+	*d_fpath = PATH().resolve(s_fname);
+	if (!path_builtin_inj(d_fpath, s_fname) && (stat(*d_fpath, &st) == -1
+			|| (st.st_mode & S_IFDIR && ERR().setno(EISDIR))
+			|| access(*d_fpath, X_OK) == -1) && ERR().print(s_fname))
 	{
-		ERR().setno(ENOENT);
-		ERR().print(fname);
-		free((void *)fpath);
 		g_signal = 126;
-		return (0);
+		if (errno == EACCES)
+			g_signal++;
+		ret--;
+		free(*d_fpath);
+		*d_fpath = NULL;
 	}
-	if (access(fpath, X_OK) == -1)
-	{
-		ERR().setno(EACCES);
-		ERR().print(fname);
-		free((void *)fpath);
-		g_signal = 127;
-		return (0);
-	}
-	return (1);
+	return (ret);
 }
 
 pid_t	async(char *const *argv, char *const *envp, int *ifp, int *ofp)
@@ -77,10 +71,8 @@ pid_t	async(char *const *argv, char *const *envp, int *ifp, int *ofp)
 	pid_t	pid;
 	char	*path;
 
-	if (argv == NULL || argv[0] == NULL)
-		return (0);
-	path = PATH().resolve(argv[0]);
-	if (isexecable(path, argv[0]) == 0)
+	if (argv == NULL || argv[0] == NULL
+		|| !path_resolve_wrapper(&path, argv[0]))
 		return (0);
 	pid = fork();
 	if (pid == 0)
@@ -93,7 +85,8 @@ pid_t	async(char *const *argv, char *const *envp, int *ifp, int *ofp)
 			close_pipe(ofp);
 		else if (ofp[1] != STDOUT_FILENO)
 			(ERR().exit)("dup2", 1);
-		exec(path, argv, envp);
+		if (!exec_builtin_inj(path, argv, envp))
+			execve(path, argv, envp);
 		(ERR().exit)(argv[0], 1);
 	}
 	free(path);
