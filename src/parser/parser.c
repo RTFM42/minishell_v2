@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 21:56:34 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/29 17:39:59 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/07/09 03:28:53 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ t_token	*parser(const char *str)
 	}
 	while (head && head->prev)
 		head = head->prev;
+	token = head;
 	while (token)
 	{
 		if (token->type == LXR_ERROR)

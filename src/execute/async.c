@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 01:12:08 by yushsato          #+#    #+#             */
-/*   Updated: 2024/07/06 16:17:00 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/07/09 03:46:48 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@ void	close_pipe(int *pipe)
 		sf_close(pipe[0]);
 	if (pipe[1] != STDOUT_FILENO)
 		sf_close(pipe[1]);
-	pipe[0] = STDIN_FILENO;
-	pipe[1] = STDOUT_FILENO;
 }
 
 int	await(pid_t pid)
@@ -66,28 +64,29 @@ static int	path_resolve_wrapper(char **d_fpath, const char *s_fname)
 	return (ret);
 }
 
-pid_t	async(char *const *argv, char *const *envp, int *ifp, int *ofp)
+static int	dup2_exit(void)
+{
+	(ERR().exit)("dup2", 1);
+	return (1);
+}
+
+pid_t	async(char *const *av, char *const *envp, int *ifp, int *ofp)
 {
 	pid_t	pid;
 	char	*path;
 
-	if (argv == NULL || argv[0] == NULL
-		|| !path_resolve_wrapper(&path, argv[0]))
+	if (av == NULL || av[0] == NULL || !path_resolve_wrapper(&path, av[0]))
 		return (0);
 	pid = fork();
 	if (pid == 0)
 	{
-		if (ifp[0] != STDIN_FILENO && dup2(ifp[0], STDIN_FILENO) != -1)
+		if (ifp[0] != 0 && (dup2(ifp[0], 0) != -1 || dup2_exit()))
 			close_pipe(ifp);
-		else if (ifp[0] != STDIN_FILENO)
-			(ERR().exit)("dup2", 1);
-		if (ofp[1] != STDOUT_FILENO && dup2(ofp[1], STDOUT_FILENO) != -1)
+		if (ofp[1] != 1 && (dup2(ofp[1], 1) != -1 || dup2_exit()))
 			close_pipe(ofp);
-		else if (ofp[1] != STDOUT_FILENO)
-			(ERR().exit)("dup2", 1);
-		if (!exec_builtin_inj(path, argv, envp))
-			execve(path, argv, envp);
-		(ERR().exit)(argv[0], 1);
+		if (!exec_builtin_inj(path, av, envp))
+			execve(path, av, envp);
+		(ERR().exit)(av[0], 1);
 	}
 	free(path);
 	return (pid);
