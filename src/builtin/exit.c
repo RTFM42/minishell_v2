@@ -6,21 +6,21 @@
 /*   By: nsakanou <nsakanou@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 16:53:58 by nsakanou          #+#    #+#             */
-/*   Updated: 2024/07/06 17:39:40 by nsakanou         ###   ########.fr       */
+/*   Updated: 2024/07/08 23:02:33 by nsakanou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-static bool	only_digit(char *str)
+static int	only_digit(char *str)
 {
 	while (*str)
 	{
 		if (!ft_isdigit(*str))
-			return (false);
+			return (1);
 		str++;
 	}
-	return (true);
+	return (0);
 }
 
 static int	num_of_argc(char **argv)
@@ -38,64 +38,27 @@ static int	num_of_argc(char **argv)
 	return (argc);
 }
 
-static int	cannot_exit(char **argv)
+static void	can_exit(char **argv)
 {
-		printf("88888");
-	if (num_of_argc(argv) > 1 && !only_digit(*argv))//exit a d s できない
-		printf("numeric argument required\n");
-	else if (num_of_argc(argv) > 1 && only_digit(*argv))//exit 1 2 できない
-		printf("too many arguments\n");
-	return (0);
+	int	argc;
+
+	argc = num_of_argc(argv);
+	if (argc == 0)
+		return ;
+	if (argc > 1)
+		ERR().exit("exit", 1);
+	if (!only_digit(argv[1]))
+		ERR().exit("exit", 255);
 }
-/*
-exitできない
-→exit 1 2, exit 1 a   :too many arguments最初の引数が数字だとexitしない
-→exit a d s    ：numeric argument required引数に数字がないとexitできない
-*/
 
-static int	can_exit(char **argv)
-{
-	int		status;
-
-	status = 0;
-	if (num_of_argc(argv) == 0) // exitのみ
-		exit(0);
-	else if (num_of_argc(argv) == 1 && only_digit(*argv))// exit 1とか
-	{
-		printf("sdaaa\n");
-		status = ft_atoi(argv[1]);
-		while (status > 255)
-			status = status % 255;
-		exit (status);
-	}
-	else if (num_of_argc(argv) >= 1 && (ft_isalpha(argv[1][1]) || !only_digit(argv[1])))//exit status 255-> exit a,exit a 3 5 exit 234sdfg, exit asd1234,
-	{
-		printf("111111a\n");
-		printf("numeric argument required\n");
-		status = 255;
-		exit(status);
-	}
-	else
-		cannot_exit(argv);
-	return (0);
-}
-/*
-exitできる
-→exit 234sdfg, exit asd1234, exit 12qwer 2 4 :numeric argument required   status 255
-→exit a 3 5, exit a  :numeric argument required  status 255
-→exit 255   :status 255
-→exit   :status 0
-*/
-
-int	exit_command(char **argv)
+int	bt_exit(int argc, char *const *argv, char *const *envp)
 {
 	t_env	*def;
 
 	can_exit(argv);
-	def = env_find(*(env_store()), "?");
-	def = ENV
+	def = ENV().find;
 	if (def == NULL)
-		exit(0);
+		exit (0);
 	exit(ft_atoi(def->value));
 	ERR().exit("exit", 1);
 	return (1);
