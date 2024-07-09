@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 04:17:16 by yushsato          #+#    #+#             */
-/*   Updated: 2024/07/09 03:55:03 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/07/09 17:12:00 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ static char	*execute_ifd(t_token *in, int *ifd)
 	return (hd);
 }
 
-static void execute_ofd(t_token *out, int *ofd)
+static void	execute_ofd(t_token *out, int *ofd)
 {
 	int		fd;
 
