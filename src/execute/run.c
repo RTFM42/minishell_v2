@@ -6,13 +6,15 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 04:17:16 by yushsato          #+#    #+#             */
-/*   Updated: 2024/07/09 17:12:00 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/07/13 17:27:41 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
 void	close_pipe(int *pipe);
+int		isbuiltin(const char *fname);
+int		exec_builtin(char *const *argv, char *const *envp, int *ofd);
 t_token	*token_last(t_token *head);
 
 static t_node	*execute_ready(t_token *cursor)
@@ -137,11 +139,16 @@ int	execute_run(t_token *cursor, char **envp)
 				ft_memcpy(ifd, ifp, sizeof(int) * 2);
 			if (ofd[0] == 0)
 				ft_memcpy(ofd, ofp, sizeof(int) * 2);
-			EXEC().promise_add((EXEC().async)(node->args, envp, ifd, ofd));
-			if (heredoc != NULL)
+			if (!is_pipe && isbuiltin(node->args[0]))
+				status = exec_builtin(node->args, envp, ofd);
+			else
 			{
-				write(ifd[1], heredoc, ft_strlen(heredoc));
-				free(heredoc);
+				EXEC().promise_add((EXEC().async)(node->args, envp, ifd, ofd));			
+				if (heredoc != NULL)
+				{
+					write(ifd[1], heredoc, ft_strlen(heredoc));
+					free(heredoc);
+				}
 			}
 			if (is_pipe)
 				close_pipe(ifp);
@@ -174,18 +181,25 @@ int	execute_run(t_token *cursor, char **envp)
 			if (ofd[0] == 0)
 				ft_memcpy(ofd, ofp, sizeof(int) * 2);
 			if ((is_logic && !status) || !is_logic)
-				EXEC().promise_add((EXEC().async)(node->args, envp, ifd, ofd));
-			if (heredoc)
 			{
-				write(ifd[1], heredoc, ft_strlen(heredoc));
-				free(heredoc);
+				if (!is_pipe && isbuiltin(node->args[0]))
+					status = exec_builtin(node->args, envp, ofd);
+				else
+				{
+					EXEC().promise_add((EXEC().async)(node->args, envp, ifd, ofd));
+					if (heredoc)
+					{
+						write(ifd[1], heredoc, ft_strlen(heredoc));
+						free(heredoc);
+					}
+				}
 			}
 			if (is_pipe)
 				close_pipe(ifp);
 			is_logic = 0;
 			is_pipe = 0;
 		}
-		if (ifd[0] != 0 && ifd[0] != ifp[0])	
+		if (ifd[0] != 0 && ifd[0] != ifp[0])
 			close_pipe(ifd);
 		if (ofd[0] != 0 && ofd[0] != ofp[0])
 			close_pipe(ofd);
