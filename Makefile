@@ -6,42 +6,42 @@
 #    By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/13 14:42:14 by yushsato          #+#    #+#              #
-#    Updated: 2024/07/06 16:12:14 by yushsato         ###   ########.fr        #
+#    Updated: 2024/07/13 17:32:01 by yushsato         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	= minishell
 CC		= cc
 CFLAGS	= -Wall -Wextra -Werror
-SRCS	= ./src/signal_cache.c \
-		  ./src/lexer/lexer.c \
-		  ./src/lexer/token.c \
-		  ./src/lexer/error.c \
-		  ./src/lexer/tokenizer.c \
-		  ./src/lexer/sanitizer.c \
-		  ./src/prompt.c \
-		  ./src/parser/strallocat.c \
-		  ./src/parser/word_env.c \
-		  ./src/parser/word.c \
-		  ./src/parser/parser.c \
-		  ./src/parser/isenvchar.c \
-		  ./src/env/env_raw.c \
+SRCS	= ./src/builtin/env.c \
 		  ./src/env/env_obj.c \
-		  ./src/main.c \
-		  ./src/path.c \
-		  ./src/readline.c \
-		  ./src/signal.c \
+		  ./src/env/env_raw.c \
 		  ./src/execute/async.c \
+		  ./src/execute/builtin_injection.c \
 		  ./src/execute/exec.c \
 		  ./src/execute/promise.c \
 		  ./src/execute/run.c \
-		  ./src/execute/builtin_injection.c \
-		  ./src/node/token.c \
+		  ./src/lexer/error.c \
+		  ./src/lexer/lexer.c \
+		  ./src/lexer/sanitizer.c \
+		  ./src/lexer/token.c \
+		  ./src/lexer/tokenizer.c \
+		  ./src/main.c \
+		  ./src/node/node.c \
 		  ./src/node/node_redirection.c \
 		  ./src/node/node_redirection_heredoc.c \
 		  ./src/node/strsallocat.c \
-		  ./src/node/node.c \
-		  ./src/builtin/env.c
+		  ./src/node/token.c \
+		  ./src/parser/isenvchar.c \
+		  ./src/parser/parser.c \
+		  ./src/parser/strallocat.c \
+		  ./src/parser/word.c \
+		  ./src/parser/word_env.c \
+		  ./src/path.c \
+		  ./src/prompt.c \
+		  ./src/readline.c \
+		  ./src/signal.c \
+		  ./src/signal_cache.c
 OBJS	= $(SRCS:.c=.o)
 RLDIR	= $(shell brew --prefix readline)
 LIBFT	= libft.a

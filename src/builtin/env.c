@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 15:52:03 by yushsato          #+#    #+#             */
-/*   Updated: 2024/07/06 16:25:26 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/07/12 15:29:31 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,9 @@ int	bt_env(int argc, char *const *argv, char *const *envp)
 	char	*tmp;
 	int		i;
 
-	(void)argc;
 	(void)argv;
+	if (argc > 1 && ERR().setno(EINVAL) && ERR().print(argv[0]))
+		return (1);
 	res = sf_calloc(1, sizeof(char));
 	i = 0;
 	while (envp[i])
