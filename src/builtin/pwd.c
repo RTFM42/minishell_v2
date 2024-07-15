@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nsakanou <nsakanou@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 16:54:27 by nsakanou          #+#    #+#             */
-/*   Updated: 2024/07/06 16:56:40 by nsakanou         ###   ########.fr       */
+/*   Updated: 2024/07/13 18:32:59 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,26 +14,17 @@
 
 int	bt_pwd(int argc, char *const *argv, char *const *envp)
 {
-	char		*pwd;
-	static char	*save;
-	char		*tmp;
+	char	*pwd;
+	int		status;
 
-	pwd = ft_calloc(1, PATH_MAX);
-	if (argv)
-		save = ft_strdup(argv);
-	else if (getcwd(pwd, PATH_MAX) != NULL)
-	{
-		tmp = save;
-		save = ft_strdup(pwd);
-		printf("%s\n", pwd);
-		if (!tmp)
-			free(tmp);
-	}
-	else if (!printf("%s\n", save))
-	{
-		free(pwd);
-		return (1);
-	}
-	free (pwd);
-	return (0);
+	status = 0;
+	if (argc > 1 && ERR().setno(EINVAL) && ERR().print(argv[0]) && ++status)
+		return (status);
+	pwd = sf_calloc(1, PATH_MAX);
+	if (getcwd(pwd, PATH_MAX) != NULL)
+		ft_printf("%s\n", pwd);
+	else if (ERR().print("pwd"))
+		++status;
+	free(pwd);
+	return (status);
 }

@@ -6,12 +6,15 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 14:58:28 by yushsato          #+#    #+#             */
-/*   Updated: 2024/07/13 17:45:55 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/07/13 18:14:32 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
+int	bt_cd(int argc, char *const *argv, char *const *envp);
+int	bt_echo(int argc, char *const *argv, char *const *envp);
+int	bt_pwd(int argc, char *const *argv, char *const *envp);
 int	bt_env(int argc, char *const *argv, char *const *envp);
 
 int	isbuiltin(const char *fname)
@@ -60,6 +63,12 @@ int	exec_builtin_inj(const char *file, char *const *argv, char *const *envp)
 	did = 0;
 	if (!ft_memcmp(file, "env", 4) && ++did)
 		status = bt_env(argv_count(argv), argv, envp);
+	else if (!ft_memcmp(file, "cd", 3) && ++did)
+		status = bt_cd(argv_count(argv), argv, envp);
+	else if (!ft_memcmp(file, "echo", 5) && ++did)
+		status = bt_echo(argv_count(argv), argv, envp);
+	else if (!ft_memcmp(file, "pwd", 4) && ++did)
+		status = bt_pwd(argv_count(argv), argv, envp);
 	if (did)
 		exit(status);
 	return (0);
@@ -78,6 +87,12 @@ int	exec_builtin(char *const *argv, char *const *envp, int *ofd)
 		ERR().print("minishell");
 	if (!ft_memcmp(argv[0], "env", 4) && ++did)
 		status = bt_env(argv_count(argv), argv, envp);
+	else if (!ft_memcmp(argv[0], "cd", 3) && ++did)
+		status = bt_cd(argv_count(argv), argv, envp);
+	else if (!ft_memcmp(argv[0], "echo", 5) && ++did)
+		status = bt_echo(argv_count(argv), argv, envp);
+	else if (!ft_memcmp(argv[0], "pwd", 4) && ++did)
+		status = bt_pwd(argv_count(argv), argv, envp);
 	if (ofd[1] != STDOUT_FILENO && outfd > -1)
 		dup2(outfd, 1);
 	if (did)
