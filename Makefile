@@ -6,7 +6,7 @@
 #    By: nsakanou <nsakanou@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/13 14:42:14 by yushsato          #+#    #+#              #
-#    Updated: 2024/07/15 15:01:09 by nsakanou         ###   ########.fr        #
+#    Updated: 2024/07/15 21:45:05 by nsakanou         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,11 +18,13 @@ SRCS	= ./src/builtin/cd.c \
 		  ./src/builtin/env.c \
 		  ./src/builtin/pwd.c \
 		  ./src/builtin/export.c \
+		  ./src/builtin/exit.c \
 		  ./src/builtin/unset.c \
 		  ./src/env/env_obj.c \
 		  ./src/env/env_raw.c \
 		  ./src/execute/async.c \
 		  ./src/execute/builtin_injection.c \
+		  ./src/execute/builtin.c \
 		  ./src/execute/exec.c \
 		  ./src/execute/promise.c \
 		  ./src/execute/run.c \

@@ -6,7 +6,7 @@
 /*   By: nsakanou <nsakanou@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 16:53:58 by nsakanou          #+#    #+#             */
-/*   Updated: 2024/07/08 23:02:33 by nsakanou         ###   ########.fr       */
+/*   Updated: 2024/07/15 23:06:57 by nsakanou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 static int	only_digit(char *str)
 {
+	if (*str == '-' || *str == '+')
+		str++;
 	while (*str)
 	{
 		if (!ft_isdigit(*str))
@@ -23,43 +25,24 @@ static int	only_digit(char *str)
 	return (0);
 }
 
-static int	num_of_argc(char **argv)
-{
-	int	argc;
-	int	i;
-
-	i = 1;
-	argc = 0;
-	if (argv[i + 1])
-	{
-		while (argv[argc + 1])
-			argc++;
-	}
-	return (argc);
-}
-
-static void	can_exit(char **argv)
-{
-	int	argc;
-
-	argc = num_of_argc(argv);
-	if (argc == 0)
-		return ;
-	if (argc > 1)
-		ERR().exit("exit", 1);
-	if (!only_digit(argv[1]))
-		ERR().exit("exit", 255);
-}
-
 int	bt_exit(int argc, char *const *argv, char *const *envp)
 {
-	t_env	*def;
-
-	can_exit(argv);
-	def = ENV().find;
-	if (def == NULL)
-		exit (0);
-	exit(ft_atoi(def->value));
-	ERR().exit("exit", 1);
+	(void)envp;
+	if (argc == 1)
+		exit((256 + g_signal) % 256);
+	if (argc == 2)
+	{
+		if (!only_digit(argv[1]))
+			exit((256 + ft_atoi(argv[1])) % 256);
+		ft_printf("minishell: exit: %s: numeric argument required", argv[1]);
+		exit(255);
+	}
+	else if (argc > 1 && !only_digit(argv[1]))
+		ft_printf("minishell: exit: too many arguments.\n");
+	else
+	{
+		ft_printf("minishell: exit: %s: numeric argument required", argv[1]);
+		exit(255);
+	}
 	return (1);
 }

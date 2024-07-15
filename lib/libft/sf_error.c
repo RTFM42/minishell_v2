@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sf_error.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: nsakanou <nsakanou@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 22:04:31 by yushsato          #+#    #+#             */
-/*   Updated: 2024/07/06 14:07:34 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/07/15 22:44:39 by nsakanou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	sf_error_exit(const char *name, int num)
 	else if (errno == ENOENT)
 		ft_putendl_fd(": No such file or directory.", 2);
 	else if (errno == ENOMEM)
-		ft_putendl_fd(":Not enough space/cannot allocate memory.", 2);
+		ft_putendl_fd(": Not enough space/cannot allocate memory.", 2);
 	else if (errno == EIO)
 		ft_putendl_fd(": Remote I/O error.", 2);
 	else

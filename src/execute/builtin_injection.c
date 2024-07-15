@@ -6,18 +6,11 @@
 /*   By: nsakanou <nsakanou@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 14:58:28 by yushsato          #+#    #+#             */
-/*   Updated: 2024/07/15 19:25:33 by nsakanou         ###   ########.fr       */
+/*   Updated: 2024/07/15 21:29:17 by nsakanou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-
-int	bt_cd(int argc, char *const *argv, char *const *envp);
-int	bt_echo(int argc, char *const *argv, char *const *envp);
-int	bt_pwd(int argc, char *const *argv, char *const *envp);
-int	bt_env(int argc, char *const *argv, char *const *envp);
-int	bt_unset(int argc, char *const *argv, char *const *envp);
-int	bt_export(int argc, char *const *argv, char *const *envp);
 
 int	isbuiltin(const char *fname)
 {
@@ -45,67 +38,4 @@ int	path_builtin_inj(char **d_fpath, const char *s_fname)
 		ret++;
 	}
 	return (ret);
-}
-
-static int	ac(char *const *argv)
-{
-	int	i;
-
-	i = 0;
-	while (argv[i])
-		i++;
-	return (i);
-}
-
-int	exec_builtin_inj(const char *file, char *const *argv, char *const *envp)
-{
-	int	did;
-	int	status;
-
-	did = 0;
-	if (!ft_memcmp(file, "env", 4) && ++did)
-		status = bt_env(ac(argv), argv, envp);
-	else if (!ft_memcmp(file, "cd", 3) && ++did)
-		status = bt_cd(ac(argv), argv, envp);
-	else if (!ft_memcmp(file, "echo", 5) && ++did)
-		status = bt_echo(ac(argv), argv, envp);
-	else if (!ft_memcmp(file, "pwd", 4) && ++did)
-		status = bt_pwd(ac(argv), argv, envp);
-	else if (!ft_memcmp(file, "unset", 6) && ++did)
-		status = bt_unset(ac(argv), argv, envp);
-	else if (!ft_memcmp(file, "export", 7) && ++did)
-		status = bt_export(ac(argv), argv, envp);
-	if (did)
-		exit(status);
-	return (0);
-}
-
-int	exec_builtin(char *const *argv, char *const *envp, int *ofd)
-{
-	int	did;
-	int	status;
-	int	outfd;
-
-	did = 0;
-	if (ofd[1] != 1)
-		outfd = dup(1);
-	if (ofd[1] != 1 && (outfd < 0 || dup2(ofd[1], 1) == -1))
-		ERR().print("minishell");
-	if (!ft_memcmp(argv[0], "env", 4) && ++did)
-		status = bt_env(ac(argv), argv, envp);
-	else if (!ft_memcmp(argv[0], "cd", 3) && ++did)
-		status = bt_cd(ac(argv), argv, envp);
-	else if (!ft_memcmp(argv[0], "echo", 5) && ++did)
-		status = bt_echo(ac(argv), argv, envp);
-	else if (!ft_memcmp(argv[0], "pwd", 4) && ++did)
-		status = bt_pwd(ac(argv), argv, envp);
-	else if (!ft_memcmp(argv[0], "unset", 6) && ++did)
-		status = bt_unset(ac(argv), argv, envp);
-	else if (!ft_memcmp(argv[0], "export", 7) && ++did)
-		status = bt_export(ac(argv), argv, envp);
-	if (ofd[1] != STDOUT_FILENO && outfd > -1)
-		dup2(outfd, 1);
-	if (did)
-		return (status);
-	return (1);
 }
