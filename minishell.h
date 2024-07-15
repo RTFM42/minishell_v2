@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: nsakanou <nsakanou@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 17:07:01 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/27 14:59:40 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/07/15 18:42:10 by nsakanou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,14 @@ typedef struct s_env
 
 typedef struct s_envc
 {
+	void	(*init)(void);
 	t_env	**(*store)(void);
 	void	(*set)(char **list);
 	t_env	*(*find)(const char *key);
 	t_env	*(*push)(const char *key, const char *value);
 	int		(*delete)(const char *key);
 	char	**(*dump)(void);
+	char	**(*redump)(void);
 	void	(*free)(char **envp);
 }	t_envc;
 

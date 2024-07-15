@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   run.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: nsakanou <nsakanou@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 04:17:16 by yushsato          #+#    #+#             */
-/*   Updated: 2024/07/13 17:27:41 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/07/15 18:03:37 by nsakanou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,7 +143,7 @@ int	execute_run(t_token *cursor, char **envp)
 				status = exec_builtin(node->args, envp, ofd);
 			else
 			{
-				EXEC().promise_add((EXEC().async)(node->args, envp, ifd, ofd));			
+				EXEC().promise_add((EXEC().async)(node->args, envp, ifd, ofd));
 				if (heredoc != NULL)
 				{
 					write(ifd[1], heredoc, ft_strlen(heredoc));
