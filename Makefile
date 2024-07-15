@@ -6,14 +6,17 @@
 #    By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/13 14:42:14 by yushsato          #+#    #+#              #
-#    Updated: 2024/07/13 17:32:01 by yushsato         ###   ########.fr        #
+#    Updated: 2024/07/13 18:15:52 by yushsato         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	= minishell
 CC		= cc
 CFLAGS	= -Wall -Wextra -Werror
-SRCS	= ./src/builtin/env.c \
+SRCS	= ./src/builtin/cd.c \
+		  ./src/builtin/echo.c \
+		  ./src/builtin/env.c \
+		  ./src/builtin/pwd.c \
 		  ./src/env/env_obj.c \
 		  ./src/env/env_raw.c \
 		  ./src/execute/async.c \
