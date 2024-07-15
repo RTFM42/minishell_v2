@@ -6,7 +6,7 @@
 /*   By: nsakanou <nsakanou@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 19:44:09 by yushsato          #+#    #+#             */
-/*   Updated: 2024/07/15 23:41:47 by nsakanou         ###   ########.fr       */
+/*   Updated: 2024/07/16 00:35:24 by nsakanou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int	promise_all(void)
 
 	stats = 0;
 	pids = *promise_store();
-	while (pids && *pids >= 0)
+	while (pids && *pids > 0)
 	{
 		stats = 1;
 		now = *pids;

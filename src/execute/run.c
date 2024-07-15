@@ -6,7 +6,7 @@
 /*   By: nsakanou <nsakanou@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 04:17:16 by yushsato          #+#    #+#             */
-/*   Updated: 2024/07/15 23:47:13 by nsakanou         ###   ########.fr       */
+/*   Updated: 2024/07/16 00:49:52 by nsakanou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,54 +45,46 @@ static t_node	*execute_ready(t_token *cursor)
 	return (head);
 }
 
-static char	*execute_ifd(t_token *in, int *ifd)
+static char	*execute_iofd(t_token *io, int *ifd, int *ofd)
 {
 	char	*hd;
 	int		fd;
 
 	hd = NULL;
-	while (in)
+	while (io)
 	{
 		if (!hd)
 			free(hd);
 		hd = NULL;
-		if (in->type == LXR_HEREDOC)
-			hd = ft_strdup(in->token);
-		else if (in->type == LXR_INPUT)
+		if (io->type == LXR_HEREDOC)
+			hd = ft_strdup(io->token);
+		else if (io->type == LXR_INPUT)
 		{
-			fd = sf_fopen(in->token, O_RDONLY);
+			fd = sf_fopen(io->token, O_RDONLY);
 			if (fd != -1 && dup2(fd, ifd[0]) != -1)
 				sf_close(fd);
+			else if (ERR().print(io->token))
+				break ;
 		}
-		in = in->next;
+		else if (io->type == LXR_OUTPUT)
+		{
+			fd = open(io->token, O_CREAT | O_RDWR | O_TRUNC, 0644);
+			if (fd != -1 && dup2(fd, ofd[1]) != -1)
+				sf_close(fd);
+			else if(ERR().print(io->token))
+				break ;
+		}
+		else if (io->type == LXR_APPEND)
+		{
+			fd = open(io->token, O_CREAT | O_RDWR | O_APPEND, 0644);
+			if (fd != -1 && dup2(fd, ofd[1]) != -1)
+				sf_close(fd);
+			else if (ERR().print(io->token))
+				break ;
+		}
+		io = io->next;
 	}
 	return (hd);
-}
-
-static void	execute_ofd(t_token *out, int *ofd)
-{
-	int		fd;
-
-	while (out)
-	{
-		if (out->type == LXR_OUTPUT)
-		{
-			fd = open(out->token, O_CREAT | O_RDWR | O_TRUNC, 0644);
-			if (fd != -1 && dup2(fd, ofd[1]) != -1)
-				sf_close(fd);
-			else
-				ERR().print(out->token);
-		}
-		else if (out->type == LXR_APPEND)
-		{
-			fd = open(out->token, O_CREAT | O_RDWR | O_APPEND, 0644);
-			if (fd != -1 && dup2(fd, ofd[1]) != -1)
-				sf_close(fd);
-			else
-				ERR().print(out->token);
-		}
-		out = out->next;
-	}
 }
 
 int	execute_run(t_token *cursor, char **envp)
@@ -128,16 +120,17 @@ int	execute_run(t_token *cursor, char **envp)
 		ft_memcpy(ifd, ofp, sizeof(int) * 2);
 		ft_memcpy(ofd, ofp, sizeof(int) * 2);
 		heredoc = NULL;
-		if (node->in_tokens && pipe(ifd) != -1)
-			heredoc = execute_ifd(node->in_tokens, ifd);
-		if (node->out_tokens && pipe(ofd) != -1)
-			execute_ofd(node->out_tokens, ofd);
-		if (node->conjection_type == LXR_LOGIC
+		ERR().setno(0);
+		if (node->io_tokens && pipe(ifd) != -1)
+			heredoc = execute_iofd(node->io_tokens, ifd, ofd);
+		if (errno)
+			status = 1;
+		if (!errno && node->conjection_type == LXR_LOGIC
 			&& ((is_logic && !status) || !is_logic))
 		{
 			if (ifd[0] == 0)
 				ft_memcpy(ifd, ifp, sizeof(int) * 2);
-			if (ofd[0] == 0)
+			if (ofd[1] == 0)
 				ft_memcpy(ofd, ofp, sizeof(int) * 2);
 			if (!is_pipe && isbuiltin(node->args[0]))
 				status = exec_builtin(node->args, envp, ofd);
@@ -155,13 +148,13 @@ int	execute_run(t_token *cursor, char **envp)
 			is_logic = 1;
 			is_pipe = 0;
 		}
-		else if (node->conjection_type == LXR_PIPE
+		else if (!errno && node->conjection_type == LXR_PIPE
 			&& ((is_logic && !status) || !is_logic))
 		{
 			pipe(ofp);
 			if (ifd[0] == 0)
 				ft_memcpy(ifd, ifp, sizeof(int) * 2);
-			if (ofd[0] == 0)
+			if (ofd[1] == 0)
 				ft_memcpy(ofd, ofp, sizeof(int) * 2);
 			EXEC().promise_add((EXEC().async)(node->args, envp, ifd, ofd));
 			if (heredoc)
@@ -178,9 +171,9 @@ int	execute_run(t_token *cursor, char **envp)
 		{
 			if (ifd[0] == 0)
 				ft_memcpy(ifd, ifp, sizeof(int) * 2);
-			if (ofd[0] == 0)
+			if (ofd[1] == 0)
 				ft_memcpy(ofd, ofp, sizeof(int) * 2);
-			if ((is_logic && !status) || !is_logic)
+			if (!errno && ((is_logic && !status) || !is_logic))
 			{
 				if (!is_pipe && isbuiltin(node->args[0]))
 					status = exec_builtin(node->args, envp, ofd);
@@ -201,8 +194,11 @@ int	execute_run(t_token *cursor, char **envp)
 		}
 		if (ifd[0] != 0 && ifd[0] != ifp[0])
 			close_pipe(ifd);
-		if (ofd[0] != 0 && ofd[0] != ofp[0])
+		if (ofd[1] != 0 && ofd[1] != ofp[1])
+		{
+			ft_putendl_fd("OK\n", 2);
 			close_pipe(ofd);
+		}
 		if (!is_pipe)
 			status = EXEC().promise_all();
 		node = node->next;

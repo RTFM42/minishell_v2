@@ -6,7 +6,7 @@
 /*   By: nsakanou <nsakanou@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 17:07:01 by yushsato          #+#    #+#             */
-/*   Updated: 2024/07/15 18:42:10 by nsakanou         ###   ########.fr       */
+/*   Updated: 2024/07/16 00:15:05 by nsakanou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,7 @@ typedef struct s_node
 	int				exit_status;
 	int				cancel;
 	char			**args;
-	t_token			*in_tokens;
-	t_token			*out_tokens;
+	t_token			*io_tokens;
 	struct s_node	*next;
 	struct s_node	*prev;
 }	t_node;

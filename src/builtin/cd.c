@@ -6,7 +6,7 @@
 /*   By: nsakanou <nsakanou@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 16:46:48 by nsakanou          #+#    #+#             */
-/*   Updated: 2024/07/15 23:37:27 by nsakanou         ###   ########.fr       */
+/*   Updated: 2024/07/16 01:28:44 by nsakanou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	bt_cd(int argc, char *const *argv, char *const *envp)
 		check_file_permission(argv[1]);
 	if (!argv[1])
 		cd_home();
-	else if (chdir(argv[1]) == 0)
+	else if (chdir(argv[1]) != 0)
 		(ERR().print)("cd");
 	return (0);
 }

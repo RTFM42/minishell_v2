@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   node.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: nsakanou <nsakanou@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 04:44:17 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/25 22:14:31 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/07/16 00:08:25 by nsakanou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,7 @@ t_node	*node_free(t_node *node)
 	{
 		if (node->args && strs_free(node->args))
 			free(node->args);
-		TKN().freeall(node->in_tokens);
-		TKN().freeall(node->out_tokens);
+		TKN().freeall(node->io_tokens);
 		next = node->next;
 		free(node);
 		node = next;

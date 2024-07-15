@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   async.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: nsakanou <nsakanou@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 01:12:08 by yushsato          #+#    #+#             */
-/*   Updated: 2024/07/12 16:57:50 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/07/15 23:58:24 by nsakanou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static int	path_resolve_wrapper(char **d_fpath, const char *s_fname)
 			|| (st.st_mode & S_IFDIR && ERR().setno(EISDIR))
 			|| access(*d_fpath, X_OK) == -1) && ERR().print(s_fname))
 	{
-		g_signal = 126;
+		g_signal = 127;
 		if (errno == EACCES)
 			g_signal++;
 		ret--;

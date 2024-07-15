@@ -6,13 +6,13 @@
 /*   By: nsakanou <nsakanou@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 16:53:58 by nsakanou          #+#    #+#             */
-/*   Updated: 2024/07/15 23:06:57 by nsakanou         ###   ########.fr       */
+/*   Updated: 2024/07/16 00:55:56 by nsakanou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-static int	only_digit(char *str)
+int	only_digit(char *str)
 {
 	if (*str == '-' || *str == '+')
 		str++;
