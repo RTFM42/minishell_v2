@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_raw.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: nsakanou <nsakanou@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 21:43:54 by yushsato          #+#    #+#             */
-/*   Updated: 2024/05/14 08:03:30 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/07/15 16:27:53 by nsakanou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ char	**env_dump(void)
 	{
 		tmp = ft_strjoin(env->key, "=");
 		array[--count] = ft_strjoin(tmp, env->value);
+		if (array[count] == NULL)
+			array[count] = ft_strdup(env->key);
 		free(tmp);
 		env = env->prev;
 	}

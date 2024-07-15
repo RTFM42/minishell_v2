@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_injection.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: nsakanou <nsakanou@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 14:58:28 by yushsato          #+#    #+#             */
-/*   Updated: 2024/07/13 18:14:32 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/07/15 14:51:36 by nsakanou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ int	bt_cd(int argc, char *const *argv, char *const *envp);
 int	bt_echo(int argc, char *const *argv, char *const *envp);
 int	bt_pwd(int argc, char *const *argv, char *const *envp);
 int	bt_env(int argc, char *const *argv, char *const *envp);
+int	bt_unset(int argc, char *const *argv, char *const *envp);
 
 int	isbuiltin(const char *fname)
 {

@@ -6,11 +6,23 @@
 /*   By: nsakanou <nsakanou@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 16:54:46 by nsakanou          #+#    #+#             */
-/*   Updated: 2024/07/06 17:21:47 by nsakanou         ###   ########.fr       */
+/*   Updated: 2024/07/15 14:57:52 by nsakanou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+
+int	env_name_judge(const char *key);
+
+static int	ft_strcmp(const char *s1, const char *s2)
+{
+	int	i;
+
+	i = 0;
+	while (s1[i] != '\0' && s2[i] != '\0' && s1[i] == s2[i])
+		i++;
+	return (s1[i] - s2[i]);
+}
 
 int	bt_unset(int argc, char *const *argv, char *const *envp)
 {
