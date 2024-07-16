@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 04:17:16 by yushsato          #+#    #+#             */
-/*   Updated: 2024/07/17 04:55:32 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/07/17 05:47:55 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,13 @@ static t_node	*execute_ready(t_token *cursor)
 	return (head);
 }
 
-static char	*execute_iofd(t_token *io, int *ifd, int *ofd)
+static int	execute_iofd(t_token *io, int *ifd, int *ofd, char **dhd)
 {
 	char	*hd;
 	int		fd;
 
 	hd = NULL;
+	ERR().setno(0);
 	while (io)
 	{
 		if (!hd)
@@ -61,7 +62,7 @@ static char	*execute_iofd(t_token *io, int *ifd, int *ofd)
 			break ;
 		if ((io->type == LXR_OUTPUT || io->type == LXR_APPEND) && ofd[1] == 1
 			&& pipe(ofd) == -1 && ERR().print("pipe"))
-			break ;
+				break ;
 		if (io->type == LXR_HEREDOC)
 			hd = ft_strdup(io->token);
 		else if (io->type == LXR_INPUT)
@@ -90,7 +91,10 @@ static char	*execute_iofd(t_token *io, int *ifd, int *ofd)
 		}
 		io = io->next;
 	}
-	return (hd);
+	*dhd = hd;
+	if (errno)
+		return (-1);
+	return (0);
 }
 
 int	execute_run(t_token *cursor, char **envp)
@@ -105,6 +109,7 @@ int	execute_run(t_token *cursor, char **envp)
 	int		is_pipe;
 	int		is_logic;
 	int		status;
+	int		fd_stat;
 
 	SIG().set(0);
 	node = execute_ready(cursor);
@@ -117,6 +122,8 @@ int	execute_run(t_token *cursor, char **envp)
 	SIG().exec(0);
 	while (node)
 	{
+		status = 0;
+		fd_stat = 0;
 		ifp[0] = STDIN_FILENO;
 		ifp[1] = STDOUT_FILENO;
 		if (is_pipe)
@@ -128,19 +135,18 @@ int	execute_run(t_token *cursor, char **envp)
 		heredoc = NULL;
 		ERR().setno(0);
 		if (node->io_tokens)
-			heredoc = execute_iofd(node->io_tokens, ifd, ofd);
-		if (errno)
-			status = 1;
-		if (!errno && node->conjection_type == LXR_LOGIC
+			fd_stat = execute_iofd(node->io_tokens, ifd, ofd, &heredoc);
+		status = fd_stat * -1;
+		if (node->conjection_type == LXR_LOGIC
 			&& ((is_logic && !status) || !is_logic))
 		{
 			if (ifd[0] == 0)
 				ft_memcpy(ifd, ifp, sizeof(int) * 2);
 			if (ofd[1] == 1)
 				ft_memcpy(ofd, ofp, sizeof(int) * 2);
-			if (!is_pipe && isbuiltin(node->args[0]))
+			if (!fd_stat && !is_pipe && isbuiltin(node->args[0]))
 				status = exec_builtin(node->args, envp, ofd);
-			else
+			else if (!fd_stat)
 			{
 				EXEC().promise_add((EXEC().async)(node->args, envp, ifd, ofd));
 				if (heredoc != NULL)
@@ -154,7 +160,7 @@ int	execute_run(t_token *cursor, char **envp)
 			is_logic = 1;
 			is_pipe = 0;
 		}
-		else if (!errno && node->conjection_type == LXR_PIPE
+		else if (node->conjection_type == LXR_PIPE
 			&& ((is_logic && !status) || !is_logic))
 		{
 			pipe(ofp);
@@ -162,7 +168,8 @@ int	execute_run(t_token *cursor, char **envp)
 				ft_memcpy(ifd, ifp, sizeof(int) * 2);
 			if (ofd[1] == 1)
 				ft_memcpy(ofd, ofp, sizeof(int) * 2);
-			EXEC().promise_add((EXEC().async)(node->args, envp, ifd, ofd));
+			if (!fd_stat)
+				EXEC().promise_add((EXEC().async)(node->args, envp, ifd, ofd));
 			if (heredoc)
 			{
 				write(ifd[1], heredoc, ft_strlen(heredoc));
@@ -179,11 +186,11 @@ int	execute_run(t_token *cursor, char **envp)
 				ft_memcpy(ifd, ifp, sizeof(int) * 2);
 			if (ofd[1] == 1)
 				ft_memcpy(ofd, ofp, sizeof(int) * 2);
-			if (!errno && ((is_logic && !status) || !is_logic))
+			if ((is_logic && !status) || !is_logic)
 			{
-				if (!is_pipe && isbuiltin(node->args[0]))
+				if (!fd_stat && !is_pipe && isbuiltin(node->args[0]))
 					status = exec_builtin(node->args, envp, ofd);
-				else
+				else if (!fd_stat)
 				{
 					EXEC().promise_add((EXEC().async)(node->args, envp, ifd, ofd));
 					if (heredoc)
@@ -202,7 +209,7 @@ int	execute_run(t_token *cursor, char **envp)
 			close_pipe(ifd);
 		if (ofd[1] != 0 && ofd[1] != ofp[1])
 			close_pipe(ofd);
-		if (!is_pipe)
+		if (!is_pipe && !status)
 			status = EXEC().promise_all();
 		node = node->next;
 	}
