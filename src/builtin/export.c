@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 16:55:11 by nsakanou          #+#    #+#             */
-/*   Updated: 2024/07/16 15:53:52 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/07/17 04:24:22 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,28 @@ static void	export_print_all(void)
 	ENV().free(envp);
 }
 
+static int	is_valid_env_char(char c)
+{
+	return (ft_isalnum(c) || c == '_');
+}
+
+static int	is_valid_env_str(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (ft_isdigit(*str) || !is_valid_env_char(*str) || *str == '=')
+		return (1);
+	while (str[++i])
+	{
+		if (str[i] == '=')
+			return (0);
+		if (!is_valid_env_char(str[i]))
+			return (1);
+	}
+	return (0);
+}
+
 int	bt_export(int argc, char *const *argv, char *const *envp)
 {
 	int	stat;
@@ -37,25 +59,16 @@ int	bt_export(int argc, char *const *argv, char *const *envp)
 	(void)envp;
 	if (argc < 2)
 		export_print_all();
-	else if (argv[1][0] == '-' || argv[1][0] == '+')//error status 2にならなければならない
+	while (*++argv)
 	{
-		stat = 2;
-		ft_printf("export: '%d': not a valid identifier\n", ft_atoi(argv[1]));
-		ft_printf("export: usage: export [-nf] [name[=value] ...] or export -p\n");
+		if (!is_valid_env_str(*argv))
+			ENV().set((char **)argv);
+		else
+		{
+			ft_printf("minishell: export: `%s':"
+				" not a valid identifier\n", *argv);
+			stat = 1;
+		}
 	}
-	else if (!only_digit(argv[1]) && ++stat)//error status 1
-		ft_printf("export: '%d': not a valid identifier\n", ft_atoi(argv[1]));
-	else
-		ENV().set((char **)&argv[1]);
 	return (stat);
 }
-
-// bash-3.2$ export -1
-// bash: export: -1: invalid option
-// export: usage: export [-nf] [name[=value] ...] or export -p
-// bash-3.2$ echo $?
-// 2
-// bash-3.2$ export 1
-// bash: export: `1': not a valid identifier
-// bash-3.2$ echo $?
-// 1
