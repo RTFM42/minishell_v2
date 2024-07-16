@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nsakanou <nsakanou@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 16:54:46 by nsakanou          #+#    #+#             */
-/*   Updated: 2024/07/15 17:17:13 by nsakanou         ###   ########.fr       */
+/*   Updated: 2024/07/17 03:54:03 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	bt_unset(int argc, char *const *argv, char *const *envp)
 	{
 		if (ENV().find(argv[i]))
 			ENV().delete(argv[i]);
-		else
+		else if (errno != 0)
 			ERR().print("unset");
 		i++;
 	}
