@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nsakanou <nsakanou@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 14:43:52 by yushsato          #+#    #+#             */
-/*   Updated: 2024/07/15 18:41:53 by nsakanou         ###   ########.fr       */
+/*   Updated: 2024/07/17 06:03:21 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,7 @@ int	main(int ac, char **av, char **ae)
 		token = PSR().parser(input);
 		free(input);
 		if (token == NULL)
-		{
-			g_signal = 2;
 			continue ;
-		}
 		envp = ENV().redump();
 		g_signal = (EXEC().run)(token, envp);
 		TKN().freeall(token);
