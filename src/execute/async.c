@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   async.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nsakanou <nsakanou@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 01:12:08 by yushsato          #+#    #+#             */
-/*   Updated: 2024/07/15 23:58:24 by nsakanou         ###   ########.fr       */
+/*   Updated: 2024/07/17 07:18:43 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,16 +48,37 @@ static int	path_resolve_wrapper(char **d_fpath, const char *s_fname)
 	struct stat	st;
 	int			ret;
 
-	ret = 1;
+	ret = 0;
 	*d_fpath = PATH().resolve(s_fname);
-	if (!path_builtin_inj(d_fpath, s_fname) && (stat(*d_fpath, &st) == -1
-			|| (st.st_mode & S_IFDIR && ERR().setno(EISDIR))
-			|| access(*d_fpath, X_OK) == -1) && ERR().print(s_fname))
+	if (path_builtin_inj(d_fpath, s_fname))
+		return (1);
+	if (!ft_strchr(*d_fpath, '.') && !ft_strchr(*d_fpath, '/'))
 	{
 		g_signal = 127;
-		if (errno == EACCES)
-			g_signal++;
-		ret--;
+		ft_printf("minishell: %s: command not found\n", s_fname);
+	}
+	else if (stat(*d_fpath, &st) == -1 && errno == ENOENT)
+	{
+		g_signal = 127;
+		if (!ft_strchr(s_fname, '.') && !ft_strchr(s_fname, '/'))
+			ft_printf("minishell: %s: command not found\n", s_fname);
+		else
+			ERR().print(s_fname);
+	}
+	else if (st.st_mode & S_IFDIR && ERR().setno(EISDIR))
+	{
+		g_signal = 126;
+		ERR().print(s_fname);
+	}
+	else if (access(*d_fpath, X_OK) == -1)
+	{
+		g_signal = 127;
+		ERR().print(s_fname);
+	}
+	else
+		ret++;
+	if (!ret)
+	{
 		free(*d_fpath);
 		*d_fpath = NULL;
 	}

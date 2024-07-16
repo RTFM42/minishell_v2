@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 04:17:16 by yushsato          #+#    #+#             */
-/*   Updated: 2024/07/17 05:47:55 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/07/17 06:17:01 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,6 +149,8 @@ int	execute_run(t_token *cursor, char **envp)
 			else if (!fd_stat)
 			{
 				EXEC().promise_add((EXEC().async)(node->args, envp, ifd, ofd));
+				if (g_signal != 0)
+					status = g_signal;
 				if (heredoc != NULL)
 				{
 					write(ifd[1], heredoc, ft_strlen(heredoc));
@@ -169,7 +171,11 @@ int	execute_run(t_token *cursor, char **envp)
 			if (ofd[1] == 1)
 				ft_memcpy(ofd, ofp, sizeof(int) * 2);
 			if (!fd_stat)
+			{
 				EXEC().promise_add((EXEC().async)(node->args, envp, ifd, ofd));
+				if (g_signal != 0)
+					status = g_signal;
+			}
 			if (heredoc)
 			{
 				write(ifd[1], heredoc, ft_strlen(heredoc));
@@ -193,6 +199,8 @@ int	execute_run(t_token *cursor, char **envp)
 				else if (!fd_stat)
 				{
 					EXEC().promise_add((EXEC().async)(node->args, envp, ifd, ofd));
+					if (g_signal != 0)
+						status = g_signal;
 					if (heredoc)
 					{
 						write(ifd[1], heredoc, ft_strlen(heredoc));
