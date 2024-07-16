@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   run.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nsakanou <nsakanou@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 04:17:16 by yushsato          #+#    #+#             */
-/*   Updated: 2024/07/16 00:49:52 by nsakanou         ###   ########.fr       */
+/*   Updated: 2024/07/16 23:58:00 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,12 @@ static char	*execute_iofd(t_token *io, int *ifd, int *ofd)
 		if (!hd)
 			free(hd);
 		hd = NULL;
+		if ((io->type == LXR_HEREDOC || io->type == LXR_INPUT) && ifd[0] == 0
+			&& pipe(ifd) == -1 && ERR().print("pipe"))
+			break ;
+		if ((io->type == LXR_OUTPUT || io->type == LXR_APPEND) && ofd[1] == 1
+			&& pipe(ofd) == -1 && ERR().print("pipe"))
+			break ;
 		if (io->type == LXR_HEREDOC)
 			hd = ft_strdup(io->token);
 		else if (io->type == LXR_INPUT)
@@ -121,7 +127,7 @@ int	execute_run(t_token *cursor, char **envp)
 		ft_memcpy(ofd, ofp, sizeof(int) * 2);
 		heredoc = NULL;
 		ERR().setno(0);
-		if (node->io_tokens && pipe(ifd) != -1)
+		if (node->io_tokens)
 			heredoc = execute_iofd(node->io_tokens, ifd, ofd);
 		if (errno)
 			status = 1;
@@ -195,10 +201,7 @@ int	execute_run(t_token *cursor, char **envp)
 		if (ifd[0] != 0 && ifd[0] != ifp[0])
 			close_pipe(ifd);
 		if (ofd[1] != 0 && ofd[1] != ofp[1])
-		{
-			ft_putendl_fd("OK\n", 2);
 			close_pipe(ofd);
-		}
 		if (!is_pipe)
 			status = EXEC().promise_all();
 		node = node->next;

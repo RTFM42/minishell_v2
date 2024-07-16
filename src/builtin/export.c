@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nsakanou <nsakanou@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 16:55:11 by nsakanou          #+#    #+#             */
-/*   Updated: 2024/07/16 01:12:21 by nsakanou         ###   ########.fr       */
+/*   Updated: 2024/07/16 15:53:52 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,22 +31,23 @@ static void	export_print_all(void)
 
 int	bt_export(int argc, char *const *argv, char *const *envp)
 {
+	int	stat;
+
+	stat = 0;
 	(void)envp;
 	if (argc < 2)
-	{
 		export_print_all();
-		return (0);
-	}
-	if (argv[1][0] == '-' || argv[1][0] == '+')//error status 2にならなければならない
+	else if (argv[1][0] == '-' || argv[1][0] == '+')//error status 2にならなければならない
 	{
+		stat = 2;
 		ft_printf("export: '%d': not a valid identifier\n", ft_atoi(argv[1]));
 		ft_printf("export: usage: export [-nf] [name[=value] ...] or export -p\n");
 	}
-	else if (!only_digit(argv[1]))//error status 1
+	else if (!only_digit(argv[1]) && ++stat)//error status 1
 		ft_printf("export: '%d': not a valid identifier\n", ft_atoi(argv[1]));
 	else
 		ENV().set((char **)&argv[1]);
-	return (0);
+	return (stat);
 }
 
 // bash-3.2$ export -1
