@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 04:17:16 by yushsato          #+#    #+#             */
-/*   Updated: 2024/07/16 23:58:00 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/07/17 04:55:32 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,7 @@ int	execute_run(t_token *cursor, char **envp)
 		{
 			if (ifd[0] == 0)
 				ft_memcpy(ifd, ifp, sizeof(int) * 2);
-			if (ofd[1] == 0)
+			if (ofd[1] == 1)
 				ft_memcpy(ofd, ofp, sizeof(int) * 2);
 			if (!is_pipe && isbuiltin(node->args[0]))
 				status = exec_builtin(node->args, envp, ofd);
@@ -160,7 +160,7 @@ int	execute_run(t_token *cursor, char **envp)
 			pipe(ofp);
 			if (ifd[0] == 0)
 				ft_memcpy(ifd, ifp, sizeof(int) * 2);
-			if (ofd[1] == 0)
+			if (ofd[1] == 1)
 				ft_memcpy(ofd, ofp, sizeof(int) * 2);
 			EXEC().promise_add((EXEC().async)(node->args, envp, ifd, ofd));
 			if (heredoc)
@@ -177,7 +177,7 @@ int	execute_run(t_token *cursor, char **envp)
 		{
 			if (ifd[0] == 0)
 				ft_memcpy(ifd, ifp, sizeof(int) * 2);
-			if (ofd[1] == 0)
+			if (ofd[1] == 1)
 				ft_memcpy(ofd, ofp, sizeof(int) * 2);
 			if (!errno && ((is_logic && !status) || !is_logic))
 			{
