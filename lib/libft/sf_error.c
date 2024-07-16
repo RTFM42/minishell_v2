@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 22:04:31 by yushsato          #+#    #+#             */
-/*   Updated: 2024/07/17 05:55:50 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/07/17 05:57:51 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	sf_error_print(const char *name)
 	if (errno == EACCES)
 		ft_putendl_fd(": Permission denied", 2);
 	else if (errno == EEXIST)
-		ft_putendl_fd(": File exists.", 2);
+		ft_putendl_fd(": File exists", 2);
 	else if (errno == EINVAL)
 		ft_putendl_fd(": Invalid argument", 2);
 	else if (errno == ENOENT)
