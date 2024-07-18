@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sf_error.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nsakanou <nsakanou@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 22:04:31 by yushsato          #+#    #+#             */
-/*   Updated: 2024/07/18 20:43:54 by nsakanou         ###   ########.fr       */
+/*   Updated: 2024/07/19 02:47:46 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	sf_error_print(const char *name)
 	else if (errno == ENOENT)
 		ft_putendl_fd(": No such file or directory", 2);
 	else if (errno == EISDIR)
-		ft_putendl_fd(": is a directory", 2);
+		ft_putendl_fd(": Is a directory", 2);
 	else if (errno == ENOMEM)
 		ft_putendl_fd(": Not enough space/cannot allocate memory", 2);
 	else if (errno == EIO)

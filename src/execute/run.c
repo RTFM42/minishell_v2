@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 04:17:16 by yushsato          #+#    #+#             */
-/*   Updated: 2024/07/17 06:17:01 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/07/19 01:17:29 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,10 +59,12 @@ static int	execute_iofd(t_token *io, int *ifd, int *ofd, char **dhd)
 		hd = NULL;
 		if ((io->type == LXR_HEREDOC || io->type == LXR_INPUT) && ifd[0] == 0
 			&& pipe(ifd) == -1 && ERR().print("pipe"))
-			break ;
+			return (-1);
+		else
+			*dhd = hd;
 		if ((io->type == LXR_OUTPUT || io->type == LXR_APPEND) && ofd[1] == 1
 			&& pipe(ofd) == -1 && ERR().print("pipe"))
-				break ;
+			return (-1);
 		if (io->type == LXR_HEREDOC)
 			hd = ft_strdup(io->token);
 		else if (io->type == LXR_INPUT)
@@ -71,7 +73,7 @@ static int	execute_iofd(t_token *io, int *ifd, int *ofd, char **dhd)
 			if (fd != -1 && dup2(fd, ifd[0]) != -1)
 				sf_close(fd);
 			else if (ERR().print(io->token))
-				break ;
+				return (-1);
 		}
 		else if (io->type == LXR_OUTPUT)
 		{
@@ -79,7 +81,7 @@ static int	execute_iofd(t_token *io, int *ifd, int *ofd, char **dhd)
 			if (fd != -1 && dup2(fd, ofd[1]) != -1)
 				sf_close(fd);
 			else if(ERR().print(io->token))
-				break ;
+				return (-1);
 		}
 		else if (io->type == LXR_APPEND)
 		{
@@ -87,13 +89,10 @@ static int	execute_iofd(t_token *io, int *ifd, int *ofd, char **dhd)
 			if (fd != -1 && dup2(fd, ofd[1]) != -1)
 				sf_close(fd);
 			else if (ERR().print(io->token))
-				break ;
+				return (-1);
 		}
 		io = io->next;
 	}
-	*dhd = hd;
-	if (errno)
-		return (-1);
 	return (0);
 }
 
@@ -108,6 +107,7 @@ int	execute_run(t_token *cursor, char **envp)
 	char	*heredoc;
 	int		is_pipe;
 	int		is_logic;
+	int		is_promise;
 	int		status;
 	int		fd_stat;
 
@@ -124,6 +124,7 @@ int	execute_run(t_token *cursor, char **envp)
 	{
 		status = 0;
 		fd_stat = 0;
+		is_promise = 0;
 		ifp[0] = STDIN_FILENO;
 		ifp[1] = STDOUT_FILENO;
 		if (is_pipe)
@@ -148,6 +149,7 @@ int	execute_run(t_token *cursor, char **envp)
 				status = exec_builtin(node->args, envp, ofd);
 			else if (!fd_stat)
 			{
+				is_promise = 1;
 				EXEC().promise_add((EXEC().async)(node->args, envp, ifd, ofd));
 				if (g_signal != 0)
 					status = g_signal;
@@ -172,6 +174,7 @@ int	execute_run(t_token *cursor, char **envp)
 				ft_memcpy(ofd, ofp, sizeof(int) * 2);
 			if (!fd_stat)
 			{
+				is_promise = 1;
 				EXEC().promise_add((EXEC().async)(node->args, envp, ifd, ofd));
 				if (g_signal != 0)
 					status = g_signal;
@@ -198,6 +201,7 @@ int	execute_run(t_token *cursor, char **envp)
 					status = exec_builtin(node->args, envp, ofd);
 				else if (!fd_stat)
 				{
+					is_promise = 1;
 					EXEC().promise_add((EXEC().async)(node->args, envp, ifd, ofd));
 					if (g_signal != 0)
 						status = g_signal;
@@ -217,8 +221,13 @@ int	execute_run(t_token *cursor, char **envp)
 			close_pipe(ifd);
 		if (ofd[1] != 0 && ofd[1] != ofp[1])
 			close_pipe(ofd);
-		if (!is_pipe && !status)
-			status = EXEC().promise_all();
+		if (!is_pipe && is_promise)
+		{
+			if (!status)
+				status = EXEC().promise_all();
+			else
+				EXEC().promise_all();
+		}
 		node = node->next;
 	}
 	SIG().shell(0);
