@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nsakanou <nsakanou@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 16:53:58 by nsakanou          #+#    #+#             */
-/*   Updated: 2024/07/18 20:33:26 by nsakanou         ###   ########.fr       */
+/*   Updated: 2024/07/18 20:56:12 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static void	puterr(const char *sh, const char *cmd,
 	tmp = ret;
 	ret = ft_strjoin(tmp, "\n");
 	free(tmp);
-	ft_putendl_fd(ret, 2);
+	ft_putstr_fd(ret, 2);
 	free(ret);
 }
 
