@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 01:12:08 by yushsato          #+#    #+#             */
-/*   Updated: 2024/07/17 07:18:43 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/07/18 21:04:17 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,28 @@ int	await(pid_t pid)
 	return (1);
 }
 
+static void	puterr(const char *sh, const char *cmd, const char *reason)
+{
+	char	*ret;
+	char	*tmp;
+
+	ret = ft_strjoin(sh, ": ");
+	tmp = ret;
+	ret = ft_strjoin(tmp, cmd);
+	free(tmp);
+	tmp = ret;
+	ret = ft_strjoin(tmp, ": ");
+	free(tmp);
+	tmp = ret;
+	ret = ft_strjoin(tmp, reason);
+	free(tmp);
+	tmp = ret;
+	ret = ft_strjoin(tmp, "\n");
+	free(tmp);
+	ft_putstr_fd(ret, 2);
+	free(ret);
+}
+
 static int	path_resolve_wrapper(char **d_fpath, const char *s_fname)
 {
 	struct stat	st;
@@ -55,13 +77,13 @@ static int	path_resolve_wrapper(char **d_fpath, const char *s_fname)
 	if (!ft_strchr(*d_fpath, '.') && !ft_strchr(*d_fpath, '/'))
 	{
 		g_signal = 127;
-		ft_printf("minishell: %s: command not found\n", s_fname);
+		puterr("minishell", s_fname, "command not found");
 	}
 	else if (stat(*d_fpath, &st) == -1 && errno == ENOENT)
 	{
 		g_signal = 127;
 		if (!ft_strchr(s_fname, '.') && !ft_strchr(s_fname, '/'))
-			ft_printf("minishell: %s: command not found\n", s_fname);
+			puterr("minishell", s_fname, "command not found");
 		else
 			ERR().print(s_fname);
 	}
