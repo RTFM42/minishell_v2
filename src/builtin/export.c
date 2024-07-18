@@ -6,13 +6,42 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 16:55:11 by nsakanou          #+#    #+#             */
-/*   Updated: 2024/07/17 04:24:22 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/07/18 20:11:01 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-int	only_digit(char *str);
+int		only_digit(char *str);
+
+static void	puterr(const char *sh, const char *cmd,
+	const char *opt, const char *reason)
+{
+	char	*ret;
+	char	*tmp;
+
+	ret = ft_strjoin(sh, ": ");
+	tmp = ret;
+	ret = ft_strjoin(tmp, cmd);
+	free(tmp);
+	tmp = ret;
+	ret = ft_strjoin(tmp, ": `");
+	free(tmp);
+	tmp = ret;
+	ret = ft_strjoin(tmp, opt);
+	free(tmp);
+	tmp = ret;
+	ret = ft_strjoin(tmp, "': ");
+	free(tmp);
+	tmp = ret;
+	ret = ft_strjoin(tmp, reason);
+	free(tmp);
+	tmp = ret;
+	ret = ft_strjoin(tmp, "\n");
+	free(tmp);
+	ft_putendl_fd(ret, 2);
+	free(ret);
+}
 
 static void	export_print_all(void)
 {
@@ -65,8 +94,7 @@ int	bt_export(int argc, char *const *argv, char *const *envp)
 			ENV().set((char **)argv);
 		else
 		{
-			ft_printf("minishell: export: `%s':"
-				" not a valid identifier\n", *argv);
+			puterr("minishell", "export", *argv, "not a valid identifier");
 			stat = 1;
 		}
 	}

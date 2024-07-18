@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 16:53:58 by nsakanou          #+#    #+#             */
-/*   Updated: 2024/07/17 04:47:53 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/07/18 20:11:49 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,35 @@ int	only_digit(char *str)
 	return (0);
 }
 
+static void	puterr(const char *sh, const char *cmd,
+	const char *opt, const char *reason)
+{
+	char	*ret;
+	char	*tmp;
+
+	ret = ft_strjoin(sh, ": ");
+	tmp = ret;
+	ret = ft_strjoin(tmp, cmd);
+	free(tmp);
+	tmp = ret;
+	ret = ft_strjoin(tmp, ": ");
+	free(tmp);
+	tmp = ret;
+	ret = ft_strjoin(tmp, opt);
+	free(tmp);
+	tmp = ret;
+	ret = ft_strjoin(tmp, ": ");
+	free(tmp);
+	tmp = ret;
+	ret = ft_strjoin(tmp, reason);
+	free(tmp);
+	tmp = ret;
+	ret = ft_strjoin(tmp, "\n");
+	free(tmp);
+	ft_putendl_fd(ret, 2);
+	free(ret);
+}
+
 int	bt_exit(int argc, char *const *argv, char *const *envp)
 {
 	(void)envp;
@@ -35,17 +64,16 @@ int	bt_exit(int argc, char *const *argv, char *const *envp)
 	{
 		if (!only_digit(argv[1]))
 			exit((256 + ft_atoi(argv[1])) % 256);
-		ft_printf("minishell: exit: %s: numeric argument required\n", argv[1]);
+		puterr("minishell", "exit", argv[1], "numeric argument required");
 		exit(2);
 	}
 	else if (argc >= 3)
 	{
 		if (!only_digit(argv[1]))
-			ft_printf("minishell: exit: too many arguments.\n");
+			ft_putendl_fd("minishell: exit: too many arguments\n", 2);
 		else
 		{
-			ft_printf("minishell: exit: %s: "
-				"numeric argument required\n", argv[1]);
+			puterr("minishell", "exit", argv[1], "numeric argument required");
 			exit(2);
 		}
 	}

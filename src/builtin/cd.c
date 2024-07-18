@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 16:46:48 by nsakanou          #+#    #+#             */
-/*   Updated: 2024/07/17 04:30:43 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/07/18 20:10:27 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	bt_cd(int argc, char *const *argv, char *const *envp)
 		cd_home();
 	if (argc > 2)
 	{
-		ft_printf("minishell: cd: too many arguments\n");
+		ft_putendl_fd("minishell: cd: too many arguments\n", 2);
 		return (1);
 	}
 	if (argv[1] && check_file_permission(argv[1]))
