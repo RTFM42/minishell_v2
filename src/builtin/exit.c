@@ -6,7 +6,7 @@
 /*   By: nsakanou <nsakanou@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 16:53:58 by nsakanou          #+#    #+#             */
-/*   Updated: 2024/07/18 20:29:20 by nsakanou         ###   ########.fr       */
+/*   Updated: 2024/07/18 20:33:26 by nsakanou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int	bt_exit(int argc, char *const *argv, char *const *envp)
 		if (!only_digit(argv[1]))
 			exit((256 + ft_atoi(argv[1])) % 256);
 		puterr("minishell", "exit", argv[1], "numeric argument required");
-		exit(2);
+		exit(255);
 	}
 	else if (argc >= 3)
 	{
