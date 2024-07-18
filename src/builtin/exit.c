@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: nsakanou <nsakanou@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 16:53:58 by nsakanou          #+#    #+#             */
-/*   Updated: 2024/07/18 20:11:49 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/07/18 20:29:20 by nsakanou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,11 +70,14 @@ int	bt_exit(int argc, char *const *argv, char *const *envp)
 	else if (argc >= 3)
 	{
 		if (!only_digit(argv[1]))
-			ft_putendl_fd("minishell: exit: too many arguments\n", 2);
+		{
+			ft_putendl_fd("minishell: exit: too many arguments", 2);
+			return (1);
+		}
 		else
 		{
 			puterr("minishell", "exit", argv[1], "numeric argument required");
-			exit(2);
+			exit(255);
 		}
 	}
 	return (2);
