@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: nsakanou <nsakanou@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 16:53:58 by nsakanou          #+#    #+#             */
-/*   Updated: 2024/07/18 20:56:12 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/07/18 20:58:22 by nsakanou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int	bt_exit(int argc, char *const *argv, char *const *envp)
 		if (!only_digit(argv[1]))
 			exit((256 + ft_atoi(argv[1])) % 256);
 		puterr("minishell", "exit", argv[1], "numeric argument required");
-		exit(255);
+		exit(2);
 	}
 	else if (argc >= 3)
 	{
@@ -77,7 +77,7 @@ int	bt_exit(int argc, char *const *argv, char *const *envp)
 		else
 		{
 			puterr("minishell", "exit", argv[1], "numeric argument required");
-			exit(255);
+			exit(2);
 		}
 	}
 	return (2);
