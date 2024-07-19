@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 01:12:08 by yushsato          #+#    #+#             */
-/*   Updated: 2024/07/19 03:07:52 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/07/20 00:54:37 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	await(pid_t pid)
 	return (1);
 }
 
-static void	puterr(const char *sh, const char *cmd, const char *reason)
+static int	puterr(const char *sh, const char *cmd, const char *reason)
 {
 	char	*ret;
 	char	*tmp;
@@ -63,6 +63,7 @@ static void	puterr(const char *sh, const char *cmd, const char *reason)
 	free(tmp);
 	ft_putstr_fd(ret, 2);
 	free(ret);
+	return (1);
 }
 
 static int	path_resolve_wrapper(char **d_fpath, const char *s_fname)
@@ -74,36 +75,22 @@ static int	path_resolve_wrapper(char **d_fpath, const char *s_fname)
 	*d_fpath = PATH().resolve(s_fname);
 	if (path_builtin_inj(d_fpath, s_fname))
 		return (1);
-	if (!ft_strchr(*d_fpath, '/'))
-	{
+	if (!ft_strchr(*d_fpath, '/')
+		&& puterr("minishell", s_fname, "command not found"))
 		g_signal = 127;
-		puterr("minishell", s_fname, "command not found");
-	}
-	else if (stat(*d_fpath, &st) == -1 && errno == ENOENT)
-	{
+	else if (stat(*d_fpath, &st) == -1 && errno == ENOENT && ((*s_fname == '.'
+				&& !ft_strchr(s_fname, '/')) || ERR().print(s_fname)))
 		g_signal = 127;
-		if (*s_fname == '.' && !ft_strchr(s_fname, '/'))
-			puterr("minishell", s_fname, "command not found");
-		else
-			ERR().print(s_fname);
-	}
-	else if (st.st_mode & S_IFDIR && ERR().setno(EISDIR))
-	{
+	else if ((st.st_mode & S_IFDIR && ERR().setno(EISDIR)
+			&& ERR().print(s_fname))
+		|| (access(*d_fpath, X_OK) == -1 && ERR().print(s_fname)))
 		g_signal = 126;
-		ERR().print(s_fname);
-	}
-	else if (access(*d_fpath, X_OK) == -1)
-	{
-		g_signal = 126;
-		ERR().print(s_fname);
-	}
 	else
 		ret++;
 	if (!ret)
-	{
 		free(*d_fpath);
+	if (!ret)
 		*d_fpath = NULL;
-	}
 	return (ret);
 }
 
