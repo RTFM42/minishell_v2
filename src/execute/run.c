@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 04:17:16 by yushsato          #+#    #+#             */
-/*   Updated: 2024/07/20 00:38:21 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/07/20 01:00:45 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ static int	execute_iofd(t_token *io, int *ifd, int *ofd, char **dhd)
 			fd = open(io->token, O_CREAT | O_RDWR | O_TRUNC, 0644);
 			if (fd != -1 && dup2(fd, ofd[1]) != -1)
 				sf_close(fd);
-			else if(ERR().print(io->token))
+			else if (ERR().print(io->token))
 				return (-1);
 		}
 		else if (io->type == LXR_APPEND)
