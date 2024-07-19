@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 01:12:08 by yushsato          #+#    #+#             */
-/*   Updated: 2024/07/20 00:54:37 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/07/20 00:57:11 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,26 +21,6 @@ void	close_pipe(int *pipe)
 		sf_close(pipe[0]);
 	if (pipe[1] != STDOUT_FILENO)
 		sf_close(pipe[1]);
-}
-
-int	await(pid_t pid)
-{
-	int	stat;
-
-	if (waitpid(pid, &stat, 0) == pid)
-	{
-		if (WIFEXITED(stat))
-			stat = WEXITSTATUS(stat);
-		else if (WIFSIGNALED(stat))
-			stat = WTERMSIG(stat) + 128;
-		if (0 <= stat && stat <= 255)
-			return (stat);
-		else
-			return (255);
-	}
-	if (pid == 0)
-		return (g_signal);
-	return (1);
 }
 
 static int	puterr(const char *sh, const char *cmd, const char *reason)

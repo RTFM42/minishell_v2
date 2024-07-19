@@ -6,7 +6,7 @@
 #    By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/13 14:42:14 by yushsato          #+#    #+#              #
-#    Updated: 2024/07/19 23:32:42 by yushsato         ###   ########.fr        #
+#    Updated: 2024/07/20 00:57:59 by yushsato         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,15 +16,16 @@ CFLAGS	= -Wall -Wextra -Werror
 SRCS	= ./src/builtin/cd.c \
 		  ./src/builtin/echo.c \
 		  ./src/builtin/env.c \
-		  ./src/builtin/pwd.c \
-		  ./src/builtin/export.c \
 		  ./src/builtin/exit.c \
+		  ./src/builtin/export.c \
+		  ./src/builtin/pwd.c \
 		  ./src/builtin/unset.c \
 		  ./src/env/env_obj.c \
 		  ./src/env/env_raw.c \
 		  ./src/execute/async.c \
-		  ./src/execute/builtin_injection.c \
+		  ./src/execute/await.c \
 		  ./src/execute/builtin.c \
+		  ./src/execute/builtin_injection.c \
 		  ./src/execute/exec.c \
 		  ./src/execute/promise.c \
 		  ./src/execute/run.c \
