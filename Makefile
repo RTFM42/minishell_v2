@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: nsakanou <nsakanou@student.42tokyo.jp>     +#+  +:+       +#+         #
+#    By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/13 14:42:14 by yushsato          #+#    #+#              #
-#    Updated: 2024/07/15 21:45:05 by nsakanou         ###   ########.fr        #
+#    Updated: 2024/07/19 23:32:42 by yushsato         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -62,16 +62,10 @@ $(NAME): $(OBJS) $(LIBFT) $(PRINTF)
 	$(CC) $(CFLAGS) $^ -o $@ $(INCLUDE) $(RLFLAGS)
 
 $(LIBFT):
-	cd lib          && \
-	cd libft        && \
-	make all        && \
-	cp $@ ../../
+	cd lib && cd libft && make all && cp $@ ../../
 
 $(PRINTF):
-	cd lib          && \
-	cd printf       && \
-	make all        && \
-	cp $@ ../../
+	cd lib && cd printf && make all && cp $@ ../../
 
 readline:
 	brew list readline &> /dev/null || brew install readline

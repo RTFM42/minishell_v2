@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 01:17:25 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/22 15:24:52 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/07/19 23:51:49 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,9 @@ void	sig_shell(int signo)
 void	sig_exec(int signo)
 {
 	signal(SIGINT, sig_exec);
-	signal(SIGQUIT, SIG_IGN);
+	signal(SIGQUIT, sig_exec);
+	if (signo == SIGQUIT)
+		ft_printf("Quit: %d\n", signo);
 	if (signo != SIGINT)
 		return ;
 	rl_on_new_line();

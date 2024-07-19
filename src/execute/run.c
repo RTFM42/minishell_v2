@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 04:17:16 by yushsato          #+#    #+#             */
-/*   Updated: 2024/07/19 01:17:29 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/07/20 00:38:21 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,26 +47,23 @@ static t_node	*execute_ready(t_token *cursor)
 
 static int	execute_iofd(t_token *io, int *ifd, int *ofd, char **dhd)
 {
-	char	*hd;
 	int		fd;
 
-	hd = NULL;
+	*dhd = NULL;
 	ERR().setno(0);
 	while (io)
 	{
-		if (!hd)
-			free(hd);
-		hd = NULL;
+		if (!*dhd)
+			free(*dhd);
+		*dhd = NULL;
 		if ((io->type == LXR_HEREDOC || io->type == LXR_INPUT) && ifd[0] == 0
 			&& pipe(ifd) == -1 && ERR().print("pipe"))
 			return (-1);
-		else
-			*dhd = hd;
 		if ((io->type == LXR_OUTPUT || io->type == LXR_APPEND) && ofd[1] == 1
 			&& pipe(ofd) == -1 && ERR().print("pipe"))
 			return (-1);
 		if (io->type == LXR_HEREDOC)
-			hd = ft_strdup(io->token);
+			*dhd = ft_strdup(io->token);
 		else if (io->type == LXR_INPUT)
 		{
 			fd = sf_fopen(io->token, O_RDONLY);

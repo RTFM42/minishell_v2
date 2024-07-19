@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 22:04:31 by yushsato          #+#    #+#             */
-/*   Updated: 2024/07/19 02:47:46 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/07/20 00:05:19 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,8 @@ int	sf_error_print(const char *name)
 		ft_putendl_fd(": Not enough space/cannot allocate memory", 2);
 	else if (errno == EIO)
 		ft_putendl_fd(": Remote I/O error", 2);
+	else if (errno == ENOTDIR)
+		ft_putendl_fd(": Not a directory", 2);
 	else
 	{
 		ft_putstr_fd(":(", 2);
