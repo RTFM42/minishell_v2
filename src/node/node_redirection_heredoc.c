@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   node_redirection_heredoc.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: nsakanou <nsakanou@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 21:07:17 by yushsato          #+#    #+#             */
-/*   Updated: 2024/07/02 17:00:39 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/07/16 00:08:58 by nsakanou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,9 @@ t_token	*node_add_heredoc(t_node *T, t_token *C)
 
 	SIG().herdoc(0);
 	C = C->next;
-	T->in_tokens = token_push(T->in_tokens, ft_strdup(""), 0, LXR_HEREDOC);
+	T->io_tokens = token_push(T->io_tokens, ft_strdup(""), 0, LXR_HEREDOC);
 	fd = dup(STDIN_FILENO);
-	last = token_last(T->in_tokens);
+	last = token_last(T->io_tokens);
 	while (1)
 	{
 		status = heredoc_concat(readline("> "), last, T, C);

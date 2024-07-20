@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   promise.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: nsakanou <nsakanou@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 19:44:09 by yushsato          #+#    #+#             */
-/*   Updated: 2024/07/02 19:44:47 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/07/16 00:35:24 by nsakanou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,10 +72,11 @@ int	promise_all(void)
 	pid_t	*pids;
 	pid_t	now;
 
-	stats = 1;
+	stats = 0;
 	pids = *promise_store();
-	while (pids && *pids >= 0)
+	while (pids && *pids > 0)
 	{
+		stats = 1;
 		now = *pids;
 		promise_rm();
 		if (now != -1)

@@ -6,14 +6,16 @@
 /*   By: nsakanou <nsakanou@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 16:53:58 by nsakanou          #+#    #+#             */
-/*   Updated: 2024/07/08 23:02:33 by nsakanou         ###   ########.fr       */
+/*   Updated: 2024/07/18 20:58:22 by nsakanou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-static int	only_digit(char *str)
+int	only_digit(char *str)
 {
+	if (*str == '-' || *str == '+')
+		str++;
 	while (*str)
 	{
 		if (!ft_isdigit(*str))
@@ -23,43 +25,60 @@ static int	only_digit(char *str)
 	return (0);
 }
 
-static int	num_of_argc(char **argv)
+static void	puterr(const char *sh, const char *cmd,
+	const char *opt, const char *reason)
 {
-	int	argc;
-	int	i;
+	char	*ret;
+	char	*tmp;
 
-	i = 1;
-	argc = 0;
-	if (argv[i + 1])
-	{
-		while (argv[argc + 1])
-			argc++;
-	}
-	return (argc);
-}
-
-static void	can_exit(char **argv)
-{
-	int	argc;
-
-	argc = num_of_argc(argv);
-	if (argc == 0)
-		return ;
-	if (argc > 1)
-		ERR().exit("exit", 1);
-	if (!only_digit(argv[1]))
-		ERR().exit("exit", 255);
+	ret = ft_strjoin(sh, ": ");
+	tmp = ret;
+	ret = ft_strjoin(tmp, cmd);
+	free(tmp);
+	tmp = ret;
+	ret = ft_strjoin(tmp, ": ");
+	free(tmp);
+	tmp = ret;
+	ret = ft_strjoin(tmp, opt);
+	free(tmp);
+	tmp = ret;
+	ret = ft_strjoin(tmp, ": ");
+	free(tmp);
+	tmp = ret;
+	ret = ft_strjoin(tmp, reason);
+	free(tmp);
+	tmp = ret;
+	ret = ft_strjoin(tmp, "\n");
+	free(tmp);
+	ft_putstr_fd(ret, 2);
+	free(ret);
 }
 
 int	bt_exit(int argc, char *const *argv, char *const *envp)
 {
-	t_env	*def;
-
-	can_exit(argv);
-	def = ENV().find;
-	if (def == NULL)
-		exit (0);
-	exit(ft_atoi(def->value));
-	ERR().exit("exit", 1);
-	return (1);
+	(void)envp;
+	ft_printf("exit\n");
+	if (argc == 1)
+		exit((256 + g_signal) % 256);
+	if (argc == 2)
+	{
+		if (!only_digit(argv[1]))
+			exit((256 + ft_atoi(argv[1])) % 256);
+		puterr("minishell", "exit", argv[1], "numeric argument required");
+		exit(2);
+	}
+	else if (argc >= 3)
+	{
+		if (!only_digit(argv[1]))
+		{
+			ft_putendl_fd("minishell: exit: too many arguments", 2);
+			return (1);
+		}
+		else
+		{
+			puterr("minishell", "exit", argv[1], "numeric argument required");
+			exit(2);
+		}
+	}
+	return (2);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_obj.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: nsakanou <nsakanou@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 20:53:52 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/08 00:21:25 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/07/15 18:50:43 by nsakanou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,24 +87,27 @@ void	env_set(char **list)
 {
 	char	*ptr;
 	char	*key;
-	t_env	*shlvl;
 
 	while (*list)
 	{
 		ptr = ft_strchr(*list, '=');
-		key = sf_calloc(ptr - *list + 1, sizeof(char));
-		key = ft_memcpy(key, *list, ptr - *list);
-		if (*++ptr == '\0')
+		if (ptr != NULL)
+		{
+			key = sf_calloc(ptr - *list + 1, sizeof(char));
+			key = ft_memcpy(key, *list, ptr - *list);
+			ptr++;
+		}
+		else
+			key = ft_strdup(*list);
+		if (ptr == NULL)
 			env_push(key, NULL);
+		else if (*ptr == '\0')
+			env_push(key, "");
 		else
 			env_push(key, ptr);
 		free(key);
 		list++;
 	}
-	shlvl = env_find("SHLVL");
-	ptr = shlvl->value;
-	shlvl->value = ft_itoa(ft_strictatoi(shlvl->value) + 1);
-	free(ptr);
 }
 
 /**
@@ -121,8 +124,12 @@ int	env_delete(const char *key)
 	chain = env_find(key);
 	if (chain)
 	{
-		chain->prev->next = chain->next;
-		chain->next->prev = chain->prev;
+		if (chain->prev)
+			chain->prev->next = chain->next;
+		else
+			*env_store() = chain->next;
+		if (chain->next)
+			chain->next->prev = chain->prev;
 		free(chain->key);
 		free(chain->value);
 		free(chain);

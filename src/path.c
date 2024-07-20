@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 16:34:31 by yushsato          #+#    #+#             */
-/*   Updated: 2024/05/14 17:39:05 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/07/19 02:56:35 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,8 @@ char	*path_resolve(const char *bin)
 	char	*path;
 	int		count;
 
-	if (bin && ft_strchr(bin, '/')
-		&& (!ENV().find("PATH") || !ENV().find("PATH")->value))
+	if (bin && ((ft_strchr(bin, '/') || *bin == '.')
+			|| !ENV().find("PATH") || !ENV().find("PATH")->value))
 		return (ft_strdup(bin));
 	envs = ft_split(ENV().find("PATH")->value, ':');
 	count = -1;

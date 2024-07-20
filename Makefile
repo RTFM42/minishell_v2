@@ -6,7 +6,7 @@
 #    By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/13 14:42:14 by yushsato          #+#    #+#              #
-#    Updated: 2024/07/13 18:15:52 by yushsato         ###   ########.fr        #
+#    Updated: 2024/07/21 02:31:03 by yushsato         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,14 +16,21 @@ CFLAGS	= -Wall -Wextra -Werror
 SRCS	= ./src/builtin/cd.c \
 		  ./src/builtin/echo.c \
 		  ./src/builtin/env.c \
+		  ./src/builtin/exit.c \
+		  ./src/builtin/export.c \
 		  ./src/builtin/pwd.c \
+		  ./src/builtin/unset.c \
 		  ./src/env/env_obj.c \
 		  ./src/env/env_raw.c \
 		  ./src/execute/async.c \
+		  ./src/execute/await.c \
+		  ./src/execute/builtin.c \
 		  ./src/execute/builtin_injection.c \
 		  ./src/execute/exec.c \
+		  ./src/execute/iofd.c \
 		  ./src/execute/promise.c \
 		  ./src/execute/run.c \
+		  ./src/execute/run_util.c \
 		  ./src/lexer/error.c \
 		  ./src/lexer/lexer.c \
 		  ./src/lexer/sanitizer.c \
@@ -58,16 +65,10 @@ $(NAME): $(OBJS) $(LIBFT) $(PRINTF)
 	$(CC) $(CFLAGS) $^ -o $@ $(INCLUDE) $(RLFLAGS)
 
 $(LIBFT):
-	cd lib          && \
-	cd libft        && \
-	make all        && \
-	cp $@ ../../
+	cd lib && cd libft && make all && cp $@ ../../
 
 $(PRINTF):
-	cd lib          && \
-	cd printf       && \
-	make all        && \
-	cp $@ ../../
+	cd lib && cd printf && make all && cp $@ ../../
 
 readline:
 	brew list readline &> /dev/null || brew install readline

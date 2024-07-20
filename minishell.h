@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 17:07:01 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/27 14:59:40 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/07/21 01:56:34 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,14 @@ typedef struct s_env
 
 typedef struct s_envc
 {
+	void	(*init)(void);
 	t_env	**(*store)(void);
 	void	(*set)(char **list);
 	t_env	*(*find)(const char *key);
 	t_env	*(*push)(const char *key, const char *value);
 	int		(*delete)(const char *key);
 	char	**(*dump)(void);
+	char	**(*redump)(void);
 	void	(*free)(char **envp);
 }	t_envc;
 
@@ -84,8 +86,7 @@ typedef struct s_node
 	int				exit_status;
 	int				cancel;
 	char			**args;
-	t_token			*in_tokens;
-	t_token			*out_tokens;
+	t_token			*io_tokens;
 	struct s_node	*next;
 	struct s_node	*prev;
 }	t_node;
@@ -104,6 +105,22 @@ typedef struct s_io
 	int		pipe[2];
 	char	**info;
 }	t_io;
+
+typedef struct s_exec
+{
+	t_node	*node;
+	t_node	*head;
+	int		ifp[2];
+	int		ofp[2];
+	int		ifd[2];
+	int		ofd[2];
+	char	*heredoc;
+	int		is_pipe;
+	int		is_logic;
+	int		is_promise;
+	int		status;
+	int		fd_stat;
+}	t_exec;
 
 typedef struct s_execc
 {

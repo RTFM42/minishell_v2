@@ -1,30 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   await.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/06 16:54:27 by nsakanou          #+#    #+#             */
-/*   Updated: 2024/07/16 15:47:49 by yushsato         ###   ########.fr       */
+/*   Created: 2024/07/20 00:57:21 by yushsato          #+#    #+#             */
+/*   Updated: 2024/07/21 00:57:23 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-int	bt_pwd(int argc, char *const *argv, char *const *envp)
+int	await(pid_t pid)
 {
-	char	*pwd;
-	int		status;
+	int	stat;
 
-	(void)envp;
-	(void)argv;
-	status = 0;
-	pwd = sf_calloc(1, PATH_MAX);
-	if (getcwd(pwd, PATH_MAX) != NULL && argc >= 1)
-		ft_printf("%s\n", pwd);
-	else if (ERR().print("pwd"))
-		++status;
-	free(pwd);
-	return (status);
+	if (waitpid(pid, &stat, 0) == pid)
+	{
+		if (WIFEXITED(stat))
+			stat = WEXITSTATUS(stat);
+		else if (WIFSIGNALED(stat))
+			stat = WTERMSIG(stat) + 128;
+		if (0 <= stat && stat <= 255)
+			return (stat);
+		else
+			return (255);
+	}
+	if (pid == 0)
+		return (g_signal);
+	return (1);
 }

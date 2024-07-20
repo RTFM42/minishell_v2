@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   word.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: nsakanou <nsakanou@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 19:39:39 by yushsato          #+#    #+#             */
-/*   Updated: 2024/07/02 16:04:15 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/07/16 00:39:23 by nsakanou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static void	parse_2quote_env(char **pdst, char **psrc)
 	char	*envk;
 	char	*envv;
 
-	if (**psrc != '$' && *(*psrc + 1) == '?' && (*psrc)++ && (*psrc)++)
+	if (**psrc == '$' && *(*psrc + 1) == '?' && (*psrc)++ && (*psrc)++)
 	{
 		envv = ft_itoa(g_signal);
 		*pdst = strallocat(*pdst, envv, ft_strlen(envv));
@@ -63,7 +63,8 @@ static void	parse_2quote(char **dst, char **src)
 		if ((!ft_memcmp(*src, "\\$", 2) || !ft_memcmp(*src, "\\\"", 2)
 				|| !ft_memcmp(*src, "\\\\", 2)) && ++(*src))
 			*dst = strallocat(*dst, (*src)++, 1);
-		else if (**src == '$')
+		else if (**src == '$'
+			&& (isenvchar(*(*src + 1)) || *(*src + 1) == '?'))
 			parse_2quote_env(dst, src);
 		else
 			*dst = strallocat(*dst, (*src)++, 1);

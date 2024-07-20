@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 14:43:52 by yushsato          #+#    #+#             */
-/*   Updated: 2024/06/22 15:17:08 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/07/21 02:32:39 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ int	main(int ac, char **av, char **ae)
 	if (av[0] && ac != 1 && ERR().setno(EINVAL))
 		(ERR().exit)("argv", 1);
 	ENV().set(ae);
+	ENV().init();
 	while (1)
 	{
 		SIG().shell(0);
@@ -43,11 +44,8 @@ int	main(int ac, char **av, char **ae)
 		token = PSR().parser(input);
 		free(input);
 		if (token == NULL)
-		{
-			g_signal = 2;
 			continue ;
-		}
-		envp = ENV().dump();
+		envp = ENV().redump();
 		g_signal = (EXEC().run)(token, envp);
 		TKN().freeall(token);
 		ENV().free(envp);

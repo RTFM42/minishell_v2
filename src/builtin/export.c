@@ -3,55 +3,44 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nsakanou <nsakanou@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 16:55:11 by nsakanou          #+#    #+#             */
-/*   Updated: 2024/07/06 17:33:55 by nsakanou         ###   ########.fr       */
+/*   Updated: 2024/07/18 20:56:19 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-static char	*get_key(const char *argv)
+int		only_digit(char *str);
+
+static void	puterr(const char *sh, const char *cmd,
+	const char *opt, const char *reason)
 {
-	char	*key;
-	char	*key_end;
-	size_t	len;
+	char	*ret;
+	char	*tmp;
 
-	key_end = ft_strchr(argv, '=');
-	if (!key_end)
-		return (ft_strdup(argv));
-	len = key_end - argv;
-	key = ft_calloc(len, sizeof(char));
-	ft_strlcpy(key, argv, len);
-	return (key);
-}
-
-static char	*get_value(const char *argv)
-{
-	char	*key_end;
-	char	*value;
-
-	key_end = ft_strchr(argv, '=');
-	if (!key_end)
-		return (NULL);
-	value = ft_strdup(key_end + 1);
-	return (value);
-}
-
-static int	env_name_judge(const char *key)
-{
-	const char	*ptr = key;
-
-	if (!key || !ft_isalpha(key[0]))
-		return (0);
-	while (*ptr)
-	{
-		if (!ft_isalnum(*ptr) && *ptr != '_')
-			return (0);
-		ptr++;
-	}
-	return (1);
+	ret = ft_strjoin(sh, ": ");
+	tmp = ret;
+	ret = ft_strjoin(tmp, cmd);
+	free(tmp);
+	tmp = ret;
+	ret = ft_strjoin(tmp, ": `");
+	free(tmp);
+	tmp = ret;
+	ret = ft_strjoin(tmp, opt);
+	free(tmp);
+	tmp = ret;
+	ret = ft_strjoin(tmp, "': ");
+	free(tmp);
+	tmp = ret;
+	ret = ft_strjoin(tmp, reason);
+	free(tmp);
+	tmp = ret;
+	ret = ft_strjoin(tmp, "\n");
+	free(tmp);
+	ft_putstr_fd(ret, 2);
+	free(ret);
 }
 
 static void	export_print_all(void)
@@ -69,33 +58,45 @@ static void	export_print_all(void)
 	ENV().free(envp);
 }
 
-int	bt_export(int argc, char *const *argv, char *const *envp)
+static int	is_valid_env_char(char c)
 {
-	int		i;
-	char	*key;
-	char	*value;
+	return (ft_isalnum(c) || c == '_');
+}
 
-	(void)envp;
-	if (argc < 2)
+static int	is_valid_env_str(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (ft_isdigit(*str) || !is_valid_env_char(*str) || *str == '=')
+		return (1);
+	while (str[++i])
 	{
-		export_print_all();
-		return (0);
-	}
-	i = 1;
-	while (i < argc)
-	{
-		key = get_key(argv[i]);
-		value = get_value(argv[i]);
-		if (env_name_judge(key))
-		{
-			if (ENV().push(key, value) == NULL)
-				ERR().print("export");
-		}
-		else
-			ERR().print("export");
-		free(key);
-		free(value);
-		i++;
+		if (str[i] == '=')
+			return (0);
+		if (!is_valid_env_char(str[i]))
+			return (1);
 	}
 	return (0);
+}
+
+int	bt_export(int argc, char *const *argv, char *const *envp)
+{
+	int	stat;
+
+	stat = 0;
+	(void)envp;
+	if (argc < 2)
+		export_print_all();
+	while (*++argv)
+	{
+		if (!is_valid_env_str(*argv))
+			ENV().set((char **)argv);
+		else
+		{
+			puterr("minishell", "export", *argv, "not a valid identifier");
+			stat = 1;
+		}
+	}
+	return (stat);
 }
