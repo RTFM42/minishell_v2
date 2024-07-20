@@ -6,17 +6,17 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 04:17:16 by yushsato          #+#    #+#             */
-/*   Updated: 2024/07/21 02:11:57 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/07/21 02:32:09 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-void	close_pipe(int *pipe);
-int		isbuiltin(const char *fname);
-int		exec_builtin(char *const *argv, char *const *envp, int *ofd);
 int		exec_iofd(t_token *io, int *ifd, int *ofd, char **dhd);
-t_token	*token_last(t_token *head);
+void	exec_logic(t_exec *exec, char **envp);
+void	exec_pipe(t_exec *exec, char **envp);
+void	exec_normal(t_exec *exec, char **envp);
+void	exec_await(t_exec *exec);
 
 static t_node	*ready(t_token *cursor)
 {
@@ -80,105 +80,9 @@ static int	reset(t_exec *exec)
 	ERR().setno(0);
 	if (exec->node->io_tokens)
 		exec->fd_stat = exec_iofd(exec->node->io_tokens,
-			exec->ifd, exec->ofd, &(exec->heredoc));
+				exec->ifd, exec->ofd, &(exec->heredoc));
 	exec->status = exec->fd_stat * -1;
 	return (1);
-}
-
-static void	elogic(t_exec *exec, char **envp)
-{
-	if (exec->ifd[0] == 0)
-		ft_memcpy(exec->ifd, exec->ifp, sizeof(int) * 2);
-	if (exec->ofd[1] == 1)
-		ft_memcpy(exec->ofd, exec->ofp, sizeof(int) * 2);
-	if (!exec->fd_stat && !exec->is_pipe && isbuiltin(exec->node->args[0]))
-		exec->status = exec_builtin(exec->node->args, envp, exec->ofd);
-	else if (!exec->fd_stat)
-	{
-		exec->is_promise = 1;
-		EXEC().promise_add((EXEC().async)(exec->node->args,
-			envp, exec->ifd, exec->ofd));
-		if (g_signal != 0)
-			exec->status = g_signal;
-		if (exec->heredoc != NULL)
-		{
-			write(exec->ifd[1], exec->heredoc, ft_strlen(exec->heredoc));
-			free(exec->heredoc);
-		}
-	}
-	if (exec->is_pipe)
-		close_pipe(exec->ifp);
-	exec->is_logic = 1;
-	exec->is_pipe = 0;
-}
-
-static void	epipe(t_exec *exec, char **envp)
-{
-	pipe(exec->ofp);
-	if (exec->ifd[0] == 0)
-		ft_memcpy(exec->ifd, exec->ifp, sizeof(int) * 2);
-	if (exec->ofd[1] == 1)
-		ft_memcpy(exec->ofd, exec->ofp, sizeof(int) * 2);
-	if (!exec->fd_stat)
-	{
-		exec->is_promise = 1;
-		EXEC().promise_add((EXEC().async)(exec->node->args,
-			envp, exec->ifd, exec->ofd));
-		if (g_signal != 0)
-			exec->status = g_signal;
-	}
-	if (exec->heredoc)
-	{
-		write(exec->ifd[1], exec->heredoc, ft_strlen(exec->heredoc));
-		free(exec->heredoc);
-	}
-	if (exec->is_pipe)
-		close_pipe(exec->ifp);
-	exec->is_logic = 0;
-	exec->is_pipe = 1;
-}
-
-static void	enormal(t_exec *exec, char **envp)
-{
-	if (exec->ifd[0] == 0)
-		ft_memcpy(exec->ifd, exec->ifp, sizeof(int) * 2);
-	if (exec->ofd[1] == 1)
-		ft_memcpy(exec->ofd, exec->ofp, sizeof(int) * 2);
-	if ((exec->is_logic && !exec->status) || !exec->is_logic)
-	{
-		if (!exec->fd_stat && !exec->is_pipe && isbuiltin(exec->node->args[0]))
-			exec->status = exec_builtin(exec->node->args, envp, exec->ofd);
-		else if (!exec->fd_stat)
-		{
-			exec->is_promise = 1;
-			EXEC().promise_add((EXEC().async)(exec->node->args,
-				envp, exec->ifd, exec->ofd));
-			if (g_signal != 0)
-				exec->status = g_signal;
-			if (exec->heredoc && write(exec->ifd[1],
-					exec->heredoc, ft_strlen(exec->heredoc)))
-				free(exec->heredoc);
-		}
-	}
-	if (exec->is_pipe)
-		close_pipe(exec->ifp);
-	exec->is_logic = 0;
-	exec->is_pipe = 0;
-}
-
-static void	eawait(t_exec *exec)
-{
-	if (exec->ifd[0] != 0 && exec->ifd[0] != exec->ifp[0])
-		close_pipe(exec->ifd);
-	if (exec->ofd[1] != 0 && exec->ofd[1] != exec->ofp[1])
-		close_pipe(exec->ofd);
-	if (!exec->is_pipe && exec->is_promise)
-	{
-		if (!exec->status)
-			exec->status = EXEC().promise_all();
-		else
-			EXEC().promise_all();
-	}
 }
 
 int	execute_run(t_token *cursor, char **envp)
@@ -191,13 +95,13 @@ int	execute_run(t_token *cursor, char **envp)
 	{
 		if (exec.node->conjection_type == LXR_LOGIC
 			&& ((exec.is_logic && !exec.status) || !exec.is_logic))
-			elogic(&exec, envp);
+			exec_logic(&exec, envp);
 		else if (exec.node->conjection_type == LXR_PIPE
 			&& ((exec.is_logic && !exec.status) || !exec.is_logic))
-			epipe(&exec, envp);
+			exec_pipe(&exec, envp);
 		else
-			enormal(&exec, envp);
-		eawait(&exec);
+			exec_normal(&exec, envp);
+		exec_await(&exec);
 		exec.node = exec.node->next;
 	}
 	SIG().shell(0);
