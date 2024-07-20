@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 04:17:16 by yushsato          #+#    #+#             */
-/*   Updated: 2024/07/21 00:55:50 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/07/21 00:59:51 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int		exec_builtin(char *const *argv, char *const *envp, int *ofd);
 int		exec_iofd(t_token *io, int *ifd, int *ofd, char **dhd);
 t_token	*token_last(t_token *head);
 
-static t_node	*execute_ready(t_token *cursor)
+static t_node	*exec_ready(t_token *cursor)
 {
 	t_node	*head;
 	t_node	*node;
@@ -62,7 +62,7 @@ int	execute_run(t_token *cursor, char **envp)
 	int		fd_stat;
 
 	SIG().set(0);
-	node = execute_ready(cursor);
+	node = exec_ready(cursor);
 	head = node;
 	is_logic = 0;
 	is_pipe = 0;
