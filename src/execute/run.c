@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 04:17:16 by yushsato          #+#    #+#             */
-/*   Updated: 2024/07/20 01:00:45 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/07/21 00:55:50 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	close_pipe(int *pipe);
 int		isbuiltin(const char *fname);
 int		exec_builtin(char *const *argv, char *const *envp, int *ofd);
+int		exec_iofd(t_token *io, int *ifd, int *ofd, char **dhd);
 t_token	*token_last(t_token *head);
 
 static t_node	*execute_ready(t_token *cursor)
@@ -43,54 +44,6 @@ static t_node	*execute_ready(t_token *cursor)
 			cursor = NODE().add_args(node, cursor);
 	}
 	return (head);
-}
-
-static int	execute_iofd(t_token *io, int *ifd, int *ofd, char **dhd)
-{
-	int		fd;
-
-	*dhd = NULL;
-	ERR().setno(0);
-	while (io)
-	{
-		if (!*dhd)
-			free(*dhd);
-		*dhd = NULL;
-		if ((io->type == LXR_HEREDOC || io->type == LXR_INPUT) && ifd[0] == 0
-			&& pipe(ifd) == -1 && ERR().print("pipe"))
-			return (-1);
-		if ((io->type == LXR_OUTPUT || io->type == LXR_APPEND) && ofd[1] == 1
-			&& pipe(ofd) == -1 && ERR().print("pipe"))
-			return (-1);
-		if (io->type == LXR_HEREDOC)
-			*dhd = ft_strdup(io->token);
-		else if (io->type == LXR_INPUT)
-		{
-			fd = sf_fopen(io->token, O_RDONLY);
-			if (fd != -1 && dup2(fd, ifd[0]) != -1)
-				sf_close(fd);
-			else if (ERR().print(io->token))
-				return (-1);
-		}
-		else if (io->type == LXR_OUTPUT)
-		{
-			fd = open(io->token, O_CREAT | O_RDWR | O_TRUNC, 0644);
-			if (fd != -1 && dup2(fd, ofd[1]) != -1)
-				sf_close(fd);
-			else if (ERR().print(io->token))
-				return (-1);
-		}
-		else if (io->type == LXR_APPEND)
-		{
-			fd = open(io->token, O_CREAT | O_RDWR | O_APPEND, 0644);
-			if (fd != -1 && dup2(fd, ofd[1]) != -1)
-				sf_close(fd);
-			else if (ERR().print(io->token))
-				return (-1);
-		}
-		io = io->next;
-	}
-	return (0);
 }
 
 int	execute_run(t_token *cursor, char **envp)
@@ -133,7 +86,7 @@ int	execute_run(t_token *cursor, char **envp)
 		heredoc = NULL;
 		ERR().setno(0);
 		if (node->io_tokens)
-			fd_stat = execute_iofd(node->io_tokens, ifd, ofd, &heredoc);
+			fd_stat = exec_iofd(node->io_tokens, ifd, ofd, &heredoc);
 		status = fd_stat * -1;
 		if (node->conjection_type == LXR_LOGIC
 			&& ((is_logic && !status) || !is_logic))

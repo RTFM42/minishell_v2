@@ -6,9 +6,11 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 00:57:21 by yushsato          #+#    #+#             */
-/*   Updated: 2024/07/20 00:57:24 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/07/21 00:57:23 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "../../minishell.h"
 
 int	await(pid_t pid)
 {

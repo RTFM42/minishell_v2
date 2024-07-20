@@ -6,7 +6,7 @@
 #    By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/13 14:42:14 by yushsato          #+#    #+#              #
-#    Updated: 2024/07/20 00:57:59 by yushsato         ###   ########.fr        #
+#    Updated: 2024/07/21 00:56:27 by yushsato         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,7 @@ SRCS	= ./src/builtin/cd.c \
 		  ./src/execute/builtin.c \
 		  ./src/execute/builtin_injection.c \
 		  ./src/execute/exec.c \
+		  ./src/execute/iofd.c \
 		  ./src/execute/promise.c \
 		  ./src/execute/run.c \
 		  ./src/lexer/error.c \
