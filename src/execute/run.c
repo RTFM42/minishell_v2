@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 04:17:16 by yushsato          #+#    #+#             */
-/*   Updated: 2024/07/21 00:59:51 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/07/21 02:11:57 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int		exec_builtin(char *const *argv, char *const *envp, int *ofd);
 int		exec_iofd(t_token *io, int *ifd, int *ofd, char **dhd);
 t_token	*token_last(t_token *head);
 
-static t_node	*exec_ready(t_token *cursor)
+static t_node	*ready(t_token *cursor)
 {
 	t_node	*head;
 	t_node	*node;
@@ -46,141 +46,161 @@ static t_node	*exec_ready(t_token *cursor)
 	return (head);
 }
 
+static int	init(t_exec *exec, t_token *cursor)
+{
+	SIG().set(0);
+	exec->node = ready(cursor);
+	exec->head = exec->node;
+	exec->is_logic = 0;
+	exec->is_pipe = 0;
+	exec->status = exec->node->cancel;
+	if (exec->status)
+	{
+		NODE().free(exec->node);
+		return (exec->status);
+	}
+	SIG().exec(0);
+	return (0);
+}
+
+static int	reset(t_exec *exec)
+{
+	exec->status = 0;
+	exec->fd_stat = 0;
+	exec->is_promise = 0;
+	exec->ifp[0] = STDIN_FILENO;
+	exec->ifp[1] = STDOUT_FILENO;
+	if (exec->is_pipe)
+		ft_memcpy(exec->ifp, exec->ofp, sizeof(int) * 2);
+	exec->ofp[0] = STDIN_FILENO;
+	exec->ofp[1] = STDOUT_FILENO;
+	ft_memcpy(exec->ifd, exec->ofp, sizeof(int) * 2);
+	ft_memcpy(exec->ofd, exec->ofp, sizeof(int) * 2);
+	exec->heredoc = NULL;
+	ERR().setno(0);
+	if (exec->node->io_tokens)
+		exec->fd_stat = exec_iofd(exec->node->io_tokens,
+			exec->ifd, exec->ofd, &(exec->heredoc));
+	exec->status = exec->fd_stat * -1;
+	return (1);
+}
+
+static void	elogic(t_exec *exec, char **envp)
+{
+	if (exec->ifd[0] == 0)
+		ft_memcpy(exec->ifd, exec->ifp, sizeof(int) * 2);
+	if (exec->ofd[1] == 1)
+		ft_memcpy(exec->ofd, exec->ofp, sizeof(int) * 2);
+	if (!exec->fd_stat && !exec->is_pipe && isbuiltin(exec->node->args[0]))
+		exec->status = exec_builtin(exec->node->args, envp, exec->ofd);
+	else if (!exec->fd_stat)
+	{
+		exec->is_promise = 1;
+		EXEC().promise_add((EXEC().async)(exec->node->args,
+			envp, exec->ifd, exec->ofd));
+		if (g_signal != 0)
+			exec->status = g_signal;
+		if (exec->heredoc != NULL)
+		{
+			write(exec->ifd[1], exec->heredoc, ft_strlen(exec->heredoc));
+			free(exec->heredoc);
+		}
+	}
+	if (exec->is_pipe)
+		close_pipe(exec->ifp);
+	exec->is_logic = 1;
+	exec->is_pipe = 0;
+}
+
+static void	epipe(t_exec *exec, char **envp)
+{
+	pipe(exec->ofp);
+	if (exec->ifd[0] == 0)
+		ft_memcpy(exec->ifd, exec->ifp, sizeof(int) * 2);
+	if (exec->ofd[1] == 1)
+		ft_memcpy(exec->ofd, exec->ofp, sizeof(int) * 2);
+	if (!exec->fd_stat)
+	{
+		exec->is_promise = 1;
+		EXEC().promise_add((EXEC().async)(exec->node->args,
+			envp, exec->ifd, exec->ofd));
+		if (g_signal != 0)
+			exec->status = g_signal;
+	}
+	if (exec->heredoc)
+	{
+		write(exec->ifd[1], exec->heredoc, ft_strlen(exec->heredoc));
+		free(exec->heredoc);
+	}
+	if (exec->is_pipe)
+		close_pipe(exec->ifp);
+	exec->is_logic = 0;
+	exec->is_pipe = 1;
+}
+
+static void	enormal(t_exec *exec, char **envp)
+{
+	if (exec->ifd[0] == 0)
+		ft_memcpy(exec->ifd, exec->ifp, sizeof(int) * 2);
+	if (exec->ofd[1] == 1)
+		ft_memcpy(exec->ofd, exec->ofp, sizeof(int) * 2);
+	if ((exec->is_logic && !exec->status) || !exec->is_logic)
+	{
+		if (!exec->fd_stat && !exec->is_pipe && isbuiltin(exec->node->args[0]))
+			exec->status = exec_builtin(exec->node->args, envp, exec->ofd);
+		else if (!exec->fd_stat)
+		{
+			exec->is_promise = 1;
+			EXEC().promise_add((EXEC().async)(exec->node->args,
+				envp, exec->ifd, exec->ofd));
+			if (g_signal != 0)
+				exec->status = g_signal;
+			if (exec->heredoc && write(exec->ifd[1],
+					exec->heredoc, ft_strlen(exec->heredoc)))
+				free(exec->heredoc);
+		}
+	}
+	if (exec->is_pipe)
+		close_pipe(exec->ifp);
+	exec->is_logic = 0;
+	exec->is_pipe = 0;
+}
+
+static void	eawait(t_exec *exec)
+{
+	if (exec->ifd[0] != 0 && exec->ifd[0] != exec->ifp[0])
+		close_pipe(exec->ifd);
+	if (exec->ofd[1] != 0 && exec->ofd[1] != exec->ofp[1])
+		close_pipe(exec->ofd);
+	if (!exec->is_pipe && exec->is_promise)
+	{
+		if (!exec->status)
+			exec->status = EXEC().promise_all();
+		else
+			EXEC().promise_all();
+	}
+}
+
 int	execute_run(t_token *cursor, char **envp)
 {
-	t_node	*node;
-	t_node	*head;
-	int		ifp[2];
-	int		ofp[2];
-	int		ifd[2];
-	int		ofd[2];
-	char	*heredoc;
-	int		is_pipe;
-	int		is_logic;
-	int		is_promise;
-	int		status;
-	int		fd_stat;
+	t_exec	exec;
 
-	SIG().set(0);
-	node = exec_ready(cursor);
-	head = node;
-	is_logic = 0;
-	is_pipe = 0;
-	status = node->cancel;
-	if (status && !NODE().free(node))
-		return (status);
-	SIG().exec(0);
-	while (node)
+	if (init(&exec, cursor))
+		return (exec.status);
+	while (exec.node && reset(&exec))
 	{
-		status = 0;
-		fd_stat = 0;
-		is_promise = 0;
-		ifp[0] = STDIN_FILENO;
-		ifp[1] = STDOUT_FILENO;
-		if (is_pipe)
-			ft_memcpy(ifp, ofp, sizeof(int) * 2);
-		ofp[0] = STDIN_FILENO;
-		ofp[1] = STDOUT_FILENO;
-		ft_memcpy(ifd, ofp, sizeof(int) * 2);
-		ft_memcpy(ofd, ofp, sizeof(int) * 2);
-		heredoc = NULL;
-		ERR().setno(0);
-		if (node->io_tokens)
-			fd_stat = exec_iofd(node->io_tokens, ifd, ofd, &heredoc);
-		status = fd_stat * -1;
-		if (node->conjection_type == LXR_LOGIC
-			&& ((is_logic && !status) || !is_logic))
-		{
-			if (ifd[0] == 0)
-				ft_memcpy(ifd, ifp, sizeof(int) * 2);
-			if (ofd[1] == 1)
-				ft_memcpy(ofd, ofp, sizeof(int) * 2);
-			if (!fd_stat && !is_pipe && isbuiltin(node->args[0]))
-				status = exec_builtin(node->args, envp, ofd);
-			else if (!fd_stat)
-			{
-				is_promise = 1;
-				EXEC().promise_add((EXEC().async)(node->args, envp, ifd, ofd));
-				if (g_signal != 0)
-					status = g_signal;
-				if (heredoc != NULL)
-				{
-					write(ifd[1], heredoc, ft_strlen(heredoc));
-					free(heredoc);
-				}
-			}
-			if (is_pipe)
-				close_pipe(ifp);
-			is_logic = 1;
-			is_pipe = 0;
-		}
-		else if (node->conjection_type == LXR_PIPE
-			&& ((is_logic && !status) || !is_logic))
-		{
-			pipe(ofp);
-			if (ifd[0] == 0)
-				ft_memcpy(ifd, ifp, sizeof(int) * 2);
-			if (ofd[1] == 1)
-				ft_memcpy(ofd, ofp, sizeof(int) * 2);
-			if (!fd_stat)
-			{
-				is_promise = 1;
-				EXEC().promise_add((EXEC().async)(node->args, envp, ifd, ofd));
-				if (g_signal != 0)
-					status = g_signal;
-			}
-			if (heredoc)
-			{
-				write(ifd[1], heredoc, ft_strlen(heredoc));
-				free(heredoc);
-			}
-			if (is_pipe)
-				close_pipe(ifp);
-			is_logic = 0;
-			is_pipe = 1;
-		}
+		if (exec.node->conjection_type == LXR_LOGIC
+			&& ((exec.is_logic && !exec.status) || !exec.is_logic))
+			elogic(&exec, envp);
+		else if (exec.node->conjection_type == LXR_PIPE
+			&& ((exec.is_logic && !exec.status) || !exec.is_logic))
+			epipe(&exec, envp);
 		else
-		{
-			if (ifd[0] == 0)
-				ft_memcpy(ifd, ifp, sizeof(int) * 2);
-			if (ofd[1] == 1)
-				ft_memcpy(ofd, ofp, sizeof(int) * 2);
-			if ((is_logic && !status) || !is_logic)
-			{
-				if (!fd_stat && !is_pipe && isbuiltin(node->args[0]))
-					status = exec_builtin(node->args, envp, ofd);
-				else if (!fd_stat)
-				{
-					is_promise = 1;
-					EXEC().promise_add((EXEC().async)(node->args, envp, ifd, ofd));
-					if (g_signal != 0)
-						status = g_signal;
-					if (heredoc)
-					{
-						write(ifd[1], heredoc, ft_strlen(heredoc));
-						free(heredoc);
-					}
-				}
-			}
-			if (is_pipe)
-				close_pipe(ifp);
-			is_logic = 0;
-			is_pipe = 0;
-		}
-		if (ifd[0] != 0 && ifd[0] != ifp[0])
-			close_pipe(ifd);
-		if (ofd[1] != 0 && ofd[1] != ofp[1])
-			close_pipe(ofd);
-		if (!is_pipe && is_promise)
-		{
-			if (!status)
-				status = EXEC().promise_all();
-			else
-				EXEC().promise_all();
-		}
-		node = node->next;
+			enormal(&exec, envp);
+		eawait(&exec);
+		exec.node = exec.node->next;
 	}
 	SIG().shell(0);
-	NODE().free(head);
-	return (status);
+	NODE().free(exec.head);
+	return (exec.status);
 }

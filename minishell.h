@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nsakanou <nsakanou@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 17:07:01 by yushsato          #+#    #+#             */
-/*   Updated: 2024/07/16 00:15:05 by nsakanou         ###   ########.fr       */
+/*   Updated: 2024/07/21 01:56:34 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,22 @@ typedef struct s_io
 	int		pipe[2];
 	char	**info;
 }	t_io;
+
+typedef struct s_exec
+{
+	t_node	*node;
+	t_node	*head;
+	int		ifp[2];
+	int		ofp[2];
+	int		ifd[2];
+	int		ofd[2];
+	char	*heredoc;
+	int		is_pipe;
+	int		is_logic;
+	int		is_promise;
+	int		status;
+	int		fd_stat;
+}	t_exec;
 
 typedef struct s_execc
 {
