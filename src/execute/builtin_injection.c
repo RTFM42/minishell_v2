@@ -22,6 +22,16 @@ int	isbuiltin(const char *fname)
 	return (0);
 }
 
+int	isbuiltin(const char *fname)
+{
+	if (!ft_memcmp(fname, "echo", 5) || !ft_memcmp(fname, "cd", 3)
+		|| !ft_memcmp(fname, "pwd", 4) || !ft_memcmp(fname, "export", 7)
+		|| !ft_memcmp(fname, "unset", 6) || !ft_memcmp(fname, "env", 4)
+		|| !ft_memcmp(fname, "exit", 5))
+		return (1);
+	return (0);
+}
+
 int	path_builtin_inj(char **d_fpath, const char *s_fname)
 {
 	char	*inj;
