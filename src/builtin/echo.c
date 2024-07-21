@@ -6,7 +6,7 @@
 /*   By: nsakanou <nsakanou@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 16:40:12 by nsakanou          #+#    #+#             */
-/*   Updated: 2024/07/06 16:45:53 by nsakanou         ###   ########.fr       */
+/*   Updated: 2024/07/22 01:23:55 by nsakanou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,12 @@ int	bt_echo(int argc, char *const *argv, char *const *envp)
 		i++;
 	while (argv[i])
 	{
-		printf("%s", argv[i]);
+		ft_putstr_fd(argv[i], STDOUT_FILENO);
 		if (argv[i + 1] != NULL)
-			printf(" ");
+			ft_putchar_fd(' ', STDOUT_FILENO);
 		i++;
 	}
 	if (!has_n_option(argv[1]))
-		printf("\n");
+		ft_putchar_fd('\n', STDOUT_FILENO);
 	return (0);
 }

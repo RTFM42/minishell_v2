@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: nsakanou <nsakanou@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 16:55:11 by nsakanou          #+#    #+#             */
-/*   Updated: 2024/07/18 20:56:19 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/07/22 01:17:41 by nsakanou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,17 +45,17 @@ static void	puterr(const char *sh, const char *cmd,
 
 static void	export_print_all(void)
 {
-	char	**envp;
-	int		i;
+	t_env	*env;
 
-	envp = ENV().dump();
-	i = 0;
-	while (envp[i])
+	env = *(ENV().store());
+	while (env)
 	{
-		printf("declare -x %s\n", envp[i]);
-		i++;
+		if (env->value)
+			ft_printf("declare -x %s=\"%s\"\n", env->key, env->value);
+		else
+			ft_printf("declare -x %s\n", env->key);
+		env = env->next;
 	}
-	ENV().free(envp);
 }
 
 static int	is_valid_env_char(char c)
@@ -82,7 +82,7 @@ static int	is_valid_env_str(char *str)
 
 int	bt_export(int argc, char *const *argv, char *const *envp)
 {
-	int	stat;
+	int		stat;
 
 	stat = 0;
 	(void)envp;
@@ -91,7 +91,10 @@ int	bt_export(int argc, char *const *argv, char *const *envp)
 	while (*++argv)
 	{
 		if (!is_valid_env_str(*argv))
-			ENV().set((char **)argv);
+		{
+			if (!(ft_strchr(*argv, '=') == NULL && ENV().find(*argv) != NULL))
+				ENV().set((char **)argv);
+		}
 		else
 		{
 			puterr("minishell", "export", *argv, "not a valid identifier");
