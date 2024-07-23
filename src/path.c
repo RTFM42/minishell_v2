@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 16:34:31 by yushsato          #+#    #+#             */
-/*   Updated: 2024/07/19 02:56:35 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/07/23 18:21:04 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,9 +77,14 @@ char	*path_resolve(const char *bin)
 	{
 		path = path_join(envs[count], bin);
 		if (path_exists(path) && path_isfile(path))
+		{
+			PSR().free(envs);
 			return (path);
+		}
 		free(path);
 	}
+	count = 0;
+	PSR().free(envs);
 	return (ft_strdup(bin));
 }
 

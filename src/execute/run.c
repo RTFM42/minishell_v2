@@ -6,11 +6,12 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 04:17:16 by yushsato          #+#    #+#             */
-/*   Updated: 2024/07/21 02:32:09 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/07/23 17:21:28 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+#include <stdlib.h>
 
 int		exec_iofd(t_token *io, int *ifd, int *ofd, char **dhd);
 void	exec_logic(t_exec *exec, char **envp);
