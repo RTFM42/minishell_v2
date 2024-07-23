@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_obj.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nsakanou <nsakanou@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 20:53:52 by yushsato          #+#    #+#             */
-/*   Updated: 2024/07/15 18:50:43 by nsakanou         ###   ########.fr       */
+/*   Updated: 2024/07/22 13:57:41 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ t_env	*env_push(const char *key, const char *value)
 	if (env_find(key))
 	{
 		chain = env_find(key);
+		if (chain->value)
+			free(chain->value);
 		chain->value = sf_strdup(value);
 		return (chain);
 	}
