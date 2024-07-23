@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_raw.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nsakanou <nsakanou@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 21:43:54 by yushsato          #+#    #+#             */
-/*   Updated: 2024/07/15 19:23:46 by nsakanou         ###   ########.fr       */
+/*   Updated: 2024/07/23 16:17:06 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,15 @@ int		env_delete(const char *key);
 void	env_init(void)
 {
 	t_env	*shlvl;
+	int		lvl;
 
 	shlvl = env_find("SHLVL");
 	if (shlvl && shlvl->value)
-		env_push("SHLVL", ft_itoa(ft_strictatoi(shlvl->value) + 1));
+	{
+		lvl = ft_strictatoi(shlvl->value) + 1;
+		free(shlvl->value);
+		shlvl->value = ft_itoa(lvl);
+	}
 	else
 		env_push("SHLVL", "1");
 }

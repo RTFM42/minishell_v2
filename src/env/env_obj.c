@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 20:53:52 by yushsato          #+#    #+#             */
-/*   Updated: 2024/07/22 13:57:41 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/07/23 16:40:30 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,26 +51,23 @@ t_env	*env_find(const char *key)
 */
 t_env	*env_push(const char *key, const char *value)
 {
-	t_env	**store;
 	t_env	*chain;
 
-	store = env_store();
-	if (env_find(key))
+	if (key == NULL)
+		return (NULL);
+	if (*(env_store()) == NULL)
 	{
-		chain = env_find(key);
-		if (chain->value)
-			free(chain->value);
+		*(env_store()) = sf_calloc(1, sizeof(t_env));
+		(*(env_store()))->key = sf_strdup(key);
+	}
+	chain = env_find(key);
+	if (chain && chain->value)
+		free(chain->value);
+	if (chain)
 		chain->value = sf_strdup(value);
+	if (chain)
 		return (chain);
-	}
-	if (key && *store == NULL)
-	{
-		*store = sf_calloc(1, sizeof(t_env));
-		(*store)->key = sf_strdup(key);
-		(*store)->value = sf_strdup(value);
-		return (*store);
-	}
-	chain = *store;
+	chain = *(env_store());
 	while (chain->next)
 		chain = chain->next;
 	chain->next = sf_calloc(1, sizeof(t_env));
