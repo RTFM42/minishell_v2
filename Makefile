@@ -6,13 +6,13 @@
 #    By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/13 14:42:14 by yushsato          #+#    #+#              #
-#    Updated: 2024/07/23 18:22:51 by yushsato         ###   ########.fr        #
+#    Updated: 2024/07/23 19:20:12 by yushsato         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	= minishell
 CC		= cc
-CFLAGS	= -Wall -Wextra -Werror
+CFLAGS	= # -Wall -Wextra -Werror
 SRCS	= ./src/builtin/cd.c \
 		  ./src/builtin/echo.c \
 		  ./src/builtin/env.c \
