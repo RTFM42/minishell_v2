@@ -6,13 +6,13 @@
 #    By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/13 14:42:14 by yushsato          #+#    #+#              #
-#    Updated: 2024/07/21 02:31:03 by yushsato         ###   ########.fr        #
+#    Updated: 2024/07/23 15:48:14 by yushsato         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	= minishell
-CC		= cc
-CFLAGS	= -Wall -Wextra -Werror
+CC		= cc #/opt/homebrew/opt/llvm/bin/clang
+CFLAGS	= #-g -fsanitize=leak #-Wall -Wextra -Werror
 SRCS	= ./src/builtin/cd.c \
 		  ./src/builtin/echo.c \
 		  ./src/builtin/env.c \

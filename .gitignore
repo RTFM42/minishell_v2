@@ -5,3 +5,4 @@ minishell
 *.a
 .DS_Store
 minishell_tester
+/test*
