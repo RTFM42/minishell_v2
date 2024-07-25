@@ -6,7 +6,7 @@
 /*   By: yushsato <yushsato@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 14:43:46 by yushsato          #+#    #+#             */
-/*   Updated: 2024/07/02 17:44:07 by yushsato         ###   ########.fr       */
+/*   Updated: 2024/07/25 19:04:20 by yushsato         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,5 +90,6 @@ void	parse_env(t_token *token, char **pdst, char **psrc)
 				free(split[i++]);
 			free(split);
 		}
+		free(envk);
 	}
 }
