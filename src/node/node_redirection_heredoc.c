@@ -51,7 +51,6 @@ t_token	*node_add_heredoc(t_node *T, t_token *C)
 {
 	int		status;
 	int		fd;
-	char	*str;
 	t_token	*last;
 
 	SIG().herdoc(0);

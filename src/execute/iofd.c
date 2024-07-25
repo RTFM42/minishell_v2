@@ -54,9 +54,12 @@ int	exec_iofd(t_token *io, int *ifd, int *ofd, char **dhd)
 	ERR().setno(0);
 	while (io)
 	{
-		if (!*dhd)
-			free(*dhd);
-		*dhd = NULL;
+		if (io->type == LXR_HEREDOC || io->type == LXR_INPUT)
+		{
+			if (!*dhd)
+				free(*dhd);
+			*dhd = NULL;
+		}
 		if ((io->type == LXR_HEREDOC || io->type == LXR_INPUT) && ifd[0] == 0
 			&& pipe(ifd) == -1 && ERR().print("pipe"))
 			return (-1);
